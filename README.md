@@ -264,3 +264,11 @@ Exemples :
 ### Bug connu
 
 L'en-tête des tableaux est cassée lors d'un scroll.
+
+## Annexes
+
+### Context
+
+settings.php => `$conf['context_reaction_debug_enable_global'] = 1;`
+
+Affiche sur chaque page, les contextes actifs.
