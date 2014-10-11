@@ -404,7 +404,7 @@ jQuery(function() {
         jQuery('.field').addClass('show-field').each(function (index) {
           var classfield = jQuery(this).attr('class').split(' ');
 
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-field-name">' + classfield[1].replace(dash, '_') + ' (' + classfield[2].replace(dash, '_') + ')</div></div>');
+          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-field-name">' + classfield[1].replace(dash, '_').replace('field_name_', '') + ' (' + classfield[2].replace(dash, '_') + ')</div></div>');
         });
       }
       else if (showOrHideField === false) {
