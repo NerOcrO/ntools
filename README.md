@@ -22,6 +22,11 @@ NTools
 * Cliquez sur l'onglet "Paramètres"
 * Ajoutez vos noms de domaines autorisés (e.g. : http://nerocro.monsite.fr/*)
 
+### Mes pages exclues
+
+* \*/update.php*
+* \*/batch?*
+
 ## Pourquoi ?
 
 Étant quotidiennement amené à travailler sur plusieurs Drupal différents dans
