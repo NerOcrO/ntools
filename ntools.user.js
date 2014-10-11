@@ -50,6 +50,8 @@ drupalCookie = {
 }
 
 jQuery(function() {
+  'use strict';
+
   var body = jQuery('body').attr('class'),
     mum = 'body:not([class*="page-admin"])',
     empty = new RegExp(' ', 'g'),
@@ -59,7 +61,7 @@ jQuery(function() {
     nodeType = /node-type-(\S+)/.exec(body),
     pageType = /page-type-(\S+)/.exec(body),
     pageTaxonomy = /page-taxonomy-term-([0-9]+)/.exec(body),
-    pageUser = /page-user-([0-9]+)/.exec(body);
+    pageUser = /page-user-([0-9]+)/.exec(body),
     bodyClass = '',
     output = '',
     node = '',
@@ -82,7 +84,8 @@ jQuery(function() {
   jQuery('#block-admin-display-form thead tr').prepend('<th>Machine name</th>');
   jQuery('#block-admin-display-form tbody tr').each(function (index) {
     var a = jQuery('a[id*="edit-"]', this).attr('href'),
-      output = '';
+      output = '',
+      url = '';
 
     if (a !== undefined) {
       url = a.split(reg);
@@ -441,7 +444,7 @@ jQuery(function() {
   jQuery('#edit-name').focus();
 
   // La feuille CSS embarquée.
-  styles = function() {/*
+  styles = (function () {/*
 .page-admin table .odd:hover,
 .page-admin table .even:hover,
 .homebox-column-wrapper table .odd:hover,
@@ -614,7 +617,7 @@ jQuery(function() {
 }
 .ntools-form-name {
   background-color: #4A3657;
-}*/}.toString().slice(14, -3);
+}*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
   css.appendChild(document.createTextNode(styles));
   jQuery('head').append(css);
