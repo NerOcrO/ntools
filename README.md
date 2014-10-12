@@ -154,6 +154,9 @@ au préalable.
 
 Intégration du bloc masquerade dans notre barre pour l'avoir tout le temps.
 
+Ajout des rôles sur chaque utilisateur (attribut title)
+en attendant [cette fonctionnalité](https://www.drupal.org/node/2355069).
+
 ### Mise en évidence d'éléments récurrents
 
 #### Philosophie
