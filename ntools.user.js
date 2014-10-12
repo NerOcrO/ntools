@@ -267,8 +267,7 @@ jQuery(function() {
   }
 
   // Déplacement du bloc Masquerade dans la balise mère.
-  var t = jQuery('#block-masquerade-masquerade');
-  jQuery(mum + ' .ntools').append(t);
+  jQuery(mum + ' .ntools').append(jQuery('#block-masquerade-masquerade'));
 
   // Suppression d'une phrase que je juge inutile.
   jQuery('.description')
@@ -277,6 +276,24 @@ jQuery(function() {
       return this.nodeType !== 1;
     })
     .remove();
+
+  // Ajout des rôles sur chaque utilisateur.
+  jQuery('#block-masquerade-masquerade #quick_switch_links li').each(function (index) {
+    var a = jQuery('a', this),
+      uid = /\/([0-9]+)\?token/.exec(a.attr('href')),
+      roles = [];
+
+    jQuery.get(
+      '/user/' + uid[1] + '/edit',
+      function (data) {
+        jQuery('#edit-roles input:checked', data).each(function (index) {
+          roles.push(jQuery('label[for=' + jQuery(this).attr('id') + ']', data).text());
+        });
+
+        a.attr('title', roles.join(', '));
+      }
+    );
+  });
 
   // Un bouton pour mettre en évidence les régions.
   if (jQuery('.region')[0] !== undefined) {
