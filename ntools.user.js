@@ -283,16 +283,18 @@ jQuery(function() {
       uid = /\/([0-9]+)\?token/.exec(a.attr('href')),
       roles = [];
 
-    jQuery.get(
-      '/user/' + uid[1] + '/edit',
-      function (data) {
-        jQuery('#edit-roles input:checked', data).each(function (index) {
-          roles.push(jQuery('label[for=' + jQuery(this).attr('id') + ']', data).text());
-        });
+    if (uid !== null) {
+      jQuery.get(
+        '/user/' + uid[1] + '/edit',
+        function (data) {
+          jQuery('#edit-roles input:checked', data).each(function (index) {
+            roles.push(jQuery('label[for=' + jQuery(this).attr('id') + ']', data).text());
+          });
 
-        a.attr('title', roles.join(', '));
-      }
-    );
+          a.attr('title', roles.join("\r\n"));
+        }
+      );
+    }
   });
 
   // Un bouton pour mettre en évidence les régions.
