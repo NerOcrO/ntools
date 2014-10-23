@@ -29,6 +29,12 @@ NTools
 * \*/update.php*
 * \*/batch?*
 
+### Thème Drupal
+
+* Téléchargez ou clonez ce dépôt
+* Placez le script JS dans le répertoire js/ de votre thème
+* Insérez dans votre_theme.info : `scripts[] = js/ntools.user.js`
+
 ## Pourquoi ?
 
 Étant quotidiennement amené à travailler sur plusieurs Drupal différents dans
