@@ -1,6 +1,8 @@
 NTools
 ======
 
+![toolbar](https://raw.githubusercontent.com/NerOcrO/ntools/master/toolbar.png)
+
 ## Installation
 
 ### Firefox
