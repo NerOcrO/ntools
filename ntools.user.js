@@ -282,8 +282,8 @@ jQuery(function() {
     var a = jQuery('a', this),
       uid = /\/([0-9]+)\?token/.exec(a.attr('href')),
       roles = [];
-
-    if (uid !== null && uid[1] !== 0) {
+console.log(uid[1]);
+    if (uid !== null && uid[1] !== '0') {
       jQuery.get(
         '/user/' + uid[1] + '/edit',
         function (data) {
