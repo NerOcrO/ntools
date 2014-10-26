@@ -69,6 +69,7 @@ jQuery(function() {
     showOrHideBlock = true,
     showOrHideView = true,
     showOrHideNode = true,
+    showOrHideProfile = true,
     showOrHideField = true,
     showOrHideForm = true,
     css = document.createElement('style'),
@@ -453,6 +454,38 @@ jQuery(function() {
     });
   }
 
+  // Un bouton pour mettre en évidence les profiles.
+  if (jQuery('.entity-profile2')[0] !== undefined) {
+    jQuery(mum + ' .ntools').append('<div class="ntools-profiles-toggle"><button>Show Profiles</button></div>');
+    jQuery('.ntools-profiles-toggle button').click(function () {
+      if (showOrHideProfile === true) {
+        showOrHideProfile = false;
+        jQuery('.ntools-profiles-toggle button').html('Hide Profiles');
+        jQuery('.entity-profile2').addClass('show-profile').each(function (index) {
+          var classProfile = jQuery(this).attr('class').split(' '),
+            whithoutDash = classProfile[1].replace(dash, '_'),
+            whithoutProfile = classProfile[2].replace(dash, '_').replace('profile2_', ''),
+            link = '';
+
+          // Ces liens permettent d'aller rapidement à la liste des champs
+          // ou aux modes d'affichage du profile.
+          if (login) {
+            link = '<a href="/admin/structure/profiles/manage/' + whithoutProfile + '/fields" target="_blank" title="Manage your ' + whithoutProfile + ' fields">F</a> ' +
+              '<a href="/admin/structure/profiles/manage/' + whithoutProfile + '/display" target="_blank" title="Manage your ' + whithoutProfile + ' displays">D</a> ';
+          }
+
+          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-profile-name">' + link + whithoutDash + ' → ' + classProfile[2].replace(dash, '_') + '</div></div>');
+        });
+      }
+      else if (showOrHideProfile === false) {
+        jQuery('.show-profile > .ntools-highlight').remove();
+        jQuery('.entity-profile2').removeClass('show-profile');
+        jQuery('.ntools-profiles-toggle button').html('Show Profiles');
+        showOrHideProfile = true;
+      }
+    });
+  }
+
   // Un bouton pour mettre en évidence les fields.
   if (jQuery('.field')[0] !== undefined) {
     jQuery(mum + ' .ntools').append('<div class="ntools-fields-toggle"><button>Show Fields</button></div>');
@@ -602,10 +635,12 @@ jQuery(function() {
 .ntools-views-toggle button:hover {
   background: #DA900C;
 }
-.ntools-nodes-toggle button {
+.ntools-nodes-toggle button,
+.ntools-profiles-toggle button {
   background: #4D8F46;
 }
-.ntools-nodes-toggle button:hover {
+.ntools-nodes-toggle button:hover,
+.ntools-profiles-toggle button:hover {
   background: #277D1E;
 }
 .ntools-fields-toggle button {
@@ -624,6 +659,7 @@ jQuery(function() {
 .block.show-block,
 .view.show-view,
 .node.show-node,
+.profile.show-profile,
 .field.show-field,
 .form.show-form {
   position: relative;
@@ -668,6 +704,7 @@ jQuery(function() {
 .ntools-view-name {
   background-color: #FFA300;
 }
+.ntools-profile-name,
 .ntools-node-name {
   background-color: #4D8F46;
 }
