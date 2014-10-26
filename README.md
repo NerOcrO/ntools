@@ -82,8 +82,9 @@ Nan !
 
 ### La mer noire ? non la barre noire !
 
-La barre d'outils se colle sur le côté droit, est repliable/dépliable et
-enregistre votre configuration grâce à un cookie se nommant ntools_toggle.
+La barre d'outils se colle sur le côté gauche par défaut, est repliable/dépliable
+au double clique et vous pouvez la déplacer où vous voulez. La configuration est
+enregistré grâce au cookies ntools_toggle et ntools_toggle_positions.
 
 ### Lien de connexion
 

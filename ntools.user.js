@@ -73,7 +73,10 @@ jQuery(function() {
     showOrHideForm = true,
     css = document.createElement('style'),
     styles = '',
-    login = document.getElementsByClassName('logged-in')[0];
+    login = document.getElementsByClassName('logged-in')[0],
+    positions = '',
+    stylePosition1 = '',
+    stylePosition2 = '';
 
   /*
    *****************************************************************************
@@ -212,9 +215,16 @@ jQuery(function() {
    *****************************************************************************
    */
 
-  // Bouton pour cacher/montrer .ntools au besoin.
-  jQuery(mum).append('<div class="ntools-toggle"><button>≡</button></div>');
-  jQuery('.ntools-toggle').click(function () {
+  // On lit les dernières positions de la barre d'outils.
+  if (drupalCookie.read('ntools_toggle_positions') !== null) {
+    positions = drupalCookie.read('ntools_toggle_positions').split(':'),
+    stylePosition1 = ' style="position:fixed;top:' + positions[0] + 'px;left:' + positions[1] + 'px"',
+    stylePosition2 = ' style="position:fixed;top:' + positions[2] + 'px;left:' + positions[1] + 'px"';
+  }
+
+  // Bouton pour cacher/montrer/déplacer .ntools au besoin.
+  jQuery(mum).append('<div class="ntools-toggle"' + stylePosition1 + '><button>≡≡≡≡≡≡≡</button></div>');
+  jQuery('.ntools-toggle').dblclick(function () {
     jQuery('.ntools').slideToggle('fast');
     // Gestion de l'affichage du bloc en fonction du cookie pour éviter de gêner
     // quand on est en édition par exemple.
@@ -227,13 +237,40 @@ jQuery(function() {
   });
 
   // Balise mère.
-  jQuery(mum).append('<div class="ntools"></div>');
-  // Cache ou pas selon le cookie.
+  jQuery(mum).append('<div class="ntools"' + stylePosition2 + '></div>');
+  // Cachée ou pas selon le cookie.
   if (drupalCookie.read('ntools_toggle') === 'off') {
     jQuery('.ntools').css('display', 'none');
   }
   else {
     drupalCookie.create('ntools_toggle', 'on', 30);
+  }
+
+  // Gestion du déplacement de la barre d'outils.
+  document.getElementsByClassName('ntools-toggle')[0].addEventListener('mousedown', function(e) {
+    window.addEventListener('mousemove', nToolsMove, true);
+  }, false);
+
+  document.getElementsByClassName('ntools-toggle')[0].addEventListener('mouseup', function(e) {
+    window.removeEventListener('mousemove', nToolsMove, true);
+    drupalCookie.create('ntools_toggle_positions', e.clientY + ':' + parseFloat(e.clientX - 50) + ':' + (parseFloat(e.clientY) + parseFloat(ntoolsToggle.clientHeight)), 30);
+  }, false);
+
+  var ntoolsToggle = document.getElementsByClassName('ntools-toggle')[0];
+
+  function nToolsMove(e) {
+    var ntools = document.getElementsByClassName('ntools')[0],
+      top1 = e.clientY,
+      left1 = e.clientX - 50,
+      top2 = parseFloat(top1) + ntoolsToggle.clientHeight;
+
+    ntoolsToggle.style.position = 'fixed';
+    ntoolsToggle.style.top = top1 + 'px';
+    ntoolsToggle.style.left = left1 + 'px';
+
+    ntools.style.position = 'fixed';
+    ntools.style.top = top2 + 'px';
+    ntools.style.left = left1 + 'px';
   }
 
   // Affichage du lien pour se connecter avec gestion de la destination.
@@ -475,6 +512,12 @@ jQuery(function() {
   color: #4D8F46;
   font-weight: 900;
 }
+.ntools-toggle {
+  position: fixed;
+  left: 0;
+  top: 125px;
+  z-index: 900;
+}
 .ntools-toggle button {
   background: #202020;
   border: none;
@@ -484,10 +527,7 @@ jQuery(function() {
   font-size: 14px;
   margin: 0;
   padding: 2px 5px;
-  position: fixed;
-  right: 0;
-  top: 125px;
-  z-index: 900;
+  width: 100px;
 }
 .ntools {
   background-color: #202020;
@@ -495,7 +535,7 @@ jQuery(function() {
   min-width: 105px;
   padding: 5px 5px 0 5px;
   position: fixed;
-  right: 0;
+  left: 0;
   top: 149px;
   z-index: 900;
 }
