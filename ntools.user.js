@@ -225,7 +225,8 @@ jQuery(function() {
 
   // Bouton pour cacher/montrer/déplacer .ntools au besoin.
   jQuery(mum).append('<div class="ntools-toggle"' + stylePosition1 + '><button>≡≡≡≡≡≡≡</button></div>');
-  jQuery('.ntools-toggle').dblclick(function () {
+  var ntoolsToggle = jQuery('.ntools-toggle');
+  ntoolsToggle.dblclick(function () {
     jQuery('.ntools').slideToggle('fast');
     // Gestion de l'affichage du bloc en fonction du cookie pour éviter de gêner
     // quand on est en édition par exemple.
@@ -235,7 +236,14 @@ jQuery(function() {
     else {
       drupalCookie.create('ntools_toggle', 'off', 30);
     }
-  });
+  })
+  .mousedown(function (e) {
+    window.addEventListener('mousemove', nToolsMove, true);
+  }, false)
+  .mouseup(function (e) {
+    window.removeEventListener('mousemove', nToolsMove, true);
+    drupalCookie.create('ntools_toggle_positions', e.clientY + ':' + parseFloat(e.clientX - 50) + ':' + (parseFloat(e.clientY) + parseFloat(ntoolsToggle.height())), 30);
+  }, false);
 
   // Balise mère.
   jQuery(mum).append('<div class="ntools"' + stylePosition2 + '></div>');
@@ -247,31 +255,15 @@ jQuery(function() {
     drupalCookie.create('ntools_toggle', 'on', 30);
   }
 
-  // Gestion du déplacement de la barre d'outils.
-  document.getElementsByClassName('ntools-toggle')[0].addEventListener('mousedown', function(e) {
-    window.addEventListener('mousemove', nToolsMove, true);
-  }, false);
-
-  document.getElementsByClassName('ntools-toggle')[0].addEventListener('mouseup', function(e) {
-    window.removeEventListener('mousemove', nToolsMove, true);
-    drupalCookie.create('ntools_toggle_positions', e.clientY + ':' + parseFloat(e.clientX - 50) + ':' + (parseFloat(e.clientY) + parseFloat(ntoolsToggle.clientHeight)), 30);
-  }, false);
-
-  var ntoolsToggle = document.getElementsByClassName('ntools-toggle')[0];
-
   function nToolsMove(e) {
-    var ntools = document.getElementsByClassName('ntools')[0],
+    var ntools = jQuery('.ntools'),
       top1 = e.clientY,
       left1 = e.clientX - 50,
-      top2 = parseFloat(top1) + ntoolsToggle.clientHeight;
+      top2 = parseFloat(top1) + ntoolsToggle.height();
 
-    ntoolsToggle.style.position = 'fixed';
-    ntoolsToggle.style.top = top1 + 'px';
-    ntoolsToggle.style.left = left1 + 'px';
+    ntoolsToggle.css({'position': 'fixed', 'top': top1 + 'px', 'left': left1 + 'px'});
 
-    ntools.style.position = 'fixed';
-    ntools.style.top = top2 + 'px';
-    ntools.style.left = left1 + 'px';
+    ntools.css({'position': 'fixed', 'top': top2 + 'px', 'left': left1 + 'px'});
   }
 
   // Affichage du lien pour se connecter avec gestion de la destination.
