@@ -172,7 +172,8 @@ jQuery(function() {
   // Ajout de la machine name sur la liste des permissions.
   jQuery('#user-admin-permissions thead tr').prepend('<th>Machine name</th>');
   jQuery('#user-admin-permissions tbody tr').each(function (index) {
-    var tableau = /\[(.+)\]/.exec(jQuery('input', this).attr('name'));
+    var tableau = /\[(.+)\]/.exec(jQuery('input', this).attr('name')),
+      output = '';
 
     if (tableau !== null) {
       output = "'" + tableau[1] + "'";
