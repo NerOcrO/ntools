@@ -240,11 +240,11 @@ jQuery(function() {
   })
   .mousedown(function (e) {
     window.addEventListener('mousemove', nToolsMove, true);
-  }, false)
+  })
   .mouseup(function (e) {
     window.removeEventListener('mousemove', nToolsMove, true);
     drupalCookie.create('ntools_toggle_positions', e.clientY + ':' + parseFloat(e.clientX - 50) + ':' + (parseFloat(e.clientY) + parseFloat(ntoolsToggle.height())), 30);
-  }, false);
+  });
 
   // Balise mère.
   jQuery(mum).append('<div class="ntools"' + stylePosition2 + '></div>');
