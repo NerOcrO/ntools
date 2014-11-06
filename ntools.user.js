@@ -360,11 +360,20 @@ jQuery(function() {
         jQuery('.ntools-blocks-toggle button').html('Hide Blocks');
         jQuery('.block').addClass('show-block').each(function (index) {
           var classBlock = /block block--?([a-z0-9-]+) /.exec(jQuery(this).attr('class')),
-            nameBlockReg = new RegExp('block-' + classBlock[1] + '-', 'g');
+            nameBlockReg = new RegExp('block-' + classBlock[1] + '-', 'g'),
+            whithoutDash = classBlock[1].replace(dash, '_'),
+            idBlock = jQuery(this).attr('id').replace(nameBlockReg, '').replace(dash, '_'),
+            link = '';
 
-          output = classBlock[1].replace(dash, '_') + " → ['" + jQuery(this).attr('id').replace(nameBlockReg, '').replace(dash, '_') + "']";
+          // Ce lien permet d'éditer le bloc rapidement surtout dans le cas où
+          // le contextual link est absent.
+          if (login) {
+            link = '<a href="/admin/structure/block/manage/' + whithoutDash + '/' + idBlock + '/configure" target="_blank" title="Edit your block">E</a> ';
+          };
 
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-block-name">' + output + '</div></div>');
+          output = whithoutDash + " → ['" + idBlock + "']";
+
+          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-block-name">' + link + output + '</div></div>');
         });
       }
       else {
@@ -382,16 +391,17 @@ jQuery(function() {
         jQuery('.view').addClass('show-view').each(function (index) {
           var classView = /view view-(\S+)/.exec(jQuery(this).attr('class')),
             classIdView = /view-display-id-(\S+)/.exec(jQuery(this).attr('class')),
+            whithoutDash = classView[1].replace(dash, '_'),
             link = '';
 
           // Ce lien permet d'éditer la vue rapidement surtout dans le cas où
           // le contextual link est absent.
           if (login) {
-            link = '<a href="/admin/structure/views/view/' + classView[1].replace(dash, '_') + '/edit/' + classIdView[1] + '" target="_blank" title="Edit your view">E</a> ';
+            link = '<a href="/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1] + '" target="_blank" title="Edit your view">E</a> ';
           };
 
           jQuery(this).append('<div class="ntools-highlight"><div class="ntools-view-name">' + link +
-            classView[1].replace(dash, '_') + ' → ' + classIdView[1] + '</div></div>');
+            whithoutDash + ' → ' + classIdView[1] + '</div></div>');
         });
       }
       else {
@@ -501,6 +511,7 @@ jQuery(function() {
   jQuery('.ntools-hide-all-toggle button').click(function () {
     nToolsDeleteZone('region', jQuery('.region'));
     nToolsDeleteZone('block', jQuery('.block'));
+    nToolsDeleteZone('view', jQuery('.view'));
     nToolsDeleteZone('node', jQuery('.node'));
     nToolsDeleteZone('profile', jQuery('.profile'));
     nToolsDeleteZone('field', jQuery('.field'));
