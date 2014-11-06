@@ -49,8 +49,18 @@ drupalCookie = {
   }
 }
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 jQuery(function() {
   'use strict';
+
+  function nToolsDeleteZone(type, node) {
+    jQuery('.show-' + type + ' > .ntools-highlight').remove();
+    node.removeClass('show-' + type);
+    jQuery('.ntools-' + type + 's-toggle button').html('Show ' + type.capitalize() + 's');
+  }
 
   var body = jQuery('body').attr('class'),
     mum = 'body:not([class*="page-admin"])',
@@ -65,13 +75,6 @@ jQuery(function() {
     bodyClass = '',
     output = '',
     node = '',
-    showOrHideRegion = true,
-    showOrHideBlock = true,
-    showOrHideView = true,
-    showOrHideNode = true,
-    showOrHideProfile = true,
-    showOrHideField = true,
-    showOrHideForm = true,
     css = document.createElement('style'),
     styles = '',
     login = document.getElementsByClassName('logged-in')[0],
@@ -332,8 +335,7 @@ jQuery(function() {
   if (jQuery('.region')[0] !== undefined) {
     jQuery(mum + ' .ntools').append('<div class="ntools-regions-toggle"><button>Show Regions</button></div>');
     jQuery('.ntools-regions-toggle button').click(function () {
-      if (showOrHideRegion === true) {
-        showOrHideRegion = false;
+      if (jQuery('.show-region').length === 0) {
         jQuery('.ntools-regions-toggle button').html('Hide Regions');
         jQuery('.region').addClass('show-region').each(function (index) {
           var classRegion = /region region-([a-z0-9-]+) /.exec(jQuery(this).attr('class')),
@@ -344,11 +346,8 @@ jQuery(function() {
           jQuery(this).append('<div class="ntools-highlight"><div class="ntools-region-name">' + output + '</div></div>');
         });
       }
-      else if (showOrHideRegion === false) {
-        jQuery('.show-region > .ntools-highlight').remove();
-        jQuery('.region').removeClass('show-region');
-        jQuery('.ntools-regions-toggle button').html('Show Regions');
-        showOrHideRegion = true;
+      else {
+        nToolsDeleteZone('region', jQuery('.region'));
       }
     });
   }
@@ -357,8 +356,7 @@ jQuery(function() {
   if (jQuery('.block')[0] !== undefined) {
     jQuery(mum + ' .ntools').append('<div class="ntools-blocks-toggle"><button>Show Blocks</button></div>');
     jQuery('.ntools-blocks-toggle button').click(function () {
-      if (showOrHideBlock === true) {
-        showOrHideBlock = false;
+      if (jQuery('.show-block').length === 0) {
         jQuery('.ntools-blocks-toggle button').html('Hide Blocks');
         jQuery('.block').addClass('show-block').each(function (index) {
           var classBlock = /block block--?([a-z0-9-]+) /.exec(jQuery(this).attr('class')),
@@ -369,11 +367,8 @@ jQuery(function() {
           jQuery(this).append('<div class="ntools-highlight"><div class="ntools-block-name">' + output + '</div></div>');
         });
       }
-      else if (showOrHideBlock === false) {
-        jQuery('.show-block > .ntools-highlight').remove();
-        jQuery('.block').removeClass('show-block');
-        jQuery('.ntools-blocks-toggle button').html('Show Blocks');
-        showOrHideBlock = true;
+      else {
+        nToolsDeleteZone('block', jQuery('.block'));
       }
     });
   }
@@ -382,8 +377,7 @@ jQuery(function() {
   if (jQuery('.view')[0] !== undefined) {
     jQuery(mum + ' .ntools').append('<div class="ntools-views-toggle"><button>Show Views</button></div>');
     jQuery('.ntools-views-toggle button').click(function () {
-      if (showOrHideView === true) {
-        showOrHideView = false;
+      if (jQuery('.show-view').length === 0) {
         jQuery('.ntools-views-toggle button').html('Hide Views');
         jQuery('.view').addClass('show-view').each(function (index) {
           var classView = /view view-(\S+)/.exec(jQuery(this).attr('class')),
@@ -400,11 +394,8 @@ jQuery(function() {
             classView[1].replace(dash, '_') + ' → ' + classIdView[1] + '</div></div>');
         });
       }
-      else if (showOrHideView === false) {
-        jQuery('.show-view > .ntools-highlight').remove();
-        jQuery('.view').removeClass('show-view');
-        jQuery('.ntools-views-toggle button').html('Show Views');
-        showOrHideView = true;
+      else {
+        nToolsDeleteZone('view', jQuery('.view'));
       }
     });
   }
@@ -413,8 +404,7 @@ jQuery(function() {
   if (jQuery('.node')[0] !== undefined) {
     jQuery(mum + ' .ntools').append('<div class="ntools-nodes-toggle"><button>Show Nodes</button></div>');
     jQuery('.ntools-nodes-toggle button').click(function () {
-      if (showOrHideNode === true) {
-        showOrHideNode = false;
+      if (jQuery('.show-node').length === 0) {
         jQuery('.ntools-nodes-toggle button').html('Hide Nodes');
         jQuery('.node').addClass('show-node').each(function (index) {
           var classNode = jQuery(this).attr('class').split(' '),
@@ -438,11 +428,8 @@ jQuery(function() {
           jQuery(this).append('<div class="ntools-highlight"><div class="ntools-node-name">' + link + whithoutDash + ' → ' + classNode[2].replace(dash, '_') + '</div></div>');
         });
       }
-      else if (showOrHideNode === false) {
-        jQuery('.show-node > .ntools-highlight').remove();
-        jQuery('.node').removeClass('show-node');
-        jQuery('.ntools-nodes-toggle button').html('Show Nodes');
-        showOrHideNode = true;
+      else {
+        nToolsDeleteZone('node', jQuery('.node'));
       }
     });
   }
@@ -451,8 +438,7 @@ jQuery(function() {
   if (jQuery('.entity-profile2')[0] !== undefined) {
     jQuery(mum + ' .ntools').append('<div class="ntools-profiles-toggle"><button>Show Profiles</button></div>');
     jQuery('.ntools-profiles-toggle button').click(function () {
-      if (showOrHideProfile === true) {
-        showOrHideProfile = false;
+      if (jQuery('.show-profile').length === 0) {
         jQuery('.ntools-profiles-toggle button').html('Hide Profiles');
         jQuery('.entity-profile2').addClass('show-profile').each(function (index) {
           var classProfile = jQuery(this).attr('class').split(' '),
@@ -470,11 +456,8 @@ jQuery(function() {
           jQuery(this).append('<div class="ntools-highlight"><div class="ntools-profile-name">' + link + whithoutDash + ' → ' + classProfile[2].replace(dash, '_') + '</div></div>');
         });
       }
-      else if (showOrHideProfile === false) {
-        jQuery('.show-profile > .ntools-highlight').remove();
-        jQuery('.entity-profile2').removeClass('show-profile');
-        jQuery('.ntools-profiles-toggle button').html('Show Profiles');
-        showOrHideProfile = true;
+      else {
+        nToolsDeleteZone('profile', jQuery('.entity-profile2'));
       }
     });
   }
@@ -483,8 +466,7 @@ jQuery(function() {
   if (jQuery('.field')[0] !== undefined) {
     jQuery(mum + ' .ntools').append('<div class="ntools-fields-toggle"><button>Show Fields</button></div>');
     jQuery('.ntools-fields-toggle button').click(function () {
-      if (showOrHideField === true) {
-        showOrHideField = false;
+      if (jQuery('.show-field').length === 0) {
         jQuery('.ntools-fields-toggle button').html('Hide Fields');
         jQuery('.field').addClass('show-field').each(function (index) {
           var classfield = jQuery(this).attr('class').split(' ');
@@ -492,11 +474,8 @@ jQuery(function() {
           jQuery(this).append('<div class="ntools-highlight"><div class="ntools-field-name">' + classfield[1].replace(dash, '_').replace('field_name_', '') + ' (' + classfield[2].replace(dash, '_') + ')</div></div>');
         });
       }
-      else if (showOrHideField === false) {
-        jQuery('.show-field > .ntools-highlight').remove();
-        jQuery('.field').removeClass('show-field');
-        jQuery('.ntools-fields-toggle button').html('Show Fields');
-        showOrHideField = true;
+      else {
+        nToolsDeleteZone('field', jQuery('.field'));
       }
     });
   }
@@ -504,23 +483,29 @@ jQuery(function() {
   // Un bouton pour mettre en évidence l'identifiant des formulaires.
   node = jQuery('form');
   if (node[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-forms-toggle"><button>Show Forms ID</button></div>');
+    jQuery(mum + ' .ntools').append('<div class="ntools-forms-toggle"><button>Show Forms</button></div>');
     jQuery('.ntools-forms-toggle button').click(function () {
-      if (showOrHideForm === true) {
-        showOrHideForm = false;
-        jQuery('.ntools-forms-toggle button').html('Hide Forms ID');
+      if (jQuery('.show-form').length === 0) {
+        jQuery('.ntools-forms-toggle button').html('Hide Forms');
         node.addClass('show-form').each(function (index) {
           jQuery(this).append('<div class="ntools-highlight"><div class="ntools-form-name">' + jQuery(this).attr('id').replace(dash, '_') + '</div></div>');
         });
       }
-      else if (showOrHideForm === false) {
-        jQuery('.show-form > .ntools-highlight').remove();
-        node.removeClass('show-form');
-        jQuery('.ntools-forms-toggle button').html('Show Forms ID');
-        showOrHideForm = true;
+      else {
+        nToolsDeleteZone('form', node);
       }
     });
   }
+
+  jQuery(mum + ' .ntools').append('<div class="ntools-hide-all-toggle"><button>Hide all</button></div>');
+  jQuery('.ntools-hide-all-toggle button').click(function () {
+    nToolsDeleteZone('region', jQuery('.region'));
+    nToolsDeleteZone('block', jQuery('.block'));
+    nToolsDeleteZone('node', jQuery('.node'));
+    nToolsDeleteZone('profile', jQuery('.profile'));
+    nToolsDeleteZone('field', jQuery('.field'));
+    nToolsDeleteZone('form', node);
+  });
 
   // Autofocus sur le login.
   jQuery('#edit-name').focus();
@@ -647,6 +632,12 @@ jQuery(function() {
 }
 .ntools-forms-toggle button:hover {
   background: #3B2549;
+}
+.ntools-hide-all-toggle button {
+  background: #000;
+}
+.ntools-hide-all-toggle button:hover {
+  background: #3B3B3B;
 }
 .region.show-region,
 .block.show-block,

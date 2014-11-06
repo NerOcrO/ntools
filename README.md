@@ -177,12 +177,13 @@ long et chiant surtout quand je passe derrière un collègue ou trois mois aprè
 
 #### Fonctionnalité
 
-Ajout de boutons pour mieux visualiser les régions, blocs, vues, nodes, champs
-et formulaires. Ces boutons ne s'affichent uniquement que si ces éléments sont
-présents dans la page. Au clic, un calque noir transparent s'affiche sur
-l'espace occupé par l'élément avec son identifiant pour mieux le chercher dans
-votre code. Si vous ne voyez rien apparaître, c'est que l'élément est caché et
-qu'il faut qu'un événement se produise pour le voir (e.g. popin).
+Ajout de boutons pour mieux visualiser les régions, blocs, vues, nodes,
+profiles, champs et formulaires. Ces boutons ne s'affichent uniquement que si
+ces éléments sont présents dans la page. Au clic, un calque noir transparent
+s'affiche sur l'espace occupé par l'élément avec son identifiant pour mieux le
+chercher dans votre code. Si vous ne voyez rien apparaître, c'est que l'élément
+est caché et qu'il faut qu'un événement se produise pour le voir (e.g. popin).
+Ajout d'un bouton pour effacer toutes les zones.
 
 #### Les vues
 
