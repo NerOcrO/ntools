@@ -185,6 +185,12 @@ chercher dans votre code. Si vous ne voyez rien apparaître, c'est que l'éléme
 est caché et qu'il faut qu'un événement se produise pour le voir (e.g. popin).
 Ajout d'un bouton pour effacer toutes les zones.
 
+#### Les blocs
+
+Dans certains cas, les liens contextuels (petit engrenage) ne s'affichent pas.
+J'ai donc ajouté un lien d'édition [E] du bloc dans une nouvelle fenêtre sans le
+paramètre destination.
+
 #### Les vues
 
 Dans certains cas, les liens contextuels (petit engrenage) ne s'affichent pas,
