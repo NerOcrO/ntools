@@ -53,19 +53,37 @@ String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-jQuery(function() {
-  'use strict';
-
-  function nToolsDeleteZone(type, node) {
+nToolsHelper = {
+  deleteZone: function(type, node) {
     jQuery('.show-' + type + ' > .ntools-highlight').remove();
     node.removeClass('show-' + type);
     jQuery('.ntools-' + type + 's-toggle button').html('Show ' + type.capitalize() + 's');
+  },
+
+  addTd: function (selector, output) {
+    jQuery(selector).prepend(
+      jQuery('<td></td>')
+        .addClass('ntools-help')
+        .html(output)
+    );
+  },
+
+  addSpan: function (object, selector, output) {
+    jQuery(object).find(selector).prepend(
+      jQuery('<span></span>')
+        .addClass('ntools-help')
+        .html(output)
+    );
   }
+}
+
+jQuery(function() {
+  'use strict';
 
   var body = jQuery('body').attr('class'),
     mum = 'body:not([class*="page-admin"])',
     empty = new RegExp(' ', 'g'),
-    reg = new RegExp('/', 'g'),
+    slash = new RegExp('/', 'g'),
     dash = new RegExp('-', 'g'),
     pageNode = /page-node-([0-9]+)/.exec(body),
     nodeType = /node-type-(\S+)/.exec(body),
@@ -80,7 +98,8 @@ jQuery(function() {
     login = document.getElementsByClassName('logged-in')[0],
     positions = '',
     stylePosition1 = '',
-    stylePosition2 = '';
+    stylePosition2 = '',
+    thMachineName = jQuery('<th></th>').html('Machine name');
 
   /*
    *****************************************************************************
@@ -88,18 +107,18 @@ jQuery(function() {
    *****************************************************************************
    */
   // Ajout de la machine name sur la liste des blocs.
-  jQuery('#block-admin-display-form thead tr').prepend('<th>Machine name</th>');
+  jQuery('#block-admin-display-form thead tr').prepend(thMachineName);
   jQuery('#block-admin-display-form tbody tr').each(function (index) {
     var a = jQuery('a[id*="edit-"]', this).attr('href'),
-      output = '',
-      url = '';
+      output = '-',
+      href = '';
 
     if (a !== undefined) {
-      url = a.split(reg);
-      output = url[url.length - 3] + " → ['" + url[url.length - 2] + "']";
+      href = a.split(slash);
+      output = href[href.length - 3] + " → ['" + href[href.length - 2] + "']";
     }
 
-    jQuery(this).prepend('<td class="ntools-help">' + output + '</td>');
+    nToolsHelper.addTd(this, output);
   });
 
   // Ajout du VID sur la liste des vocabulaires.
@@ -107,54 +126,59 @@ jQuery(function() {
   jQuery('#taxonomy-overview-vocabularies tbody tr').each(function (index) {
     var a = /(.+)\[.+\]/g.exec(jQuery('select', this).attr('name'));
 
-    jQuery(this).prepend('<td class="ntools-help">' + a[1] + '</td>');
+    nToolsHelper.addTd(this, a[1]);
   });
   // Ajout de la machine name sur la liste des vocabulaires.
-  jQuery('#taxonomy-overview-vocabularies thead tr').prepend('<th>Machine name</th>');
+  jQuery('#taxonomy-overview-vocabularies thead tr').prepend(thMachineName);
   jQuery('#taxonomy-overview-vocabularies tbody tr').each(function (index) {
-    var a = jQuery('a[id*="edit-"]', this).attr('href').split(reg);
+    var a = jQuery('a[id*="edit-"]', this).attr('href').split(slash);
 
-    jQuery(this).prepend('<td class="ntools-help">' + a[a.length - 2] + '</td>');
+    nToolsHelper.addTd(this, a[a.length - 2]);
   });
-  // Ajout des liens "Gérer les champs" et "Gére l'affichage" sur la liste des vocabulaires.
+  // Ajout des liens "Gérer les champs" et "Gérer l'affichage" sur la liste des vocabulaires.
   jQuery('#taxonomy-overview-vocabularies thead tr').append('<th colspan="2">Operations +</th>');
   jQuery('#taxonomy-overview-vocabularies tbody tr').each(function (index) {
-    var a = jQuery('a[id*="edit-"]', this).attr('href').split(reg);
+    var a = jQuery('a[id*="edit-"]', this).attr('href').split(slash),
+      url = a[a.length - 2],
+      aField = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/fields').html('Manage fields'),
+      aDisplay = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/display').html('Manage display'),
+      tdField = jQuery('<td></td>').addClass('ntools-help').html(aField),
+      tdDisplay = jQuery('<td></td>').addClass('ntools-help').html(aDisplay);
 
-    jQuery(this).append('<td class="ntools-help"><a href="/admin/structure/taxonomy/' + a[a.length - 2] + '/fields">Manage fields</a></td>' +
-      '<td class="ntools-help"><a href="/admin/structure/taxonomy/' + a[a.length - 2] + '/display">Manage display</a></td>');
+      jQuery(this).append(tdField).append(tdDisplay);
   });
 
   // Ajout du TID sur la liste des termes.
   jQuery('#taxonomy-overview-terms thead tr').prepend('<th>TID</th>');
   jQuery('#taxonomy-overview-terms tbody tr').each(function (index) {
-    var a = /:(.+):/.exec(jQuery('select', this).attr('name'));
+    var a = /:(.+):/.exec(jQuery('input', this).attr('name'));
 
-    if (a === null) {
-      var a = /:(.+):/.exec(jQuery('input', this).attr('name'));
-    }
-
-    jQuery(this).prepend('<td class="ntools-help">' + a[1] + '</td>');
+    nToolsHelper.addTd(this, a[1]);
   });
 
   // Ajout de la machine name sur la liste des vues.
-  jQuery('#views-ui-list-page thead tr').prepend('<th>Machine name</th>');
+  jQuery('#views-ui-list-page thead tr').prepend(thMachineName);
   jQuery('#views-ui-list-page tbody tr').each(function (index) {
-    var a = jQuery('.first a', this).attr('href').split(reg);
+    var a = jQuery('.first a', this).attr('href').split(slash);
 
-    jQuery(this).prepend('<td class="ntools-help">$view->name = \'' + a[a.length - 2] + '\';</td>');
+    nToolsHelper.addTd(this, '$view->name = \'' + a[a.length - 2] + '\';');
   });
 
   // Ajout d'un lien vers un field collection sur la liste des champs.
   jQuery('#field-overview tbody tr').each(function (index) {
-    var a = jQuery('td:nth-child(5)', this).text();
+    var text = jQuery('td:nth-child(5)', this).text();
 
-    if (a == 'Field collection') {
+    if (text === 'Field collection') {
       var field = jQuery('td:nth-child(4)', this),
-        textField = field.text();
+        textField = field.html();
 
-      field.text('')
-        .prepend('<a href="/admin/structure/field-collections/' + textField + '/fields" class="ntools-help">' + textField + '</a>');
+      field.html('')
+        .prepend(
+          jQuery('<a></a>')
+            .attr('href', '/admin/structure/field-collections/' + textField + '/fields')
+            .addClass('ntools-help')
+            .html(textField)
+        );
     }
   });
 
@@ -164,33 +188,31 @@ jQuery(function() {
    *****************************************************************************
    */
   // Ajout de l'identifiant sur la liste des utilisateurs.
-  jQuery('#user-admin-account tr').each(function (index) {
+  jQuery('#user-admin-account tbody tr').each(function (index) {
     var a = /\/user\/(.+)\/edit/.exec(jQuery('td:last-child a', this).attr('href'));
 
-    if (a !== null) {
-      jQuery('.username', this).after(' <em class="ntools-help">(' + a[1] + ')</em>');
-    }
+    nToolsHelper.addSpan(this, '.username', '(' + a[1] + ') ');
   });
 
   // Ajout de la machine name sur la liste des permissions.
-  jQuery('#user-admin-permissions thead tr').prepend('<th>Machine name</th>');
+  jQuery('#user-admin-permissions thead tr').prepend(thMachineName);
   jQuery('#user-admin-permissions tbody tr').each(function (index) {
     var tableau = /\[(.+)\]/.exec(jQuery('input', this).attr('name')),
-      output = '';
+      output = '-';
 
     if (tableau !== null) {
       output = "'" + tableau[1] + "'";
     }
 
-    jQuery(this).prepend('<td class="ntools-help">' + output + '</td>');
+    nToolsHelper.addTd(this, output);
   });
 
   // Ajout de l'identifiant sur la liste des rôles.
-  jQuery('#user-roles tr').each(function (index) {
+  jQuery('#user-roles tbody tr').each(function (index) {
     var a = /\/admin\/people\/permissions\/(.+)/.exec(jQuery('td:last-child a', this).attr('href'));
 
     if (a !== null) {
-      jQuery('td:first-child', this).append(' <em class="ntools-help">(' + a[1] + ')</em>');
+      nToolsHelper.addSpan(this, 'td:first-child', '(' + a[1] + ') ');
     }
   });
 
@@ -200,11 +222,11 @@ jQuery(function() {
    *****************************************************************************
    */
   // Ajout de la machine name sur la liste des modules.
-  jQuery('#system-modules thead tr').prepend('<th>Machine name</th>');
+  jQuery('#system-modules thead tr').prepend(thMachineName);
   jQuery('#system-modules tbody tr').each(function (index) {
     var tableau = /\[.+\]\[(.+)\]\[.+\]/g.exec(jQuery('input', this).attr('name'));
 
-    jQuery(this).prepend('<td class="ntools-help">' + tableau[1] + '</td>');
+    nToolsHelper.addTd(this, tableau[1]);
   });
 
   /*
@@ -347,7 +369,7 @@ jQuery(function() {
         });
       }
       else {
-        nToolsDeleteZone('region', jQuery('.region'));
+        nToolsHelper.deleteZone('region', jQuery('.region'));
       }
     });
   }
@@ -377,7 +399,7 @@ jQuery(function() {
         });
       }
       else {
-        nToolsDeleteZone('block', jQuery('.block'));
+        nToolsHelper.deleteZone('block', jQuery('.block'));
       }
     });
   }
@@ -405,7 +427,7 @@ jQuery(function() {
         });
       }
       else {
-        nToolsDeleteZone('view', jQuery('.view'));
+        nToolsHelper.deleteZone('view', jQuery('.view'));
       }
     });
   }
@@ -439,7 +461,7 @@ jQuery(function() {
         });
       }
       else {
-        nToolsDeleteZone('node', jQuery('.node'));
+        nToolsHelper.deleteZone('node', jQuery('.node'));
       }
     });
   }
@@ -467,7 +489,7 @@ jQuery(function() {
         });
       }
       else {
-        nToolsDeleteZone('profile', jQuery('.entity-profile2'));
+        nToolsHelper.deleteZone('profile', jQuery('.entity-profile2'));
       }
     });
   }
@@ -485,7 +507,7 @@ jQuery(function() {
         });
       }
       else {
-        nToolsDeleteZone('field', jQuery('.field'));
+        nToolsHelper.deleteZone('field', jQuery('.field'));
       }
     });
   }
@@ -502,20 +524,20 @@ jQuery(function() {
         });
       }
       else {
-        nToolsDeleteZone('form', node);
+        nToolsHelper.deleteZone('form', node);
       }
     });
   }
 
   jQuery(mum + ' .ntools').append('<div class="ntools-hide-all-toggle"><button>Hide all</button></div>');
   jQuery('.ntools-hide-all-toggle button').click(function () {
-    nToolsDeleteZone('region', jQuery('.region'));
-    nToolsDeleteZone('block', jQuery('.block'));
-    nToolsDeleteZone('view', jQuery('.view'));
-    nToolsDeleteZone('node', jQuery('.node'));
-    nToolsDeleteZone('profile', jQuery('.profile'));
-    nToolsDeleteZone('field', jQuery('.field'));
-    nToolsDeleteZone('form', node);
+    nToolsHelper.deleteZone('region', jQuery('.region'));
+    nToolsHelper.deleteZone('block', jQuery('.block'));
+    nToolsHelper.deleteZone('view', jQuery('.view'));
+    nToolsHelper.deleteZone('node', jQuery('.node'));
+    nToolsHelper.deleteZone('profile', jQuery('.profile'));
+    nToolsHelper.deleteZone('field', jQuery('.field'));
+    nToolsHelper.deleteZone('form', node);
   });
 
   // Autofocus sur le login.
