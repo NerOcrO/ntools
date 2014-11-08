@@ -153,8 +153,8 @@ jQuery(function() {
       var field = jQuery('td:nth-child(4)', this),
         textField = field.text();
 
-      field.text('');
-      field.prepend('<a href="/admin/structure/field-collections/' + textField + '/fields">' + textField + '</a>');
+      field.text('')
+        .prepend('<a href="/admin/structure/field-collections/' + textField + '/fields" class="ntools-help">' + textField + '</a>');
     }
   });
 
