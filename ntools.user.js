@@ -13,9 +13,9 @@
  *****************************************************************************
  */
 
-drupalCookie = {
+nToolsCookie = {
   // Créer/éditer un cookie.
-  create: function(name, value, days) {
+  create: function (name, value, days) {
     if (days) {
       var date = new Date();
       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -28,7 +28,7 @@ drupalCookie = {
   },
 
   // Lire un cookie.
-  read: function(name) {
+  read: function (name) {
     var nameEQ = name + '=';
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -44,62 +44,162 @@ drupalCookie = {
   },
 
   // Supprimer un cookie.
-  erase: function(name) {
-    drupalCookie.create(name, '', -1);
+  erase: function (name) {
+    nToolsCookie.create(name, '', -1);
   }
 }
 
-String.prototype.capitalize = function() {
+String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 nToolsHelper = {
-  deleteZone: function(type, node) {
-    jQuery('.show-' + type + ' > .ntools-highlight').remove();
-    node.removeClass('show-' + type);
-    jQuery('.ntools-' + type + 's-toggle button').html('Show ' + type.capitalize() + 's');
+  // Ajoute une zone transparente sur l'élément voulu.
+  addOverlay: function (node, type, output, link1, link2) {
+    jQuery(node).append(
+      jQuery('<div></div>')
+        .addClass('ntools-highlight')
+        .append(
+          jQuery('<div></div>')
+            .addClass('ntools-' + type + '-name')
+            .html(output)
+            .prepend(link1, ' ', link2, ' ')
+        )
+        .click(function () {
+          nToolsHelper.deleteOverlay(type, this);
+        })
+    );
   },
 
-  addTd: function (selector, output) {
-    jQuery(selector).prepend(
+  // Supprime une ou plusieurs zones transparentes.
+  deleteOverlay: function (type, node) {
+    if (typeof node === 'object') {
+      var node = jQuery(node).parent();
+
+      if (jQuery('.' + type).find('.ntools-highlight').length === 1) {
+        var flag = true;
+      }
+    }
+    else {
+      var node = jQuery('.show-' + type),
+        flag = true;
+    }
+
+    node.find(' > .ntools-highlight').remove();
+    node.removeClass('show-' + type);
+    if (flag) {
+      jQuery('.ntools-' + type + 's-toggle button').html('Show ' + type.capitalize() + 's');
+    }
+
+    // Si toutes les zones n'existent plus, on efface le bouton 'Hide all'.
+    if (jQuery('.ntools-highlight').length === 0) {
+      jQuery('.ntools-hide-all-toggle').remove();
+    }
+  },
+
+  // Ajoute le bouton "Hide all" qui efface toutes les zones transparentes.
+  addhideAllButton: function (type) {
+    if (jQuery('.ntools-hide-all-toggle').length === 0) {
+      jQuery('body').find('.ntools').append(
+        jQuery('<div></div>')
+          .addClass('ntools-hide-all-toggle')
+          .append(
+            jQuery('<button></button>')
+              .html('Hide all')
+              .click(function () {
+                nToolsHelper.deleteOverlay('region');
+                nToolsHelper.deleteOverlay('block');
+                nToolsHelper.deleteOverlay('view');
+                nToolsHelper.deleteOverlay('node');
+                nToolsHelper.deleteOverlay('profile');
+                nToolsHelper.deleteOverlay('field');
+                nToolsHelper.deleteOverlay('form');
+              })
+          )
+      )
+    }
+  },
+
+  // Ajoute un <td> sur l'élément voulu.
+  addTd: function (node, output) {
+    jQuery(node).prepend(
       jQuery('<td></td>')
         .addClass('ntools-help')
         .html(output)
     );
   },
 
-  addSpan: function (object, selector, output) {
-    jQuery(object).find(selector).prepend(
+  // Ajoute un span sur l'élément voulu.
+  addSpan: function (node, selector, output) {
+    jQuery(node).find(selector).prepend(
       jQuery('<span></span>')
         .addClass('ntools-help')
         .html(output)
     );
-  }
+  },
+
+  // Ajoute un lien dans un nouvel onglet.
+  addLink: function (href, title, output) {
+    return jQuery('<a></a>')
+      .attr('href', href)
+      .attr('target', '_blank')
+      .attr('title', title)
+      .html(output);
+  },
 }
 
-jQuery(function() {
+jQuery(function () {
   'use strict';
 
   var body = jQuery('body').attr('class'),
-    mum = 'body:not([class*="page-admin"])',
-    empty = new RegExp(' ', 'g'),
-    slash = new RegExp('/', 'g'),
-    dash = new RegExp('-', 'g'),
     pageNode = /page-node-([0-9]+)/.exec(body),
     nodeType = /node-type-(\S+)/.exec(body),
     pageType = /page-type-(\S+)/.exec(body),
     pageTaxonomy = /page-taxonomy-term-([0-9]+)/.exec(body),
     pageUser = /page-user-([0-9]+)/.exec(body),
     bodyClass = '',
-    output = '',
-    node = '',
+    empty = new RegExp(' ', 'g'),
+    slash = new RegExp('/', 'g'),
+    dash = new RegExp('-', 'g'),
+    mum = jQuery('body:not([class*="page-admin"])'),
     css = document.createElement('style'),
     styles = '',
     login = document.getElementsByClassName('logged-in')[0],
     positions = '',
     stylePosition1 = '',
     stylePosition2 = '',
-    thMachineName = jQuery('<th></th>').html('Machine name');
+    ntoolsToggle = '',
+    thMachineName = jQuery('<th></th>').html('Machine name'),
+    myTypes = [
+      {
+        id: 'region',
+        type: 'region',
+      },
+      {
+        id: 'block',
+        type: 'block',
+      },
+      {
+        id: 'view',
+        type: 'view',
+      },
+      {
+        id: 'node',
+        type: 'node',
+      },
+      {
+        id: 'entity-profile2',
+        type: 'profile',
+      },
+      {
+        id: 'field',
+        type: 'field',
+      },
+      {
+        id: 'form',
+        type: 'form',
+      },
+    ];
 
   /*
    *****************************************************************************
@@ -108,10 +208,10 @@ jQuery(function() {
    */
   // Ajout de la machine name sur la liste des blocs.
   jQuery('#block-admin-display-form thead tr').prepend(thMachineName);
-  jQuery('#block-admin-display-form tbody tr').each(function (index) {
-    var a = jQuery('a[id*="edit-"]', this).attr('href'),
+  jQuery('#block-admin-display-form tbody tr').each(function () {
+    var a = jQuery(this).find('a[id*="edit-"]').attr('href'),
       output = '-',
-      href = '';
+      href = [];
 
     if (a !== undefined) {
       href = a.split(slash);
@@ -123,22 +223,22 @@ jQuery(function() {
 
   // Ajout du VID sur la liste des vocabulaires.
   jQuery('#taxonomy-overview-vocabularies thead tr').prepend('<th>VID</th>');
-  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function (index) {
-    var a = /(.+)\[.+\]/g.exec(jQuery('select', this).attr('name'));
+  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function () {
+    var a = /(.+)\[.+\]/g.exec(jQuery(this).find('select').attr('name'));
 
     nToolsHelper.addTd(this, a[1]);
   });
   // Ajout de la machine name sur la liste des vocabulaires.
   jQuery('#taxonomy-overview-vocabularies thead tr').prepend(thMachineName);
-  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function (index) {
-    var a = jQuery('a[id*="edit-"]', this).attr('href').split(slash);
+  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function () {
+    var a = jQuery(this).find('a[id*="edit-"]').attr('href').split(slash);
 
     nToolsHelper.addTd(this, a[a.length - 2]);
   });
   // Ajout des liens "Gérer les champs" et "Gérer l'affichage" sur la liste des vocabulaires.
   jQuery('#taxonomy-overview-vocabularies thead tr').append('<th colspan="2">Operations +</th>');
-  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function (index) {
-    var a = jQuery('a[id*="edit-"]', this).attr('href').split(slash),
+  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function () {
+    var a = jQuery(this).find('a[id*="edit-"]').attr('href').split(slash),
       url = a[a.length - 2],
       aField = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/fields').html('Manage fields'),
       aDisplay = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/display').html('Manage display'),
@@ -150,26 +250,26 @@ jQuery(function() {
 
   // Ajout du TID sur la liste des termes.
   jQuery('#taxonomy-overview-terms thead tr').prepend('<th>TID</th>');
-  jQuery('#taxonomy-overview-terms tbody tr').each(function (index) {
-    var a = /:(.+):/.exec(jQuery('input', this).attr('name'));
+  jQuery('#taxonomy-overview-terms tbody tr').each(function () {
+    var a = /:(.+):/.exec(jQuery(this).find('input').attr('name'));
 
     nToolsHelper.addTd(this, a[1]);
   });
 
   // Ajout de la machine name sur la liste des vues.
   jQuery('#views-ui-list-page thead tr').prepend(thMachineName);
-  jQuery('#views-ui-list-page tbody tr').each(function (index) {
-    var a = jQuery('.first a', this).attr('href').split(slash);
+  jQuery('#views-ui-list-page tbody tr').each(function () {
+    var a = jQuery(this).find('.first a').attr('href').split(slash);
 
     nToolsHelper.addTd(this, '$view->name = \'' + a[a.length - 2] + '\';');
   });
 
   // Ajout d'un lien vers un field collection sur la liste des champs.
-  jQuery('#field-overview tbody tr').each(function (index) {
-    var text = jQuery('td:nth-child(5)', this).text();
+  jQuery('#field-overview tbody tr').each(function () {
+    var text = jQuery(this).find('td:nth-child(5)').text();
 
     if (text === 'Field collection') {
-      var field = jQuery('td:nth-child(4)', this),
+      var field = jQuery(this).find('td:nth-child(4)'),
         textField = field.html();
 
       field.html('')
@@ -188,16 +288,16 @@ jQuery(function() {
    *****************************************************************************
    */
   // Ajout de l'identifiant sur la liste des utilisateurs.
-  jQuery('#user-admin-account tbody tr').each(function (index) {
-    var a = /\/user\/(.+)\/edit/.exec(jQuery('td:last-child a', this).attr('href'));
+  jQuery('#user-admin-account tbody tr').each(function () {
+    var a = /\/user\/(.+)\/edit/.exec(jQuery(this).find('td:last-child a').attr('href'));
 
     nToolsHelper.addSpan(this, '.username', '(' + a[1] + ') ');
   });
 
   // Ajout de la machine name sur la liste des permissions.
   jQuery('#user-admin-permissions thead tr').prepend(thMachineName);
-  jQuery('#user-admin-permissions tbody tr').each(function (index) {
-    var tableau = /\[(.+)\]/.exec(jQuery('input', this).attr('name')),
+  jQuery('#user-admin-permissions tbody tr').each(function () {
+    var tableau = /\[(.+)\]/.exec(jQuery(this).find('input').attr('name')),
       output = '-';
 
     if (tableau !== null) {
@@ -208,8 +308,8 @@ jQuery(function() {
   });
 
   // Ajout de l'identifiant sur la liste des rôles.
-  jQuery('#user-roles tbody tr').each(function (index) {
-    var a = /\/admin\/people\/permissions\/(.+)/.exec(jQuery('td:last-child a', this).attr('href'));
+  jQuery('#user-roles tbody tr').each(function () {
+    var a = /\/admin\/people\/permissions\/(.+)/.exec(jQuery(this).find('td:last-child a').attr('href'));
 
     if (a !== null) {
       nToolsHelper.addSpan(this, 'td:first-child', '(' + a[1] + ') ');
@@ -223,8 +323,8 @@ jQuery(function() {
    */
   // Ajout de la machine name sur la liste des modules.
   jQuery('#system-modules thead tr').prepend(thMachineName);
-  jQuery('#system-modules tbody tr').each(function (index) {
-    var tableau = /\[.+\]\[(.+)\]\[.+\]/g.exec(jQuery('input', this).attr('name'));
+  jQuery('#system-modules tbody tr').each(function () {
+    var tableau = /\[.+\]\[(.+)\]\[.+\]/g.exec(jQuery(this).find('input').attr('name'));
 
     nToolsHelper.addTd(this, tableau[1]);
   });
@@ -243,24 +343,24 @@ jQuery(function() {
    */
 
   // On lit les dernières positions de la barre d'outils.
-  if (drupalCookie.read('ntools_toggle_positions') !== null) {
-    positions = drupalCookie.read('ntools_toggle_positions').split(':'),
+  if (nToolsCookie.read('ntools_toggle_positions') !== null) {
+    positions = nToolsCookie.read('ntools_toggle_positions').split(':'),
     stylePosition1 = ' style="position:fixed;top:' + positions[0] + 'px;left:' + positions[1] + 'px"',
     stylePosition2 = ' style="position:fixed;top:' + positions[2] + 'px;left:' + positions[1] + 'px"';
   }
 
   // Bouton pour cacher/montrer/déplacer .ntools au besoin.
-  jQuery(mum).append('<div class="ntools-toggle"' + stylePosition1 + '><button>≡≡≡≡≡≡≡</button></div>');
-  var ntoolsToggle = jQuery('.ntools-toggle');
+  mum.append('<div class="ntools-toggle"' + stylePosition1 + '><button>≡≡≡≡≡≡≡</button></div>');
+  ntoolsToggle = jQuery('.ntools-toggle');
   ntoolsToggle.dblclick(function () {
     jQuery('.ntools').slideToggle('fast');
     // Gestion de l'affichage du bloc en fonction du cookie pour éviter de gêner
     // quand on est en édition par exemple.
-    if (drupalCookie.read('ntools_toggle') === 'off') {
-      drupalCookie.create('ntools_toggle', 'on', 30);
+    if (nToolsCookie.read('ntools_toggle') === 'off') {
+      nToolsCookie.create('ntools_toggle', 'on', 30);
     }
     else {
-      drupalCookie.create('ntools_toggle', 'off', 30);
+      nToolsCookie.create('ntools_toggle', 'off', 30);
     }
   })
   .mousedown(function (e) {
@@ -268,17 +368,16 @@ jQuery(function() {
   })
   .mouseup(function (e) {
     window.removeEventListener('mousemove', nToolsMove, true);
-    drupalCookie.create('ntools_toggle_positions', e.clientY + ':' + parseFloat(e.clientX - 50) + ':' + (parseFloat(e.clientY) + parseFloat(ntoolsToggle.height())), 30);
+    nToolsCookie.create('ntools_toggle_positions', e.clientY + ':' + parseFloat(e.clientX - 50) + ':' + (parseFloat(e.clientY) + parseFloat(ntoolsToggle.height())), 30);
   });
 
-  // Balise mère.
-  jQuery(mum).append('<div class="ntools"' + stylePosition2 + '></div>');
+  mum.append('<div class="ntools"' + stylePosition2 + '></div>');
   // Cachée ou pas selon le cookie.
-  if (drupalCookie.read('ntools_toggle') === 'off') {
+  if (nToolsCookie.read('ntools_toggle') === 'off') {
     jQuery('.ntools').css('display', 'none');
   }
   else {
-    drupalCookie.create('ntools_toggle', 'on', 30);
+    nToolsCookie.create('ntools_toggle', 'on', 30);
   }
 
   function nToolsMove(e) {
@@ -294,12 +393,28 @@ jQuery(function() {
 
   // Affichage du lien pour se connecter avec gestion de la destination.
   if (login === undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-user"><a href="/user?destination=' + window.location.pathname + '">Log in</a></div>');
+    mum.find('.ntools').append(
+      jQuery('<div></div>')
+        .addClass('ntools-user')
+        .append(
+          jQuery('<a></a>')
+            .attr('href', '/user?destination=' + window.location.pathname)
+            .html('Log in')
+        )
+    );
   }
 
   // Affichage du lien pour se déconnecter.
   if (login) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-user"><a href="/user/logout">Log out</a></div>');
+    mum.find('.ntools').append(
+      jQuery('<div></div>')
+        .addClass('ntools-user')
+        .append(
+          jQuery('<a></a>')
+            .attr('href', '/user/logout')
+            .html('Log out')
+        )
+    );
   }
 
   // Affichage des classes intéressantes du body.
@@ -319,23 +434,23 @@ jQuery(function() {
     bodyClass += pageUser[0] + '<br>';
   }
   if (bodyClass !== '') {
-    jQuery(mum + ' .ntools').append('<div class="ntools-body-class">' + bodyClass + '</div>');
+    mum.find('.ntools').append('<div class="ntools-body-class">' + bodyClass + '</div>');
   }
 
   // Déplacement du bloc Masquerade dans la balise mère.
-  jQuery(mum + ' .ntools').append(jQuery('#block-masquerade-masquerade'));
+  mum.find('.ntools').append(jQuery('#block-masquerade-masquerade'));
 
   // Suppression d'une phrase que je juge inutile.
   jQuery('.description')
     .contents()
-    .filter(function() {
+    .filter(function () {
       return this.nodeType !== 1;
     })
     .remove();
 
   // Ajout des rôles sur chaque utilisateur.
-  jQuery('#block-masquerade-masquerade #quick_switch_links li').each(function (index) {
-    var a = jQuery('a', this),
+  jQuery('#block-masquerade-masquerade #quick_switch_links li').each(function () {
+    var a = jQuery(this).find('a'),
       uid = /\/([0-9]+)\?token/.exec(a.attr('href')),
       roles = [];
 
@@ -343,7 +458,7 @@ jQuery(function() {
       jQuery.get(
         '/user/' + uid[1] + '/edit',
         function (data) {
-          jQuery('#edit-roles input:checked', data).each(function (index) {
+          jQuery('#edit-roles input:checked', data).each(function () {
             roles.push(jQuery('label[for=' + jQuery(this).attr('id') + ']', data).text());
           });
 
@@ -353,191 +468,126 @@ jQuery(function() {
     }
   });
 
-  // Un bouton pour mettre en évidence les régions.
-  if (jQuery('.region')[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-regions-toggle"><button>Show Regions</button></div>');
-    jQuery('.ntools-regions-toggle button').click(function () {
-      if (jQuery('.show-region').length === 0) {
-        jQuery('.ntools-regions-toggle button').html('Hide Regions');
-        jQuery('.region').addClass('show-region').each(function (index) {
-          var classRegion = /region region-([a-z0-9-]+) /.exec(jQuery(this).attr('class')),
-            nameRegionReg = new RegExp('region-' + classRegion[1] + '-', 'g');
+  jQuery.each(myTypes, function () {
+    if (this.type === 'form') {
+      var node = jQuery(this.id),
+        type = this.type;
+    }
+    else {
+      var node = jQuery('.' + this.id),
+        type = this.type;
+    }
 
-          output = classRegion[1].replace(dash, '_');
+    if (node[0] !== undefined) {
+      mum.find('.ntools').append(
+        jQuery('<div></div>')
+          .addClass('ntools-' + type + 's-toggle')
+          .append(
+            jQuery('<button></button>')
+              .html('Show ' + type.capitalize() + 's')
+              .click(function () {
+                if (jQuery('.show-' + type).length === 0) {
+                  jQuery(this).html('Hide ' + type.capitalize() + 's');
 
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-region-name">' + output + '</div></div>');
-        });
-      }
-      else {
-        nToolsHelper.deleteZone('region', jQuery('.region'));
-      }
-    });
-  }
+                  node.addClass('show-' + type).each(function () {
+                    var target = jQuery(this),
+                      targetClass = target.attr('class'),
+                      targetId = target.attr('id'),
+                      classNode = targetClass.split(' '),
+                      output = '',
+                      link = null,
+                      link2 = null;
 
-  // Un bouton pour mettre en évidence les blocs.
-  if (jQuery('.block')[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-blocks-toggle"><button>Show Blocks</button></div>');
-    jQuery('.ntools-blocks-toggle button').click(function () {
-      if (jQuery('.show-block').length === 0) {
-        jQuery('.ntools-blocks-toggle button').html('Hide Blocks');
-        jQuery('.block').addClass('show-block').each(function (index) {
-          var classBlock = /block block--?([a-z0-9-]+) /.exec(jQuery(this).attr('class')),
-            nameBlockReg = new RegExp('block-' + classBlock[1] + '-', 'g'),
-            whithoutDash = classBlock[1].replace(dash, '_'),
-            idBlock = jQuery(this).attr('id').replace(nameBlockReg, '').replace(dash, '_'),
-            link = '';
+                    // Un bouton pour mettre en évidence les régions.
+                    if (type === 'region') {
+                      var classRegion = /region region-([a-z0-9-]+) /.exec(targetClass);
 
-          // Ce lien permet d'éditer le bloc rapidement surtout dans le cas où
-          // le contextual link est absent.
-          if (login) {
-            link = '<a href="/admin/structure/block/manage/' + whithoutDash + '/' + idBlock + '/configure" target="_blank" title="Edit your block">E</a> ';
-          };
+                      output = classRegion[1].replace(dash, '_');
+                    }
+                    // Un bouton pour mettre en évidence les blocs.
+                    else if (type === 'block') {
+                      var classBlock = /block block--?([a-z0-9-]+) /.exec(targetClass),
+                        nameBlockReg = new RegExp('block-' + classBlock[1] + '-', 'g'),
+                        whithoutDash = classBlock[1].replace(dash, '_'),
+                        idBlock = targetId.replace(nameBlockReg, '').replace(dash, '_');
 
-          output = whithoutDash + " → ['" + idBlock + "']";
+                      // Ce lien permet d'éditer le bloc rapidement surtout dans le cas où
+                      // le contextual link est absent.
+                      if (login) {
+                        link = nToolsHelper.addLink('/admin/structure/block/manage/' + whithoutDash + '/' + idBlock + '/configure', 'Edit your block', 'E');
+                      };
 
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-block-name">' + link + output + '</div></div>');
-        });
-      }
-      else {
-        nToolsHelper.deleteZone('block', jQuery('.block'));
-      }
-    });
-  }
+                      output = whithoutDash + " → ['" + idBlock + "']";
+                    }
+                    // Un bouton pour mettre en évidence les vues.
+                    else if (type === 'view') {
+                      var classView = /view view-(\S+)/.exec(targetClass),
+                        classIdView = /view-display-id-(\S+)/.exec(targetClass),
+                        whithoutDash = classView[1].replace(dash, '_');
 
-  // Un bouton pour mettre en évidence les vues.
-  if (jQuery('.view')[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-views-toggle"><button>Show Views</button></div>');
-    jQuery('.ntools-views-toggle button').click(function () {
-      if (jQuery('.show-view').length === 0) {
-        jQuery('.ntools-views-toggle button').html('Hide Views');
-        jQuery('.view').addClass('show-view').each(function (index) {
-          var classView = /view view-(\S+)/.exec(jQuery(this).attr('class')),
-            classIdView = /view-display-id-(\S+)/.exec(jQuery(this).attr('class')),
-            whithoutDash = classView[1].replace(dash, '_'),
-            link = '';
+                      // Ce lien permet d'éditer la vue rapidement surtout dans le cas où
+                      // le contextual link est absent.
+                      if (login) {
+                        link = nToolsHelper.addLink('/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1], 'Edit your view', 'E');
+                      };
 
-          // Ce lien permet d'éditer la vue rapidement surtout dans le cas où
-          // le contextual link est absent.
-          if (login) {
-            link = '<a href="/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1] + '" target="_blank" title="Edit your view">E</a> ';
-          };
+                      output = whithoutDash + ' → ' + classIdView[1];
+                    }
+                    // Un bouton pour mettre en évidence les nodes.
+                    else if (type === 'node') {
+                      var whithoutDash = classNode[1].replace(dash, '_'),
+                        whithoutNode = whithoutDash.replace('node_', '');
 
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-view-name">' + link +
-            whithoutDash + ' → ' + classIdView[1] + '</div></div>');
-        });
-      }
-      else {
-        nToolsHelper.deleteZone('view', jQuery('.view'));
-      }
-    });
-  }
+                      // Ces liens permettent d'aller rapidement à la liste des champs
+                      // ou aux modes d'affichage du node.
+                      if (login) {
+                        link = nToolsHelper.addLink('/admin/structure/types/manage/' + whithoutNode + '/fields', 'Manage your ' + whithoutNode + ' fields', 'F');
+                        link2 = nToolsHelper.addLink('/admin/structure/types/manage/' + whithoutNode + '/display', 'Manage your ' + whithoutNode + ' displays', 'D');
+                      }
 
-  // Un bouton pour mettre en évidence les nodes.
-  if (jQuery('.node')[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-nodes-toggle"><button>Show Nodes</button></div>');
-    jQuery('.ntools-nodes-toggle button').click(function () {
-      if (jQuery('.show-node').length === 0) {
-        jQuery('.ntools-nodes-toggle button').html('Hide Nodes');
-        jQuery('.node').addClass('show-node').each(function (index) {
-          var classNode = jQuery(this).attr('class').split(' '),
-            whithoutDash = classNode[1].replace(dash, '_'),
-            whithoutNode = whithoutDash.replace('node_', ''),
-            link = '';
+                      // Les classes potentiellement mises avant le view mode
+                      // dont on en a rien à fiche.
+                      if (classNode[2] == 'node-promoted' || classNode[2] == 'node-sticky' || classNode[2] == 'node-unpublished') {
+                        classNode.splice(2, 1);
+                      }
 
-          // Ces liens permettent d'aller rapidement à la liste des champs
-          // ou aux modes d'affichage du node.
-          if (login) {
-            link = '<a href="/admin/structure/types/manage/' + whithoutNode + '/fields" target="_blank" title="Manage your ' + whithoutNode + ' fields">F</a> ' +
-              '<a href="/admin/structure/types/manage/' + whithoutNode + '/display" target="_blank" title="Manage your ' + whithoutNode + ' displays">D</a> ';
-          }
+                      output = whithoutDash + ' → ' + classNode[2].replace(dash, '_');
+                    }
+                    // Un bouton pour mettre en évidence les profiles.
+                    else if (type === 'profile') {
+                      var whithoutDash = classNode[1].replace(dash, '_'),
+                        whithoutProfile = classNode[2].replace(dash, '_').replace('profile2_', '');
 
-          // Les classes potentiellement mises avant le view mode
-          // dont on en a rien à fiche.
-          if (classNode[2] == 'node-promoted' || classNode[2] == 'node-sticky' || classNode[2] == 'node-unpublished') {
-            classNode.splice(2, 1);
-          }
+                      // Ces liens permettent d'aller rapidement à la liste des champs
+                      // ou aux modes d'affichage du profile.
+                      if (login) {
+                        link = nToolsHelper.addLink('/admin/structure/profiles/manage/' + whithoutProfile + '/fields', 'Manage your ' + whithoutProfile + ' fields', 'F');
+                        link2 = nToolsHelper.addLink('/admin/structure/profiles/manage/' + whithoutProfile + '/display', 'Manage your ' + whithoutProfile + ' displays', 'D');
+                      }
 
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-node-name">' + link + whithoutDash + ' → ' + classNode[2].replace(dash, '_') + '</div></div>');
-        });
-      }
-      else {
-        nToolsHelper.deleteZone('node', jQuery('.node'));
-      }
-    });
-  }
+                      output = whithoutDash + ' → ' + classNode[2].replace(dash, '_');
+                    }
+                    // Un bouton pour mettre en évidence les fields.
+                    else if (type === 'field') {
+                      output = classNode[1].replace(dash, '_').replace('field_name_', '') + ' (' + classNode[2].replace(dash, '_');
+                    }
+                    // Un bouton pour mettre en évidence l'identifiant des formulaires.
+                    else if (type === 'form') {
+                      output = targetId.replace(dash, '_');
+                    }
 
-  // Un bouton pour mettre en évidence les profiles.
-  if (jQuery('.entity-profile2')[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-profiles-toggle"><button>Show Profiles</button></div>');
-    jQuery('.ntools-profiles-toggle button').click(function () {
-      if (jQuery('.show-profile').length === 0) {
-        jQuery('.ntools-profiles-toggle button').html('Hide Profiles');
-        jQuery('.entity-profile2').addClass('show-profile').each(function (index) {
-          var classProfile = jQuery(this).attr('class').split(' '),
-            whithoutDash = classProfile[1].replace(dash, '_'),
-            whithoutProfile = classProfile[2].replace(dash, '_').replace('profile2_', ''),
-            link = '';
+                    nToolsHelper.addOverlay(this, type, output, link, link2);
+                  });
 
-          // Ces liens permettent d'aller rapidement à la liste des champs
-          // ou aux modes d'affichage du profile.
-          if (login) {
-            link = '<a href="/admin/structure/profiles/manage/' + whithoutProfile + '/fields" target="_blank" title="Manage your ' + whithoutProfile + ' fields">F</a> ' +
-              '<a href="/admin/structure/profiles/manage/' + whithoutProfile + '/display" target="_blank" title="Manage your ' + whithoutProfile + ' displays">D</a> ';
-          }
-
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-profile-name">' + link + whithoutDash + ' → ' + classProfile[2].replace(dash, '_') + '</div></div>');
-        });
-      }
-      else {
-        nToolsHelper.deleteZone('profile', jQuery('.entity-profile2'));
-      }
-    });
-  }
-
-  // Un bouton pour mettre en évidence les fields.
-  if (jQuery('.field')[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-fields-toggle"><button>Show Fields</button></div>');
-    jQuery('.ntools-fields-toggle button').click(function () {
-      if (jQuery('.show-field').length === 0) {
-        jQuery('.ntools-fields-toggle button').html('Hide Fields');
-        jQuery('.field').addClass('show-field').each(function (index) {
-          var classfield = jQuery(this).attr('class').split(' ');
-
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-field-name">' + classfield[1].replace(dash, '_').replace('field_name_', '') + ' (' + classfield[2].replace(dash, '_') + ')</div></div>');
-        });
-      }
-      else {
-        nToolsHelper.deleteZone('field', jQuery('.field'));
-      }
-    });
-  }
-
-  // Un bouton pour mettre en évidence l'identifiant des formulaires.
-  node = jQuery('form');
-  if (node[0] !== undefined) {
-    jQuery(mum + ' .ntools').append('<div class="ntools-forms-toggle"><button>Show Forms</button></div>');
-    jQuery('.ntools-forms-toggle button').click(function () {
-      if (jQuery('.show-form').length === 0) {
-        jQuery('.ntools-forms-toggle button').html('Hide Forms');
-        node.addClass('show-form').each(function (index) {
-          jQuery(this).append('<div class="ntools-highlight"><div class="ntools-form-name">' + jQuery(this).attr('id').replace(dash, '_') + '</div></div>');
-        });
-      }
-      else {
-        nToolsHelper.deleteZone('form', node);
-      }
-    });
-  }
-
-  jQuery(mum + ' .ntools').append('<div class="ntools-hide-all-toggle"><button>Hide all</button></div>');
-  jQuery('.ntools-hide-all-toggle button').click(function () {
-    nToolsHelper.deleteZone('region', jQuery('.region'));
-    nToolsHelper.deleteZone('block', jQuery('.block'));
-    nToolsHelper.deleteZone('view', jQuery('.view'));
-    nToolsHelper.deleteZone('node', jQuery('.node'));
-    nToolsHelper.deleteZone('profile', jQuery('.profile'));
-    nToolsHelper.deleteZone('field', jQuery('.field'));
-    nToolsHelper.deleteZone('form', node);
+                  nToolsHelper.addhideAllButton();
+                }
+                else {
+                  nToolsHelper.deleteOverlay(type);
+                }
+              })
+          )
+      );
+    }
   });
 
   // Autofocus sur le login.
@@ -683,6 +733,7 @@ jQuery(function() {
 }
 .ntools-highlight {
   background-color: #000;
+  cursor: pointer;
   height: 100%;
   left: 0;
   opacity: .7;
