@@ -181,9 +181,11 @@ Ajout de boutons pour mieux visualiser les régions, blocs, vues, nodes,
 profiles, champs et formulaires. Ces boutons ne s'affichent uniquement que si
 ces éléments sont présents dans la page. Au clic, un calque noir transparent
 s'affiche sur l'espace occupé par l'élément avec son identifiant pour mieux le
-chercher dans votre code. Si vous ne voyez rien apparaître, c'est que l'élément
-est caché et qu'il faut qu'un événement se produise pour le voir (e.g. popin).
-Ajout d'un bouton pour effacer toutes les zones.
+chercher dans votre code. Au clic sur cette dernière, elle disparait. Si vous ne
+voyez rien apparaître, c'est que l'élément est caché et qu'il faut qu'un
+événement se produise pour le voir (e.g. popin). Toujours au clic, un bouton
+pour effacer toutes les zones apparaît. Il disparaît quand il n'y a plus de
+zone à effacer.
 
 #### Les blocs
 
