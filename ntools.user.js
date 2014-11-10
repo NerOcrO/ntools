@@ -170,6 +170,7 @@ jQuery(function () {
     stylePosition2 = '',
     ntoolsToggle = '',
     thMachineName = jQuery('<th></th>').html('Machine name'),
+    masquerade = jQuery('#block-masquerade-masquerade'),
     myTypes = [
       {
         id: 'region',
@@ -438,10 +439,10 @@ jQuery(function () {
   }
 
   // Déplacement du bloc Masquerade dans la balise mère.
-  mum.find('.ntools').append(jQuery('#block-masquerade-masquerade'));
+  mum.find('.ntools').append(masquerade);
 
   // Suppression d'une phrase que je juge inutile.
-  jQuery('.description')
+  masquerade.find('.description')
     .contents()
     .filter(function () {
       return this.nodeType !== 1;
@@ -449,7 +450,7 @@ jQuery(function () {
     .remove();
 
   // Ajout des rôles sur chaque utilisateur.
-  jQuery('#block-masquerade-masquerade #quick_switch_links li').each(function () {
+  masquerade.find('#quick_switch_links li').each(function () {
     var a = jQuery(this).find('a'),
       uid = /\/([0-9]+)\?token/.exec(a.attr('href')),
       roles = [];
