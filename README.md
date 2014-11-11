@@ -5,8 +5,12 @@ NTools
 
 ## L'essayer, c'est l'adopter !
 
-Si vous voulez tester NTools avant de l'installer, mettez ce [bookmarklet](javascript:(function(){var%20script=document.createElement('script');script.src='https://github.com/NerOcrO/ntools/raw/master/ntools.user.js?'+Math.floor((+new%20Date)/(864e5));document.body.appendChild(script);})()) dans vos
-marque-pages et regardez tout ce que vous pouvez faire sur votre Drupal favori !
+Si vous voulez tester NTools avant de l'installer, créez un marque-page et
+mettez-y ce bookmarklet :
+
+`javascript:(function(){var%20script=document.createElement('script');script.src='https://github.com/NerOcrO/ntools/raw/master/ntools.user.js?'+Math.floor((+new%20Date)/(864e5));document.body.appendChild(script);})()`
+
+et regardez tout ce que vous pouvez faire sur votre Drupal favori !
 
 ## Installation
 
