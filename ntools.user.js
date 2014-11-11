@@ -64,6 +64,9 @@ nToolsHelper = {
             .addClass('ntools-' + type + '-name')
             .html(output)
             .prepend(link1, ' ', link2, ' ')
+            .click(function (e) {
+              e.stopPropagation();
+            })
         )
         .click(function () {
           nToolsHelper.deleteOverlay(type, this);
@@ -144,7 +147,10 @@ nToolsHelper = {
       .attr('href', href)
       .attr('target', '_blank')
       .attr('title', title)
-      .html(output);
+      .html(output)
+      .click(function (e) {
+        e.stopPropagation();
+      });
   },
 }
 
