@@ -3,6 +3,11 @@ NTools
 
 ![toolbar](https://raw.githubusercontent.com/NerOcrO/ntools/master/toolbar.png)
 
+## L'essayer, c'est l'adopter !
+
+Si vous voulez tester NTools avant de l'installer, mettez ce [bookmarklet](javascript:(function(){var%20script=document.createElement('script');script.src='https://github.com/NerOcrO/ntools/raw/master/ntools.user.js?'+Math.floor((+new%20Date)/(864e5));document.body.appendChild(script);})()) dans vos
+marque-pages et regardez tout ce que vous pouvez faire sur votre Drupal favori !
+
 ## Installation
 
 ### Firefox
@@ -33,6 +38,7 @@ NTools
 
 * Téléchargez ou clonez ce dépôt
 * Placez le script JS dans le répertoire js/ de votre thème
+* Supprimez les huit premières lignes en rapport avec greasemonkey
 * Insérez dans votre_theme.info : `scripts[] = js/ntools.user.js`
 
 ## Pourquoi ?
