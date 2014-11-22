@@ -16,8 +16,6 @@ et regardez tout ce que vous pouvez faire sur votre Drupal favori !
 
 ### Firefox
 
-Méthode rapide
-
 * Installer [greasemonkey](https://addons.mozilla.org/fr/firefox/addon/greasemonkey/)
 * [Cliquez ici et installer le script](https://github.com/NerOcrO/ntools/raw/master/ntools.user.js)
 * about:addons -> Scripts utilisateur (tête de singe) et cliquer sur le bouton
