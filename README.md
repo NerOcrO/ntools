@@ -16,11 +16,12 @@ et regardez tout ce que vous pouvez faire sur votre Drupal favori !
 
 ### Firefox
 
+Méthode rapide
+
 * Installer [greasemonkey](https://addons.mozilla.org/fr/firefox/addon/greasemonkey/)
-* Téléchargez ou clonez ce dépôt
-* Glisser et déposer le script dans about:addons -> Scripts utilisateur (tête de singe)
-* Cliquer sur le bouton "Préférences" et ajoutez vos noms de domaines autorisés
-(e.g. : http://nerocro.monsite.fr/*)
+* [Cliquez ici et installer le script](https://github.com/NerOcrO/ntools/raw/master/ntools.user.js)
+* about:addons -> Scripts utilisateur (tête de singe) et cliquer sur le bouton
+"Préférences" et ajoutez vos noms de domaines autorisés (e.g. : http://nerocro.monsite.fr/*)
 
 ### Chrome
 
@@ -31,7 +32,8 @@ et regardez tout ce que vous pouvez faire sur votre Drupal favori !
 * Créez un nouveau script en y collant celui-ci puis enregistrez
 * Retournez sur l'onglet "Userscripts installés" et cliquez sur Ntools
 * Cliquez sur l'onglet "Paramètres"
-* Ajoutez vos noms de domaines autorisés (e.g. : http://nerocro.monsite.fr/*)
+* Section "Inclusions/Exclusions" -> "Inclusions utilisateur" ajoutez vos noms
+de domaines autorisés (e.g. : http://nerocro.monsite.fr/*)
 
 ### Mes pages exclues
 
