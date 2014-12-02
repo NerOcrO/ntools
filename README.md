@@ -150,6 +150,7 @@ Quel est son nid ? J'ouvre donc l'inspecteur d'élément...
 
 Affichage des classes commençant par "page-node-", "node-type-", "page-type-",
 "page-taxonomy-term-" et "page-user-".
+Affichage également de "context-" avec un lien pour les modifier.
 
 ### Masquerade
 
@@ -300,11 +301,3 @@ Exemples :
 ### Bug connu
 
 L'en-tête des tableaux est cassée lors d'un scroll.
-
-## Annexes
-
-### Context
-
-settings.php => `$conf['context_reaction_debug_enable_global'] = 1;`
-
-Affiche sur chaque page, les contextes actifs.

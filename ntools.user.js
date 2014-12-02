@@ -321,6 +321,7 @@ toolbar: function () {
     pageType = /page-type-(\S+)/.exec(bodyClasses),
     pageTaxonomy = /page-taxonomy-term-([0-9]+)/.exec(bodyClasses),
     pageUser = /page-user-([0-9]+)/.exec(bodyClasses),
+    pageContext = bodyClasses.match(/context-(\S+)/g),
     bodyClass = '',
     empty = new RegExp(' ', 'g'),
     slash = new RegExp('/', 'g'),
@@ -451,6 +452,17 @@ toolbar: function () {
   }
   if (pageUser !== null) {
     bodyClass += pageUser[0] + '<br>';
+  }
+  if (pageContext !== null) {
+    var arrayLength = pageContext.length;
+    for (var i = 0; i < arrayLength; i++) {
+      var context = pageContext[i].split('-');
+      bodyClass += pageContext[i];
+      if (login === 1) {
+        bodyClass += ' [<a href="/admin/structure/context/list/' + context[1] + '/edit" title="Edit your context" target="_blank">E</a>]';
+      }
+      bodyClass += '<br>';
+    }
   }
   if (bodyClass !== '') {
     body.find('.ntools').append('<div class="ntools-body-class">' + bodyClass + '</div>');
