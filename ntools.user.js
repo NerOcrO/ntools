@@ -223,7 +223,7 @@ backOffice: function () {
   });
 
   // Ajout du TID sur la liste des termes.
-  jQuery('#taxonomy-overview-terms thead tr').prepend(nToolsHelper.createTh('VID'));
+  jQuery('#taxonomy-overview-terms thead tr').prepend(nToolsHelper.createTh('TID'));
   jQuery('#taxonomy-overview-terms tbody tr').each(function () {
     var a = /:(.+):/.exec(jQuery(this).find('input').attr('name'));
 
