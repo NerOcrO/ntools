@@ -9,7 +9,7 @@ Si vous voulez tester NTools avant de l'installer, créez un marque-page et
 mettez-y ce bookmarklet :
 
 ```
-javascript:(function(){var script=document.createElement('script');script.src='https://rawgit.com/NerOcrO/ntools/master/ntools.user.js?'+Math.floor((+new Date)/(864e5));document.body.appendChild(script);})()
+javascript:(function(){var script=document.createElement('script');script.src='https://rawgit.com/NerOcrO/ntools/master/ntools.user.js?'+Math.floor(new Date);document.body.appendChild(script);})()
 ```
 
 et regardez tout ce que vous pouvez faire sur votre Drupal favori !
