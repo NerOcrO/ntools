@@ -567,22 +567,46 @@ toolbar: function () {
                     // Un bouton pour mettre en évidence les nodes.
                     else if (type === 'node') {
                       var whithoutDash = classNode[1].replace(dash, '_'),
-                        whithoutNode = whithoutDash.replace('node_', '');
+                        whithoutNode = whithoutDash.replace('node_', ''),
+                        classTeaser = /node-teaser/.exec(targetClass),
+                        classPromoted = /node-promoted/.exec(targetClass),
+                        classSticky = /node-sticky/.exec(targetClass),
+                        classUnpublished = /node-unpublished/.exec(targetClass),
+                        displayMode = '',
+                        display = '',
+                        properties = [],
+                        flag = false;
+
+                      if (classPromoted !== null) {
+                        properties.push('P');
+                        flag = true;
+                      }
+                      if (classSticky !== null) {
+                        properties.push('S');
+                        flag = true;
+                      }
+                      if (classUnpublished !== null) {
+                        properties.push('U');
+                        flag = true;
+                      }
+                      if (flag) {
+                        properties = ' (' + properties.join() + ')';
+                      }
+
+                      // Malheureusement, Drupal ne gère que l'accroche.
+                      if (classTeaser !== null) {
+                        displayMode = ' → teaser';
+                        display = '/teaser';
+                      }
 
                       // Ces liens permettent d'aller rapidement à la liste des champs
                       // ou aux modes d'affichage du node.
                       if (login === 1) {
                         link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/fields', 'Manage your ' + whithoutNode + ' fields', 'F');
-                        link2 = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display', 'Manage your ' + whithoutNode + ' displays', 'D');
+                        link2 = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display' + display, 'Manage your ' + whithoutNode + ' displays', 'D');
                       }
 
-                      // Les classes potentiellement mises avant le view mode
-                      // dont on en a rien à fiche.
-                      if (classNode[2] == 'node-promoted' || classNode[2] == 'node-sticky' || classNode[2] == 'node-unpublished') {
-                        classNode.splice(2, 1);
-                      }
-
-                      output = whithoutDash + ' → ' + classNode[2].replace(dash, '_');
+                      output = whithoutDash + properties + displayMode;
                     }
                     // Un bouton pour mettre en évidence les profiles.
                     else if (type === 'profile') {

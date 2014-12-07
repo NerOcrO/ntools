@@ -221,11 +221,14 @@ fenêtre vers :
 * Gérer les champs [F]
 * Gérer l'affichage [D]
 
-J'affiche ensuite le type du node puis son display mode mais ce n'est pas
-toujours correct car par défaut, Drupal n'affiche que le sien à savoir
-node-teaser et pas les notres... Pourquoi ? Va savoir...
+J'affiche ensuite le type du node puis le mode d'affichage 'accroche' s'il
+existe car par défaut, Drupal n'intègre que la classe de ce dernier.
 
-Néanmoins, certains thèmes le rajoute alors je l'ai laissé.
+J'affiche enfin les propriétés du node :
+
+* P → Promoted
+* S → Sticky
+* U → Unpublished
 
 #### Troll
 
