@@ -677,6 +677,7 @@ styles: function () {
   border: none;
   border-radius: 0;
   color: #FFF;
+  cursor: move;
   font-family: Helvetica;
   font-size: 14px;
   margin: 0;
