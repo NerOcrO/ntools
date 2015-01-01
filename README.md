@@ -306,3 +306,7 @@ Exemples :
 ### Bug connu
 
 L'en-tête des tableaux est cassée lors d'un scroll.
+
+## Partout
+
+Ajout d'un title sur les checkbox/radio/option avec leur valeur.

@@ -855,6 +855,11 @@ styles: function () {
 jQuery(function () {
   nTools.styles();
 
+  // Tous les checkbox/radio/option ont un title avec leur valeur.
+  jQuery('input[type=checkbox], input[type=radio], option').each(function () {
+    jQuery(this).attr('title', jQuery(this).val());
+  });
+
   if (jQuery('body[class*="page-admin"]').length === 1) {
     nTools.backOffice();
   }
