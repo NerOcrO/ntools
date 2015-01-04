@@ -730,6 +730,10 @@ styles: function () {
 #block-masquerade-masquerade .form-item {
   margin: 0;
 }
+#block-masquerade-masquerade .item-list ul li {
+  margin: 0;
+  padding: 0;
+}
 .ntools button {
   border: none;
   border-radius: 0;
