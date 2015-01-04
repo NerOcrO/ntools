@@ -855,9 +855,23 @@ styles: function () {
 jQuery(function () {
   nTools.styles();
 
-  // Tous les checkbox/radio/option ont un title avec leur valeur.
-  jQuery('input[type=checkbox], input[type=radio], option').each(function () {
-    jQuery(this).attr('title', jQuery(this).val());
+  // Ajout d'un title avec name/value sur input/textarea/select.
+  jQuery('input, textarea, select').each(function () {
+    var input = jQuery(this),
+      output = 'Name: ' + input.attr('name');
+
+    if (input.attr('type') === 'checkbox' || input.attr('type') === 'radio') {
+      output += '\nValue: ' + input.val();
+    }
+
+    input.attr('title', output);
+  });
+
+  // Tous les <option> ont un title avec leur valeur.
+  jQuery('option').each(function () {
+    var input = jQuery(this);
+
+    input.attr('title', 'Value: ' + input.val());
   });
 
   if (jQuery('body[class*="page-admin"]').length === 1) {
