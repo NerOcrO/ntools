@@ -104,21 +104,18 @@ nToolsHelper = {
     'use strict';
     if (jQuery('.ntools-hide-all-toggle').length === 0) {
       jQuery('body').find('.ntools').append(
-        jQuery('<div></div>')
+        jQuery('<button></button>')
+          .html('Hide all')
           .addClass('ntools-hide-all-toggle')
-          .append(
-            jQuery('<button></button>')
-              .html('Hide all')
-              .click(function () {
-                nToolsHelper.deleteOverlay('region');
-                nToolsHelper.deleteOverlay('block');
-                nToolsHelper.deleteOverlay('view');
-                nToolsHelper.deleteOverlay('node');
-                nToolsHelper.deleteOverlay('profile');
-                nToolsHelper.deleteOverlay('field');
-                nToolsHelper.deleteOverlay('form');
-              })
-          )
+          .click(function () {
+            nToolsHelper.deleteOverlay('region');
+            nToolsHelper.deleteOverlay('block');
+            nToolsHelper.deleteOverlay('view');
+            nToolsHelper.deleteOverlay('node');
+            nToolsHelper.deleteOverlay('profile');
+            nToolsHelper.deleteOverlay('field');
+            nToolsHelper.deleteOverlay('form');
+          })
       )
     }
   },
@@ -511,11 +508,9 @@ toolbar: function () {
 
     if (node[0] !== undefined) {
       body.find('.ntools').append(
-        jQuery('<div></div>')
-          .addClass('ntools-' + type + 's-toggle')
-          .append(
-            jQuery('<button></button>')
+        jQuery('<button></button>')
               .html('Show ' + type.capitalize() + 's')
+              .addClass('ntools-' + type + 's-toggle')
               .click(function () {
                 if (jQuery('.show-' + type).length === 0) {
                   jQuery(this).html('Hide ' + type.capitalize() + 's');
@@ -640,7 +635,6 @@ toolbar: function () {
                   nToolsHelper.deleteOverlay(type);
                 }
               })
-          )
       );
     }
   });
@@ -695,6 +689,7 @@ styles: function () {
   z-index: 900;
 }
 .ntools * {
+  box-sizing: content-box;
   font: 400 14px/18px Helvetica;
 }
 .ntools a {
@@ -715,6 +710,7 @@ styles: function () {
 .ntools-user {
   border-bottom: 1px solid #FFF;
 }
+#block-masquerade-masquerade,
 .ntools-body-class {
   border-bottom: 1px solid #FFF;
 }
@@ -739,52 +735,53 @@ styles: function () {
   border-radius: 0;
   color: #FFF;
   cursor: pointer;
-  margin: 0;
-  padding: 0 5px;
-  width: 100%;
+  display: block;
+  margin: 0 0 5px;
+  padding: 2px 5px;
+  width: 93%;
 }
-.ntools-regions-toggle button {
+.ntools-regions-toggle {
   background: #018FE2;
 }
-.ntools-regions-toggle button:hover {
+.ntools-regions-toggle:hover {
   background: #0073B7;
 }
-.ntools-blocks-toggle button {
+.ntools-blocks-toggle {
   background: #B73939;
 }
-.ntools-blocks-toggle button:hover {
+.ntools-blocks-toggle:hover {
   background: #9F2B2B;
 }
-.ntools-views-toggle button {
+.ntools-views-toggle {
   background: #FFA300;
 }
-.ntools-views-toggle button:hover {
+.ntools-views-toggle:hover {
   background: #DA900C;
 }
-.ntools-nodes-toggle button,
-.ntools-profiles-toggle button {
+.ntools-nodes-toggle,
+.ntools-profiles-toggle {
   background: #4D8F46;
 }
-.ntools-nodes-toggle button:hover,
-.ntools-profiles-toggle button:hover {
+.ntools-nodes-toggle:hover,
+.ntools-profiles-toggle:hover {
   background: #277D1E;
 }
-.ntools-fields-toggle button {
+.ntools-fields-toggle {
   background: #783A00;
 }
-.ntools-fields-toggle button:hover {
+.ntools-fields-toggle:hover {
   background: #4E2500;
 }
-.ntools-forms-toggle button {
+.ntools-forms-toggle {
   background: #4A3657;
 }
-.ntools-forms-toggle button:hover {
+.ntools-forms-toggle:hover {
   background: #3B2549;
 }
-.ntools-hide-all-toggle button {
+.ntools-hide-all-toggle {
   background: #000;
 }
-.ntools-hide-all-toggle button:hover {
+.ntools-hide-all-toggle:hover {
   background: #3B3B3B;
 }
 .region.show-region,
