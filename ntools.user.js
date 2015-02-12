@@ -262,7 +262,7 @@ backOffice: function () {
   jQuery('#user-admin-account tbody tr').each(function () {
     var a = /\/user\/(.+)\/edit/.exec(jQuery(this).find('td:last-child a').attr('href'));
 
-    nToolsHelper.addSpan(this, '.username', '(' + a[1] + ') ');
+    nToolsHelper.addSpan(this, 'td:nth-child(2)', '(' + a[1] + ') ');
   });
 
   // Ajout de la machine name sur la liste des permissions.
