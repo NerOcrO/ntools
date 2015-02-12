@@ -90,7 +90,7 @@ nToolsHelper = {
     node.find(' > .ntools-highlight').remove();
     node.removeClass('show-' + type);
     if (flag) {
-      jQuery('.ntools-' + type + 's-toggle button').html('Show ' + type.capitalize() + 's');
+      jQuery('.ntools-' + type + 's-toggle').html('Show ' + type.capitalize() + 's');
     }
 
     // Si toutes les zones n'existent plus, on efface le bouton 'Hide all'.
