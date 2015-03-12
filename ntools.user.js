@@ -554,7 +554,7 @@ toolbar: function () {
                       // Ce lien permet d'éditer la vue rapidement surtout dans le cas où
                       // le contextual link est absent.
                       if (login === 1) {
-                        var url = drupalVersion == 7 ? '/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1] : 'admin/build/views/edit/' + whithoutDash + '#view-tab-' + classIdView[1];
+                        var url = nTools.drupalVersion == 7 ? '/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1] : '/admin/build/views/edit/' + whithoutDash + '#view-tab-' + classIdView[1];
                         link = nToolsHelper.createLink(url, 'Edit your view', 'E');
                       };
 
@@ -857,7 +857,7 @@ styles: function () {
 jQuery(function () {
   nTools.styles();
   
-  var drupalVersion = (typeof Drupal.themes == 'undefined') ? 7 : 6;
+  nTools.drupalVersion = (typeof Drupal.themes == 'undefined') ? 7 : 6;
 
   // Ajout d'un title avec name/value sur input/textarea/select.
   jQuery('input, textarea, select').each(function () {
