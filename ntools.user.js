@@ -51,6 +51,14 @@ nToolsCookie = {
 }
 
 nToolsHelper = {
+  // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
+  hideAllField: function () {
+    'use strict';
+    jQuery('#field-display-overview').find('tbody td:nth-child(4) select option[value="hidden"]').each(function () {
+      jQuery(this).attr("selected", true);
+    });
+  },
+
   // Ajoute une zone transparente sur l'élément voulu.
   addOverlay: function (node, type, output, link1, link2) {
     'use strict';
@@ -226,6 +234,17 @@ backOffice: function () {
 
     nToolsHelper.addTd(this, a[1]);
   });
+
+  // Ajout d'un bouton pour cacher tous les libellés des champs.
+  jQuery('#field-display-overview').find('th:nth-child(4)').append(
+    jQuery('<button></button>')
+      .html('Hide all')
+      .addClass('ntools-hidden')
+      .click(function () {
+        nToolsHelper.hideAllField();
+        return false;
+      })
+  )
 
   // Ajout de la machine name sur la liste des vues.
   jQuery('#views-ui-list-page thead tr').prepend(nToolsHelper.createTh());
@@ -845,6 +864,12 @@ styles: function () {
 }
 .ntools-form-name {
   background-color: #4A3657;
+}
+.ntools-hidden {
+  background: #000;
+  border: none;
+  color: #FFF;
+  margin-left: 5px;
 }*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
   jQuery('head')
