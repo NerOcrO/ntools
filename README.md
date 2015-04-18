@@ -1,6 +1,9 @@
 NTools
 ======
 
+Accédez aux informations importantes du markup en 1 clic ou moins pour
+développer plus rapidement.
+
 ![toolbar](https://raw.githubusercontent.com/NerOcrO/ntools/master/toolbar.png)
 
 ## L'essayer, c'est l'adopter !
