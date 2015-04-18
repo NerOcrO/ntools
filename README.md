@@ -86,9 +86,9 @@ L'autre idée que j'avais derrière la tête était que ce script peut être un 
 à sable, une sorte de beta test avant intégration dans le core si ça plaît aux
 gens.
 
-## Est-ce que ce script est compatible Drupal 6 ?
+## Est-ce que ce script est compatible avec Drupal 6 ?
 
-Nan !
+Un peu...
 
 ## ~~Guichet~~ Front office
 

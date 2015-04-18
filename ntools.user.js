@@ -856,7 +856,7 @@ styles: function () {
 
 jQuery(function () {
   nTools.styles();
-  
+
   nTools.drupalVersion = (typeof Drupal.themes == 'undefined') ? 7 : 6;
 
   // Ajout d'un title avec name/value sur input/textarea/select.
