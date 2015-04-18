@@ -51,6 +51,17 @@ nToolsCookie = {
 }
 
 nToolsHelper = {
+  // Configure de façon pertinente la traduction des entités.
+  configuringEntityTranslation: function () {
+    'use strict';
+    jQuery('#entity-translation-admin-form').find('fieldset').each(function () {
+      jQuery('select option[value="xx-et-default"]', this).attr("selected", true);
+      jQuery('input[id*="-hide-language-selector"]', this).prop('checked', true);
+      jQuery('input[id*="-exclude-language-none"]', this).prop('checked', true);
+      jQuery('input[id*="-shared-fields-original-only"]', this).prop('checked', true);
+    });
+  },
+
   // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
   hideAllField: function () {
     'use strict';
@@ -244,7 +255,7 @@ backOffice: function () {
         nToolsHelper.hideAllField();
         return false;
       })
-  )
+  );
 
   // Ajout de la machine name sur la liste des vues.
   jQuery('#views-ui-list-page thead tr').prepend(nToolsHelper.createTh());
@@ -324,7 +335,16 @@ backOffice: function () {
    * Configuration
    *****************************************************************************
    */
-  // Pour les variables, ce n'est pas pérenne.
+  // Ajout d'un bouton pour cacher tous les libellés des champs.
+  jQuery('#entity-translation-admin-form').find('#edit-actions').append(
+    jQuery('<button></button>')
+      .html('Configuring')
+      .addClass('ntools-hidden')
+      .click(function () {
+        nToolsHelper.configuringEntityTranslation();
+        return false;
+      })
+  );
 },
 
 toolbar: function () {
@@ -869,7 +889,9 @@ styles: function () {
   background: #000;
   border: none;
   color: #FFF;
+  cursor: pointer;
   margin-left: 5px;
+  padding: 5px;
 }*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
   jQuery('head')

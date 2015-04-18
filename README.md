@@ -295,6 +295,17 @@ Affichage de l'identifiant par rôle.
 
 Affichage du nom machine par module.
 
+### Configuration
+
+#### Traduction d'entité
+
+Ajout d'un bouton pour régler de façon pertinente la configuration :
+
+* Langue par défaut : Langue par défaut
+* "Hide language selector" coché
+* "Exclude Language neutral from the available languages" coché
+* "Hide shared elements on translation forms" coché
+
 ### Bonus track
 
 Ajout d'un surlignement sur les lignes de tableau pour mieux la visualiser.
