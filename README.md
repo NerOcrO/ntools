@@ -266,6 +266,11 @@ Ajout de liens :
 
 Affichage du TID par terme.
 
+#### Types de contenu
+
+Dans l'onglet "Gérer l'affichage" d'un type de contenu, ajout d'un bouton pour
+rendre caché tous les labels des champs.
+
 #### Vues
 
 Affichage du nom machine par vue.
