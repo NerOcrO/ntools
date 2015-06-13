@@ -306,6 +306,13 @@ Ajout d'un bouton pour régler de façon pertinente la configuration :
 * "Exclude Language neutral from the available languages" coché
 * "Hide shared elements on translation forms" coché
 
+### Rapports
+
+#### Liste des champs
+
+Le tableau peut être trié par ordre alphabétique selon la colonne. Intéressant
+pour savoir combien on a de texte long sur notre site par exemple.
+
 ### Bonus track
 
 Ajout d'un surlignement sur les lignes de tableau pour mieux la visualiser.

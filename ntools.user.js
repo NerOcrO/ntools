@@ -345,6 +345,36 @@ backOffice: function () {
         return false;
       })
   );
+
+  /*
+   *****************************************************************************
+   * Rapports
+   *****************************************************************************
+   */
+  // Le tableau de la liste des champs peu être trié.
+  jQuery('.page-admin-reports-fields').find('.sticky-enabled th').click(function() {
+    var table = jQuery(this).parents('table').eq(0),
+      rows = table.find('tr:gt(0)').toArray().sort(compare(jQuery(this).index()));
+    table.find('th').removeClass();
+    jQuery(this).addClass('active');
+    this.asc = !this.asc;
+
+    if (!this.asc) {
+      rows = rows.reverse();
+    }
+
+    for (var i = 0; i < rows.length; i++) {
+      table.append(rows[i]);
+    }
+
+    function compare(index) {
+      return function (a, b) {
+        var valA = jQuery(a).children('td').eq(index).html(),
+          valB = jQuery(b).children('td').eq(index).html();
+        return !isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB)) ? valA - valB : valA.localeCompare(valB);
+      }
+    }
+  });
 },
 
 toolbar: function () {
@@ -694,6 +724,9 @@ styles: function () {
 .homebox-column-wrapper table .odd:hover,
 .homebox-column-wrapper table .even:hover {
   background-color: #E1E2DC;
+}
+.page-admin-reports-fields .sticky-enabled th {
+  cursor: pointer;
 }
 .ntools-help,
 .ntools-help * {
