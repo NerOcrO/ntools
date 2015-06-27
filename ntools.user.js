@@ -522,10 +522,10 @@ toolbar: function () {
   if (pageContext !== null) {
     var arrayLength = pageContext.length;
     for (var i = 0; i < arrayLength; i++) {
-      var context = pageContext[i].split('-');
+      var context = pageContext[i].split('context-');
       bodyClass += pageContext[i];
       if (login === 1) {
-        bodyClass += ' [<a href="/admin/structure/context/list/' + context[1] + '/edit" title="Edit your context" target="_blank">E</a>]';
+        bodyClass += ' [<a href="/admin/structure/context/list/' + context[1].replace(dash, '_') + '/edit" title="Edit your context" target="_blank">E</a>]';
       }
       bodyClass += '<br>';
     }
