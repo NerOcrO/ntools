@@ -71,7 +71,7 @@ nToolsHelper = {
   },
 
   // Ajoute une zone transparente sur l'élément voulu.
-  addOverlay: function (node, type, output, link1, link2) {
+  addOverlay: function (node, type, output, links ) {
     'use strict';
     jQuery(node).append(
       jQuery('<div></div>')
@@ -80,7 +80,7 @@ nToolsHelper = {
           jQuery('<div></div>')
             .addClass('ntools-' + type + '-name')
             .html(output)
-            .prepend(link1, ' ', link2, ' ')
+            .prepend(links)
             .click(function (e) {
               e.stopPropagation();
             })
@@ -591,7 +591,7 @@ toolbar: function () {
                       classNode = targetClass.split(' '),
                       output = '',
                       link = null,
-                      link2 = null;
+                      links = jQuery('<span/>').addClass('ntools-links');
 
                     // Un bouton pour mettre en évidence les régions.
                     if (type === 'region') {
@@ -610,6 +610,7 @@ toolbar: function () {
                       // le contextual link est absent.
                       if (login === 1) {
                         link = nToolsHelper.createLink('/admin/structure/block/manage/' + whithoutDash + '/' + idBlock + '/configure', 'Edit your block', 'E');
+                        links.append(link);
                       };
 
                       output = whithoutDash + " → ['" + idBlock + "']";
@@ -625,6 +626,7 @@ toolbar: function () {
                       if (login === 1) {
                         var url = nTools.drupalVersion == 7 ? '/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1] : '/admin/build/views/edit/' + whithoutDash + '#view-tab-' + classIdView[1];
                         link = nToolsHelper.createLink(url, 'Edit your view', 'E');
+                        links.append(link);
                       };
 
                       output = whithoutDash + ' → ' + classIdView[1];
@@ -668,7 +670,9 @@ toolbar: function () {
                       // ou aux modes d'affichage du node.
                       if (login === 1) {
                         link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/fields', 'Manage your ' + whithoutNode + ' fields', 'F');
-                        link2 = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display' + display, 'Manage your ' + whithoutNode + ' displays', 'D');
+                        links.append(link);
+                        link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display' + display, 'Manage your ' + whithoutNode + ' displays', 'D');
+                        links.append(link);
                       }
 
                       output = whithoutDash + properties + displayMode;
@@ -682,7 +686,9 @@ toolbar: function () {
                       // ou aux modes d'affichage du profile.
                       if (login === 1) {
                         link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/fields', 'Manage your ' + whithoutProfile + ' fields', 'F');
-                        link2 = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/display', 'Manage your ' + whithoutProfile + ' displays', 'D');
+                        links.append(link);
+                        link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/display', 'Manage your ' + whithoutProfile + ' displays', 'D');
+                        links.append(link);
                       }
 
                       output = whithoutDash + ' → ' + classNode[2].replace(dash, '_');
@@ -695,8 +701,7 @@ toolbar: function () {
                     else if (type === 'form') {
                       output = targetId.replace(dash, '_');
                     }
-
-                    nToolsHelper.addOverlay(this, type, output, link, link2);
+                    nToolsHelper.addOverlay(this, type, output, links);
                   });
 
                   nToolsHelper.addhideAllButton();
@@ -917,6 +922,9 @@ styles: function () {
 }
 .ntools-form-name {
   background-color: #4A3657;
+}
+.ntools-links a {
+  margin-right: 3px;
 }
 .ntools-hidden {
   background: #000;
