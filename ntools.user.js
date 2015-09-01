@@ -73,6 +73,12 @@ nToolsHelper = {
   // Ajoute une zone transparente sur l'élément voulu.
   addOverlay: function (node, type, output, links ) {
     'use strict';
+    var nameLinks = jQuery('<span/>')
+      .addClass('ntools-links');
+    for (var i = 0; i < links.length; i++) {
+      nameLinks.append(links[i]);
+    }
+    
     jQuery(node).append(
       jQuery('<div></div>')
         .addClass('ntools-highlight')
@@ -80,7 +86,7 @@ nToolsHelper = {
           jQuery('<div></div>')
             .addClass('ntools-' + type + '-name')
             .html(output)
-            .prepend(links)
+            .prepend(nameLinks)
             .click(function (e) {
               e.stopPropagation();
             })
@@ -591,7 +597,7 @@ toolbar: function () {
                       classNode = targetClass.split(' '),
                       output = '',
                       link = null,
-                      links = jQuery('<span/>').addClass('ntools-links');
+                      links = [];
 
                     // Un bouton pour mettre en évidence les régions.
                     if (type === 'region') {
@@ -610,7 +616,7 @@ toolbar: function () {
                       // le contextual link est absent.
                       if (login === 1) {
                         link = nToolsHelper.createLink('/admin/structure/block/manage/' + whithoutDash + '/' + idBlock + '/configure', 'Edit your block', 'E');
-                        links.append(link);
+                        links.push(link);
                       };
 
                       output = whithoutDash + " → ['" + idBlock + "']";
@@ -626,7 +632,7 @@ toolbar: function () {
                       if (login === 1) {
                         var url = nTools.drupalVersion == 7 ? '/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1] : '/admin/build/views/edit/' + whithoutDash + '#view-tab-' + classIdView[1];
                         link = nToolsHelper.createLink(url, 'Edit your view', 'E');
-                        links.append(link);
+                        links.push(link);
                       };
 
                       output = whithoutDash + ' → ' + classIdView[1];
@@ -671,13 +677,13 @@ toolbar: function () {
                       // ou aux modes d'affichage du node.
                       if (login === 1) {
                         link = nToolsHelper.createLink('/node/' + nid , 'View this node', 'V');
-                        links.append(link);
+                        links.push(link);
                         link = nToolsHelper.createLink('/node/' + nid + '/edit', 'Edit this node', 'E');
-                        links.append(link);
+                        links.push(link);
                         link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/fields', 'Manage your ' + whithoutNode + ' fields', 'F');
-                        links.append(link);
+                        links.push(link);
                         link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display' + display, 'Manage your ' + whithoutNode + ' displays', 'D');
-                        links.append(link);
+                        links.push(link);
                       }
 
                       output = whithoutDash + properties + displayMode;
@@ -691,9 +697,9 @@ toolbar: function () {
                       // ou aux modes d'affichage du profile.
                       if (login === 1) {
                         link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/fields', 'Manage your ' + whithoutProfile + ' fields', 'F');
-                        links.append(link);
+                        links.push(link);
                         link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/display', 'Manage your ' + whithoutProfile + ' displays', 'D');
-                        links.append(link);
+                        links.push(link);
                       }
 
                       output = whithoutDash + ' → ' + classNode[2].replace(dash, '_');
