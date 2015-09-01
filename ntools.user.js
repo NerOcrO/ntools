@@ -633,7 +633,8 @@ toolbar: function () {
                     }
                     // Un bouton pour mettre en évidence les nodes.
                     else if (type === 'node') {
-                      var whithoutDash = classNode[1].replace(dash, '_'),
+                      var nid = targetId.replace('node-', ''),
+                        whithoutDash = classNode[1].replace(dash, '_'),
                         whithoutNode = whithoutDash.replace('node_', ''),
                         classTeaser = /node-teaser/.exec(targetClass),
                         classPromoted = /node-promoted/.exec(targetClass),
@@ -669,6 +670,10 @@ toolbar: function () {
                       // Ces liens permettent d'aller rapidement à la liste des champs
                       // ou aux modes d'affichage du node.
                       if (login === 1) {
+                        link = nToolsHelper.createLink('/node/' + nid , 'View this node', 'V');
+                        links.append(link);
+                        link = nToolsHelper.createLink('/node/' + nid + '/edit', 'Edit this node', 'E');
+                        links.append(link);
                         link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/fields', 'Manage your ' + whithoutNode + ' fields', 'F');
                         links.append(link);
                         link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display' + display, 'Manage your ' + whithoutNode + ' displays', 'D');
