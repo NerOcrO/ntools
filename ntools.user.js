@@ -302,8 +302,9 @@ backOffice: function () {
   });
 
   // Ajout de la machine name sur la liste des permissions.
-  jQuery('#user-admin-permissions thead tr').prepend(nToolsHelper.createTh());
-  jQuery('#user-admin-permissions tbody tr').each(function () {
+  var permission = jQuery('#user-admin-permissions, #og-ui-admin-global-permissions');
+  permission.find('thead tr').prepend(nToolsHelper.createTh());
+  permission.find('tbody tr').each(function () {
     var tableau = /\[(.+)\]/.exec(jQuery(this).find('input').attr('name')),
       output = '-';
 
