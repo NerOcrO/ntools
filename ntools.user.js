@@ -866,7 +866,7 @@ toolbar: function () {
                         links.push(link);
                       }
 
-                      output = whithoutDash + properties + displayMode;
+                      output = whithoutDash + ':' + nid + properties + displayMode;
                     }
                     // Un bouton pour mettre en évidence les profiles.
                     else if (type === 'profile') {

@@ -218,13 +218,15 @@ destination.
 
 #### Les nodes
 
-Pour éviter de passer par l'admin menu, j'ai ajouté deux liens dans une nouvelle
-fenêtre vers :
+Pour éviter de passer par l'admin menu, j'ai ajouté quatre liens dans une
+nouvelle fenêtre vers :
 
+* Afficher le node [V]
+* Éditer le node [E]
 * Gérer les champs [F]
 * Gérer l'affichage [D]
 
-J'affiche ensuite le type du node puis le mode d'affichage 'accroche' s'il
+J'affiche ensuite le type du node:NID puis le mode d'affichage 'teaser' s'il
 existe car par défaut, Drupal n'intègre que la classe de ce dernier.
 
 J'affiche enfin les propriétés du node :
