@@ -4,7 +4,7 @@
 // @description  Script who help developers on Drupal 7
 // @grant        none
 // @include      localhost
-// @version      2.0
+// @version      3.0
 // ==/UserScript==
 
 String.prototype.capitalize = function () {
@@ -71,14 +71,14 @@ nToolsHelper = {
   },
 
   // Ajoute une zone transparente sur l'élément voulu.
-  addOverlay: function (node, type, output, links ) {
+  addOverlay: function (node, type, output, links) {
     'use strict';
     var nameLinks = jQuery('<span/>')
       .addClass('ntools-links');
     for (var i = 0; i < links.length; i++) {
       nameLinks.append(links[i]);
     }
-    
+
     jQuery(node).append(
       jQuery('<div></div>')
         .addClass('ntools-highlight')
@@ -166,13 +166,15 @@ nToolsHelper = {
   },
 
   // Crée un <th>.
-  createTh: function (output, colspan) {
+  createTh: function (output, colspan, classs) {
     'use strict';
     output = typeof output !== 'undefined' ? output : 'Machine name';
     colspan = typeof colspan !== 'undefined' ? colspan : 1;
+    classs = typeof classs !== 'undefined' ? classs : '';
 
     return jQuery('<th></th>')
       .attr('colspan', colspan)
+      .addClass(classs)
       .html(output);
   },
 
@@ -188,11 +190,206 @@ nToolsHelper = {
         e.stopPropagation();
       });
   },
+
+  addHelp: function (selector, target, prefix, th_name) {
+    'use strict';
+    var slash = new RegExp('/', 'g');
+    prefix = typeof prefix !== 'undefined' ? prefix : '';
+    th_name = typeof th_name !== 'undefined' ? th_name : 'Machine name';
+
+    jQuery('table')
+    .find('thead tr').prepend(nToolsHelper.createTh(th_name))
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var output = jQuery(this).find(selector).attr('href').split(slash);
+
+      nToolsHelper.addTd(this, prefix + output[output.length - target]);
+    });
+  },
+
+  // Order added on field's list table.
+  addReportsOrder: function (parent, selector) {
+    'use strict';
+    jQuery(parent).find(selector).click(function() {
+        var table = jQuery(this).parents('table').eq(0),
+          rows = table.find('tr:gt(0)').toArray().sort(compare(jQuery(this).index()));
+        table.find('th').removeClass().addClass('filter');
+        jQuery(this).addClass('active');
+        this.asc = !this.asc;
+
+        if (!this.asc) {
+          rows = rows.reverse();
+        }
+
+        for (var i = 0; i < rows.length; i++) {
+          table.append(rows[i]);
+        }
+
+        function compare(index) {
+          return function (a, b) {
+            var valA = jQuery(a).children('td').eq(index).html(),
+              valB = jQuery(b).children('td').eq(index).html();
+            return !isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB)) ? valA - valB : valA.localeCompare(valB);
+          }
+        }
+      })
+      .addClass('filter');
+  }
 }
 
 nTools = {
 
-backOffice: function () {
+backOfficeD8: function () {
+  'use strict';
+
+  /*
+   *****************************************************************************
+   * Configuration
+   *****************************************************************************
+   */
+  // Button added to hide all field's label.
+  jQuery('#field-display-overview').find('th:nth-child(4)').append(
+    jQuery('<button></button>')
+      .html('Hide all')
+      .addClass('ntools-hidden')
+      .click(function () {
+        nToolsHelper.hideAllField();
+        return false;
+      })
+  );
+
+  /*
+   *****************************************************************************
+   * Content
+   *****************************************************************************
+   */
+  if (drupalSettings.path.currentPath == 'admin/content') {
+    // NID added on content list.
+    nToolsHelper.addHelp('.edit a', 5, '', 'NID');
+  }
+  if (drupalSettings.path.currentPath == 'admin/content/files') {
+    // FID added on file list.
+    nToolsHelper.addHelp('.views-field-count a', 1, '', 'FID');
+  }
+  /*
+   *****************************************************************************
+   * Structure
+   *****************************************************************************
+   */
+  else if (drupalSettings.path.currentPath == 'admin/structure/block') {
+    // Machine name added on blocks list.
+    jQuery('[data-drupal-selector="edit-blocks"]')
+    .find('thead tr').prepend(nToolsHelper.createTh('base_block_id'))
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var tr = jQuery(this),
+        draggable = tr.is('.draggable'),
+        output = '-';
+
+      if (draggable) {
+        // var selector = /edit-blocks-[a-z]+-(.+)/g.exec(tr.attr('data-drupal-selector'));
+        // output = 'id = "' + tr.find('td:nth-child(2)').html().toLowerCase() + '_' + selector[1] + '_block"';
+        // En attente de : https://www.drupal.org/node/2641862
+        output = 'id&nbsp;=&nbsp;"' + tr.attr('data-drupal-plugin-id') + '"';
+      }
+
+      nToolsHelper.addTd(this, output);
+    });
+  }
+  else if (drupalSettings.path.currentPath == 'admin/structure/types') {
+    // Machine name added on content type list.
+    nToolsHelper.addHelp('.manage-fields a', 2);
+  }
+  else if (drupalSettings.path.currentPath == 'admin/structure/display-modes/form') {
+    // Machine name added on display modes form list.
+    nToolsHelper.addHelp('.edit a', 1);
+  }
+  else if (drupalSettings.path.currentPath == 'admin/structure/display-modes/view') {
+    // Machine name added on display modes view list.
+    nToolsHelper.addHelp('.edit a', 1);
+  }
+  else if (drupalSettings.path.currentPath == 'admin/structure/menu') {
+    // Machine name added on menu list.
+    nToolsHelper.addHelp('.edit a', 1);
+  }
+  else if (drupalSettings.path.currentPath == 'admin/structure/taxonomy') {
+    // Machine name added on vocabularies list.
+    nToolsHelper.addHelp('.list a', 2);
+  }
+  else if (drupalSettings.path.currentPath.substring(0, 31) == 'admin/structure/taxonomy/manage') {
+    // TID added on terms list.
+    jQuery('[data-drupal-selector="edit-terms"]')
+    .find('thead tr').prepend(nToolsHelper.createTh('TID'))
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var output = jQuery(this).find('.term-id').val();
+
+      nToolsHelper.addTd(this, output);
+    });
+  }
+  else if (drupalSettings.path.currentPath == 'admin/structure/views') {
+    // Machine name added on menu list.
+    nToolsHelper.addHelp('.edit a', 1, 'id:&nbsp;');
+  }
+
+  /*
+   *****************************************************************************
+   * People
+   *****************************************************************************
+   */
+  else if (drupalSettings.path.currentPath == 'admin/people') {
+    // UID added on users list.
+    nToolsHelper.addHelp('.edit a', 5, '', 'UID');
+  }
+  else if (drupalSettings.path.currentPath == 'admin/people/permissions') {
+    // Machine name added on permissions list.
+    jQuery('[data-drupal-selector="permissions"]')
+    .find('thead tr').prepend(nToolsHelper.createTh())
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var tableau = /\[(.+)\]/.exec(jQuery(this).find('input').attr('name')),
+        output = '-';
+
+      if (tableau !== null) {
+        output = "'" + tableau[1] + "'";
+      }
+
+      nToolsHelper.addTd(this, output);
+    });
+  }
+  else if (drupalSettings.path.currentPath == 'admin/people/roles') {
+    // Machine name added on roles list.
+    nToolsHelper.addHelp('.edit a', 1);
+  }
+
+  /*
+   *****************************************************************************
+   * Modules
+   *****************************************************************************
+   */
+  else if (drupalSettings.path.currentPath == 'admin/modules') {
+    // Machine name added on modules list.
+    jQuery('[data-drupal-selector="system-modules"]')
+    .find('thead tr').prepend(nToolsHelper.createTh('Machine name', 1, 'visually-hidden'))
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var output = /\[.+\]\[(.+)\]\[.+\]/g.exec(jQuery(this).find('input').attr('name'));
+
+      nToolsHelper.addTd(this, output[1]);
+    });
+  }
+
+  /*
+   *****************************************************************************
+   * Reports
+   *****************************************************************************
+   */
+  else if (drupalSettings.path.currentPath == 'admin/reports/fields') {
+    nToolsHelper.addReportsOrder('table', 'th');
+  }
+},
+
+backOfficeD7: function () {
   'use strict';
 
   var slash = new RegExp('/', 'g');
@@ -247,9 +444,9 @@ backOffice: function () {
   // Ajout du TID sur la liste des termes.
   jQuery('#taxonomy-overview-terms thead tr').prepend(nToolsHelper.createTh('TID'));
   jQuery('#taxonomy-overview-terms tbody tr').each(function () {
-    var a = /:(.+):/.exec(jQuery(this).find('input').attr('name'));
+    var a = jQuery(this).find('.term-id').val();
 
-    nToolsHelper.addTd(this, a[1]);
+    nToolsHelper.addTd(this, a);
   });
 
   // Ajout d'un bouton pour cacher tous les libellés des champs.
@@ -355,33 +552,11 @@ backOffice: function () {
 
   /*
    *****************************************************************************
-   * Rapports
+   * Reports
    *****************************************************************************
    */
   // Le tableau de la liste des champs peu être trié.
-  jQuery('.page-admin-reports-fields').find('.sticky-enabled th').click(function() {
-    var table = jQuery(this).parents('table').eq(0),
-      rows = table.find('tr:gt(0)').toArray().sort(compare(jQuery(this).index()));
-    table.find('th').removeClass();
-    jQuery(this).addClass('active');
-    this.asc = !this.asc;
-
-    if (!this.asc) {
-      rows = rows.reverse();
-    }
-
-    for (var i = 0; i < rows.length; i++) {
-      table.append(rows[i]);
-    }
-
-    function compare(index) {
-      return function (a, b) {
-        var valA = jQuery(a).children('td').eq(index).html(),
-          valB = jQuery(b).children('td').eq(index).html();
-        return !isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB)) ? valA - valB : valA.localeCompare(valB);
-      }
-    }
-  });
+  nToolsHelper.addReportsOrder('.page-admin-reports-fields', '.sticky-enabled th');
 },
 
 toolbar: function () {
@@ -399,7 +574,7 @@ toolbar: function () {
     empty = new RegExp(' ', 'g'),
     slash = new RegExp('/', 'g'),
     dash = new RegExp('-', 'g'),
-    login = jQuery('.logged-in').length,
+    login = jQuery('.logged-in, .user-logged-in').length,
     positions = '',
     stylePosition1 = '',
     stylePosition2 = '',
@@ -707,7 +882,7 @@ toolbar: function () {
                     }
                     // Un bouton pour mettre en évidence les fields.
                     else if (type === 'field') {
-                      output = classNode[1].replace(dash, '_').replace('field_name_', '') + ' (' + classNode[2].replace(dash, '_');
+                      output = classNode[1].replace(dash, '_').replace('field_name_', '') + ' (' + classNode[2].replace(dash, '_') + ')';
                     }
                     // Un bouton pour mettre en évidence l'identifiant des formulaires.
                     else if (type === 'form') {
@@ -742,7 +917,7 @@ styles: function () {
 .homebox-column-wrapper table .even:hover {
   background-color: #E1E2DC;
 }
-.page-admin-reports-fields .sticky-enabled th {
+th.filter {
   cursor: pointer;
 }
 .ntools-help,
@@ -957,7 +1132,16 @@ styles: function () {
 jQuery(function () {
   nTools.styles();
 
-  nTools.drupalVersion = (typeof Drupal.themes == 'undefined') ? 7 : 6;
+  // Drupal version.
+  if (typeof drupalSettings != 'undefined') {
+    nTools.drupalVersion = 8;
+  }
+  else if (typeof Drupal.themes == 'undefined') {
+    nTools.drupalVersion = 7;
+  }
+  else {
+    nTools.drupalVersion = 6;
+  }
 
   // Ajout d'un title avec name/value sur input/textarea/select.
   jQuery('input, textarea, select').each(function () {
@@ -979,7 +1163,10 @@ jQuery(function () {
   });
 
   if (jQuery('body[class*="page-admin"]').length === 1) {
-    nTools.backOffice();
+    nTools.backOfficeD7();
+  }
+  else if (jQuery('body[class*="path-admin"]').length === 1) {
+    nTools.backOfficeD8();
   }
   else {
     nTools.toolbar();
