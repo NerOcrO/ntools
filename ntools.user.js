@@ -396,6 +396,18 @@ backOfficeD7: function () {
 
   /*
    *****************************************************************************
+   * Content
+   *****************************************************************************
+   */
+  // Ajout de l'identifiant sur la liste des nodes.
+  jQuery('#node-admin-content tbody tr').each(function () {
+    var a = /\/node\/(.+)\/edit/.exec(jQuery(this).find('td:last-child a').attr('href'));
+
+    nToolsHelper.addSpan(this, 'td:nth-child(2)', '(' + a[1] + ') ');
+  });
+
+  /*
+   *****************************************************************************
    * Structure
    *****************************************************************************
    */
