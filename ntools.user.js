@@ -65,9 +65,17 @@ nToolsHelper = {
   // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
   hideAllField: function () {
     'use strict';
-    jQuery('#field-display-overview').find('tbody td:nth-child(4) select option[value="hidden"]').each(function () {
-      jQuery(this).attr("selected", true);
-    });
+    jQuery('#field-display-overview').find('th:nth-child(4)').append(
+      jQuery('<button></button>')
+        .html('Hide all')
+        .addClass('ntools-hidden')
+        .click(function () {
+          jQuery('#field-display-overview').find('tbody td:nth-child(4) select option[value="hidden"]').each(function () {
+            jQuery(this).attr("selected", true);
+          });
+          return false;
+        })
+    );
   },
 
   // Ajoute une zone transparente sur l'élément voulu.
@@ -248,15 +256,7 @@ backOfficeD8: function () {
    *****************************************************************************
    */
   // Button added to hide all field's label.
-  jQuery('#field-display-overview').find('th:nth-child(4)').append(
-    jQuery('<button></button>')
-      .html('Hide all')
-      .addClass('ntools-hidden')
-      .click(function () {
-        nToolsHelper.hideAllField();
-        return false;
-      })
-  );
+  nToolsHelper.hideAllField();
 
   /*
    *****************************************************************************
@@ -450,15 +450,7 @@ backOfficeD7: function () {
   });
 
   // Ajout d'un bouton pour cacher tous les libellés des champs.
-  jQuery('#field-display-overview').find('th:nth-child(4)').append(
-    jQuery('<button></button>')
-      .html('Hide all')
-      .addClass('ntools-hidden')
-      .click(function () {
-        nToolsHelper.hideAllField();
-        return false;
-      })
-  );
+  nToolsHelper.hideAllField();
 
   // Ajout de la machine name sur la liste des vues.
   jQuery('#views-ui-list-page thead tr').prepend(nToolsHelper.createTh());
