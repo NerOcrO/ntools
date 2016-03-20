@@ -209,7 +209,8 @@ nToolsHelper = {
     .find('thead tr').prepend(nToolsHelper.createTh(th_name))
     .parent().parent()
     .find('tbody tr').each(function () {
-      var output = jQuery(this).find(selector).attr('href').split(slash);
+      var url = jQuery(this).find(selector).attr('href').split('?destination'),
+        output = url[0].split(slash);
 
       nToolsHelper.addTd(this, prefix + output[output.length - target]);
     });
@@ -265,7 +266,7 @@ backOfficeD8: function () {
    */
   if (drupalSettings.path.currentPath == 'admin/content') {
     // NID added on content list.
-    nToolsHelper.addHelp('.edit a', 5, '', 'NID');
+    nToolsHelper.addHelp('.edit a', 2, '', 'NID');
   }
   if (drupalSettings.path.currentPath == 'admin/content/files') {
     // FID added on file list.
@@ -339,7 +340,7 @@ backOfficeD8: function () {
    */
   else if (drupalSettings.path.currentPath == 'admin/people') {
     // UID added on users list.
-    nToolsHelper.addHelp('.edit a', 5, '', 'UID');
+    nToolsHelper.addHelp('.edit a', 2, '', 'UID');
   }
   else if (drupalSettings.path.currentPath == 'admin/people/permissions') {
     // Machine name added on permissions list.
