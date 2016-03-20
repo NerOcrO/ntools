@@ -121,7 +121,7 @@ nToolsHelper = {
     }
 
     node.find(' > .ntools-highlight').remove();
-    node.removeClass('show-' + type);
+    node.removeClass('ntools-show show-' + type);
     if (flag) {
       jQuery('.ntools-' + type + 's-toggle').html('Show ' + type.capitalize() + 's');
     }
@@ -770,7 +770,7 @@ toolbar: function () {
                 if (jQuery('.show-' + type).length === 0) {
                   jQuery(this).html('Hide ' + type.capitalize() + 's');
 
-                  node.addClass('show-' + type).each(function () {
+                  node.addClass('ntools-show show-' + type).each(function () {
                     var target = jQuery(this),
                       targetClass = target.attr('class'),
                       targetId = target.attr('id'),
@@ -1053,13 +1053,7 @@ th.filter {
 .ntools-hide-all-toggle:hover {
   background: #3B3B3B;
 }
-.region.show-region,
-.block.show-block,
-.view.show-view,
-.node.show-node,
-.profile.show-profile,
-.field.show-field,
-.form.show-form {
+.ntools-show {
   position: relative;
 }
 .ntools-highlight {
