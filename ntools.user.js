@@ -553,6 +553,14 @@ backOfficeD7: function () {
       })
   );
 
+  // Ajoute le machine name sur la liste des facettes.
+  jQuery('#facetapi-realm-settings-form thead tr').prepend(nToolsHelper.createTh());
+  jQuery('#facetapi-realm-settings-form tbody tr').each(function () {
+    var tableau = /enabled_facets\[(.+)\]/g.exec(jQuery(this).find('input').attr('name'));
+
+    nToolsHelper.addTd(this, tableau[1]);
+  });
+
   /*
    *****************************************************************************
    * Reports
