@@ -681,12 +681,21 @@ toolbar: function () {
 
   // Affichage du lien pour se connecter avec gestion de la destination.
   if (login === 0) {
+    var pathPrefix = '';
+
+    if (Drupal.settings == undefined) {
+      pathPrefix = drupalSettings.path.pathPrefix;
+    }
+    else {
+      pathPrefix = Drupal.settings.pathPrefix;
+    }
+
     body.find('.ntools').append(
       jQuery('<div></div>')
         .addClass('ntools-user')
         .append(
           jQuery('<a></a>')
-            .attr('href', '/user?destination=' + window.location.pathname)
+            .attr('href', '/' + pathPrefix + 'user/login?destination=' + window.location.pathname.replace(pathPrefix.replace('/', ''), ''))
             .html('Log in')
         )
     );
