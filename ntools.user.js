@@ -282,26 +282,26 @@ backOfficeD8: function () {
    * Structure
    *****************************************************************************
    */
-  else if (drupalSettings.path.currentPath == 'admin/structure/block') {
-    // Machine name added on blocks list.
-    jQuery('[data-drupal-selector="edit-blocks"]')
-    .find('thead tr').prepend(nToolsHelper.createTh('base_block_id'))
-    .parent().parent()
-    .find('tbody tr').each(function () {
-      var tr = jQuery(this),
-        draggable = tr.is('.draggable'),
-        output = '-';
+  // else if (drupalSettings.path.currentPath == 'admin/structure/block') {
+  //   // Machine name added on blocks list.
+  //   jQuery('[data-drupal-selector="edit-blocks"]')
+  //   .find('thead tr').prepend(nToolsHelper.createTh('base_block_id'))
+  //   .parent().parent()
+  //   .find('tbody tr').each(function () {
+  //     var tr = jQuery(this),
+  //       draggable = tr.is('.draggable'),
+  //       output = '-';
 
-      if (draggable) {
-        // var selector = /edit-blocks-[a-z]+-(.+)/g.exec(tr.attr('data-drupal-selector'));
-        // output = 'id = "' + tr.find('td:nth-child(2)').html().toLowerCase() + '_' + selector[1] + '_block"';
-        // En attente de : https://www.drupal.org/node/2641862
-        output = 'id&nbsp;=&nbsp;"' + tr.attr('data-drupal-plugin-id') + '"';
-      }
+  //     if (draggable) {
+  //       // var selector = /edit-blocks-[a-z]+-(.+)/g.exec(tr.attr('data-drupal-selector'));
+  //       // output = 'id = "' + tr.find('td:nth-child(2)').html().toLowerCase() + '_' + selector[1] + '_block"';
+  //       // En attente de : https://www.drupal.org/node/2641862
+  //       output = 'id&nbsp;=&nbsp;"' + tr.attr('data-drupal-plugin-id') + '"';
+  //     }
 
-      nToolsHelper.addTd(this, output);
-    });
-  }
+  //     nToolsHelper.addTd(this, output);
+  //   });
+  // }
   else if (drupalSettings.path.currentPath == 'admin/structure/types') {
     // Machine name added on content type list.
     nToolsHelper.addHelp('.manage-fields a', 2);
