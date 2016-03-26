@@ -308,6 +308,10 @@ Ajout d'un bouton pour régler de façon pertinente la configuration :
 * "Exclude Language neutral from the available languages" coché
 * "Hide shared elements on translation forms" coché
 
+#### Facette
+
+Affichage du nom machine par facette.
+
 ### Rapports
 
 #### Liste des champs
