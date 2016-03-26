@@ -324,14 +324,7 @@ backOfficeD8: function () {
   }
   else if (drupalSettings.path.currentPath.substring(0, 31) == 'admin/structure/taxonomy/manage') {
     // TID added on terms list.
-    jQuery('[data-drupal-selector="edit-terms"]')
-    .find('thead tr').prepend(nToolsHelper.createTh('TID'))
-    .parent().parent()
-    .find('tbody tr').each(function () {
-      var output = jQuery(this).find('.term-id').val();
-
-      nToolsHelper.addTd(this, output);
-    });
+    nToolsHelper.addHelp('.edit a', 2, '', 'TID');
   }
   else if (drupalSettings.path.currentPath == 'admin/structure/views') {
     // Machine name added on menu list.
