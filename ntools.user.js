@@ -209,10 +209,15 @@ nToolsHelper = {
     .find('thead tr').prepend(nToolsHelper.createTh(th_name))
     .parent().parent()
     .find('tbody tr').each(function () {
-      var url = jQuery(this).find(selector).attr('href').split('?destination'),
+      var url = jQuery(this).find(selector),
+        output = '';
+
+      if (url[0] !== undefined) {
+        url = url.attr('href').split('?destination');
         output = url[0].split(slash);
 
-      nToolsHelper.addTd(this, prefix + output[output.length - target]);
+        nToolsHelper.addTd(this, prefix + output[output.length - target]);
+      }
     });
   },
 
