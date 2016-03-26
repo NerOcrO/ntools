@@ -199,25 +199,32 @@ nToolsHelper = {
       });
   },
 
-  addHelp: function (selector, target, prefix, th_name) {
+  addHelp: function (selector, target, th_name, prefix, suffix) {
     'use strict';
-    var slash = new RegExp('/', 'g');
-    prefix = typeof prefix !== 'undefined' ? prefix : '';
+    var slash = new RegExp('/', 'g'),
+      output = '';
     th_name = typeof th_name !== 'undefined' ? th_name : 'Machine name';
+    prefix = typeof prefix !== 'undefined' ? prefix : '';
+    suffix = typeof suffix !== 'undefined' ? suffix : '';
 
     jQuery('table')
     .find('thead tr').prepend(nToolsHelper.createTh(th_name))
     .parent().parent()
     .find('tbody tr').each(function () {
       var url = jQuery(this).find(selector),
-        output = '';
+        url_split = '';
 
       if (url[0] !== undefined) {
         url = url.attr('href').split('?destination');
-        output = url[0].split(slash);
+        url_split = url[0].split(slash);
 
-        nToolsHelper.addTd(this, prefix + output[output.length - target]);
+        output = prefix + url_split[url_split.length - target] + suffix;
       }
+      else {
+        output = '-';
+      }
+
+      nToolsHelper.addTd(this, output);
     });
   },
 
@@ -258,24 +265,16 @@ backOfficeD8: function () {
 
   /*
    *****************************************************************************
-   * Configuration
-   *****************************************************************************
-   */
-  // Button added to hide all field's label.
-  nToolsHelper.hideAllField();
-
-  /*
-   *****************************************************************************
    * Content
    *****************************************************************************
    */
   if (drupalSettings.path.currentPath == 'admin/content') {
     // NID added on content list.
-    nToolsHelper.addHelp('.edit a', 2, '', 'NID');
+    nToolsHelper.addHelp('.edit a', 2, 'NID');
   }
-  if (drupalSettings.path.currentPath == 'admin/content/files') {
+  else if (drupalSettings.path.currentPath == 'admin/content/files') {
     // FID added on file list.
-    nToolsHelper.addHelp('.views-field-count a', 1, '', 'FID');
+    nToolsHelper.addHelp('.views-field-count a', 1, 'FID');
   }
   /*
    *****************************************************************************
@@ -322,13 +321,13 @@ backOfficeD8: function () {
     // Machine name added on vocabularies list.
     nToolsHelper.addHelp('.list a', 2);
   }
-  else if (drupalSettings.path.currentPath.substring(0, 31) == 'admin/structure/taxonomy/manage') {
+  else if (drupalSettings.path.currentPath.substring(0, 31) == 'admin/structure/taxonomy/manage' && /admin\/structure\/taxonomy\/manage\/(.+)\/overview\/(.+)/g.exec(drupalSettings.path.currentPath) == null) {
     // TID added on terms list.
-    nToolsHelper.addHelp('.edit a', 2, '', 'TID');
+    nToolsHelper.addHelp('.edit a', 2, 'TID');
   }
   else if (drupalSettings.path.currentPath == 'admin/structure/views') {
     // Machine name added on menu list.
-    nToolsHelper.addHelp('.edit a', 1, 'id:&nbsp;');
+    nToolsHelper.addHelp('.edit a', 1, '', 'id:&nbsp;');
   }
 
   /*
@@ -338,7 +337,7 @@ backOfficeD8: function () {
    */
   else if (drupalSettings.path.currentPath == 'admin/people') {
     // UID added on users list.
-    nToolsHelper.addHelp('.edit a', 2, '', 'UID');
+    nToolsHelper.addHelp('.edit a', 2, 'UID');
   }
   else if (drupalSettings.path.currentPath == 'admin/people/permissions') {
     // Machine name added on permissions list.
@@ -386,90 +385,179 @@ backOfficeD8: function () {
   else if (drupalSettings.path.currentPath == 'admin/reports/fields') {
     nToolsHelper.addReportsOrder('table', 'th');
   }
+
+  /*
+   *****************************************************************************
+   * Other
+   *****************************************************************************
+   */
+  // Button added to hide all field's label.
+  nToolsHelper.hideAllField();
 },
 
 backOfficeD7: function () {
   'use strict';
 
-  var slash = new RegExp('/', 'g');
+  var slash = new RegExp('/', 'g'),
+    pathname = window.location.pathname.replace(Drupal.settings.pathPrefix, '');
 
   /*
    *****************************************************************************
    * Content
    *****************************************************************************
    */
-  // Ajout de l'identifiant sur la liste des nodes.
-  jQuery('#node-admin-content tbody tr').each(function () {
-    var a = /\/node\/(.+)\/edit/.exec(jQuery(this).find('td:last-child a').attr('href'));
-
-    nToolsHelper.addSpan(this, 'td:nth-child(2)', '(' + a[1] + ') ');
-  });
+  if (pathname == '/admin/content') {
+    // Ajout de l'identifiant sur la liste des nodes.
+    nToolsHelper.addHelp('td:last-child a', 2, 'NID');
+  }
 
   /*
    *****************************************************************************
    * Structure
    *****************************************************************************
    */
-  // Ajout de la machine name sur la liste des blocs.
-  jQuery('#block-admin-display-form thead tr').prepend(nToolsHelper.createTh());
-  jQuery('#block-admin-display-form tbody tr').each(function () {
-    var a = jQuery(this).find('a[id*="edit-"]').attr('href'),
-      output = '-',
-      href = [];
+  else if (pathname == '/admin/structure/block') {
+    // Ajout de la machine name sur la liste des blocs.
+    jQuery('table')
+    .find('thead tr').prepend(nToolsHelper.createTh())
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var a = jQuery(this).find('a[id*="edit-"]').attr('href'),
+        output = '-',
+        href = [];
 
-    if (a !== undefined) {
-      href = a.split(slash);
-      output = href[href.length - 3] + " → ['" + href[href.length - 2] + "']";
-    }
+      if (a !== undefined) {
+        href = a.split(slash);
+        output = href[href.length - 3] + " → ['" + href[href.length - 2] + "']";
+      }
 
-    nToolsHelper.addTd(this, output);
-  });
+      nToolsHelper.addTd(this, output);
+    });
+  }
+  else if (pathname == '/admin/structure/taxonomy') {
+    // Ajout du VID sur la liste des vocabulaires.
+    jQuery('table')
+    .find('thead tr').prepend(nToolsHelper.createTh('VID'))
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var a = /(.+)\[.+\]/g.exec(jQuery(this).find('select').attr('name'));
 
-  // Ajout du VID sur la liste des vocabulaires.
-  jQuery('#taxonomy-overview-vocabularies thead tr').prepend(nToolsHelper.createTh('VID'));
-  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function () {
-    var a = /(.+)\[.+\]/g.exec(jQuery(this).find('select').attr('name'));
+      nToolsHelper.addTd(this, a[1]);
+    });
+    // Ajout de la machine name sur la liste des vocabulaires.
+    nToolsHelper.addHelp('td:last-child a', 2);
+    // Ajout des liens "Gérer les champs" et "Gérer l'affichage" sur la liste des vocabulaires.
+    jQuery('table')
+    .find('thead tr').append(nToolsHelper.createTh('Operations +', 2))
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var a = jQuery(this).find('td:last-child a').attr('href').split(slash),
+        url = a[a.length - 2],
+        aField = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/fields').html('Manage fields'),
+        aDisplay = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/display').html('Manage display'),
+        tdField = jQuery('<td></td>').addClass('ntools-help').html(aField),
+        tdDisplay = jQuery('<td></td>').addClass('ntools-help').html(aDisplay);
 
-    nToolsHelper.addTd(this, a[1]);
-  });
-  // Ajout de la machine name sur la liste des vocabulaires.
-  jQuery('#taxonomy-overview-vocabularies thead tr').prepend(nToolsHelper.createTh());
-  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function () {
-    var a = jQuery(this).find('a[id*="edit-"]').attr('href').split(slash);
+        jQuery(this).append(tdField).append(tdDisplay);
+    });
+  }
+  else if (pathname.substring(0, 26) == '/admin/structure/taxonomy/' && /\/admin\/structure\/taxonomy\/(.+)\/(.+)/g.exec(pathname) == null) {
+    // Ajout du TID sur la liste des termes.
+    nToolsHelper.addHelp('td:last-child a', 2, 'TID');
+  }
+  else if (pathname == '/admin/structure/views') {
+    // Ajout de la machine name sur la liste des vues.
+    nToolsHelper.addHelp('.first a', 2, '', '$view->name = \'', '\';');
+  }
 
-    nToolsHelper.addTd(this, a[a.length - 2]);
-  });
-  // Ajout des liens "Gérer les champs" et "Gérer l'affichage" sur la liste des vocabulaires.
-  jQuery('#taxonomy-overview-vocabularies thead tr').append(nToolsHelper.createTh('Operations +', 2));
-  jQuery('#taxonomy-overview-vocabularies tbody tr').each(function () {
-    var a = jQuery(this).find('a[id*="edit-"]').attr('href').split(slash),
-      url = a[a.length - 2],
-      aField = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/fields').html('Manage fields'),
-      aDisplay = jQuery('<a></a>').attr('href', '/admin/structure/taxonomy/' + url + '/display').html('Manage display'),
-      tdField = jQuery('<td></td>').addClass('ntools-help').html(aField),
-      tdDisplay = jQuery('<td></td>').addClass('ntools-help').html(aDisplay);
+  /*
+   *****************************************************************************
+   * People
+   *****************************************************************************
+   */
+  else if (pathname == '/admin/people') {
+    // Ajout de l'identifiant sur la liste des utilisateurs.
+    nToolsHelper.addHelp('td:last-child a', 2, 'UID');
+  }
+  else if (pathname == '/admin/people/permissions') {
+    // Ajout de la machine name sur la liste des permissions.
+    // var permission = jQuery('#user-admin-permissions, #og-ui-admin-global-permissions');
+    jQuery('table')
+    .find('thead tr').prepend(nToolsHelper.createTh())
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var tableau = /\[(.+)\]/.exec(jQuery(this).find('input').attr('name')),
+        output = '-';
 
-      jQuery(this).append(tdField).append(tdDisplay);
-  });
+      if (tableau !== null) {
+        output = "'" + tableau[1] + "'";
+      }
 
-  // Ajout du TID sur la liste des termes.
-  jQuery('#taxonomy-overview-terms thead tr').prepend(nToolsHelper.createTh('TID'));
-  jQuery('#taxonomy-overview-terms tbody tr').each(function () {
-    var a = jQuery(this).find('.term-id').val();
+      nToolsHelper.addTd(this, output);
+    });
+  }
+  else if (pathname == '/admin/people/permissions/roles') {
+    // Ajout de l'identifiant sur la liste des rôles.
+    nToolsHelper.addHelp('td:last-child a', 1, 'RID');
+  }
 
-    nToolsHelper.addTd(this, a);
-  });
+  /*
+   *****************************************************************************
+   * Modules
+   *****************************************************************************
+   */
+  else if (pathname == '/admin/modules') {
+    // Ajout de la machine name sur la liste des modules.
+    jQuery('table')
+    .find('thead tr').prepend(nToolsHelper.createTh())
+    .parent().parent()
+    .find('tbody tr').each(function () {
+      var output = /\[.+\]\[(.+)\]\[.+\]/g.exec(jQuery(this).find('input').attr('name'));
 
-  // Ajout d'un bouton pour cacher tous les libellés des champs.
+      nToolsHelper.addTd(this, output[1]);
+    });
+  }
+
+  /*
+   *****************************************************************************
+   * Configuration
+   *****************************************************************************
+   */
+  else if (pathname == '/admin/config/regional/entity_translation') {
+    // Ajout d'un bouton pour configurer de façon pertinente
+    // la traduction des entités.
+    jQuery('#entity-translation-admin-form').find('#edit-actions').append(
+      jQuery('<button></button>')
+        .html('Configuring')
+        .addClass('ntools-hidden')
+        .click(function () {
+          nToolsHelper.configuringEntityTranslation();
+          return false;
+        })
+    );
+  }
+  else if (pathname == '/admin/config/search/apachesolr/settings/solr/facets') {
+    // Ajout de la machine name sur la liste des facettes.
+    nToolsHelper.addHelp('.first a', 2);
+  }
+
+  /*
+   *****************************************************************************
+   * Reports
+   *****************************************************************************
+   */
+  else if (pathname == '/admin/reports/fields') {
+    // Le tableau de la liste des champs peu être trié.
+    nToolsHelper.addReportsOrder('.page-admin-reports-fields', '.sticky-enabled th');
+  }
+
+  /*
+   *****************************************************************************
+   * Other
+   *****************************************************************************
+   */
+  // Button added to hide all field's label.
   nToolsHelper.hideAllField();
-
-  // Ajout de la machine name sur la liste des vues.
-  jQuery('#views-ui-list-page thead tr').prepend(nToolsHelper.createTh());
-  jQuery('#views-ui-list-page tbody tr').each(function () {
-    var a = jQuery(this).find('.first a').attr('href').split(slash);
-
-    nToolsHelper.addTd(this, '$view->name = \'' + a[a.length - 2] + '\';');
-  });
 
   // Ajout d'un lien vers un field collection sur la liste des champs.
   jQuery('#field-overview tbody tr').each(function () {
@@ -488,86 +576,6 @@ backOfficeD7: function () {
         );
     }
   });
-
-  /*
-   *****************************************************************************
-   * People
-   *****************************************************************************
-   */
-  // Ajout de l'identifiant sur la liste des utilisateurs.
-  jQuery('#user-admin-account tbody tr').each(function () {
-    var a = /\/user\/(.+)\/edit/.exec(jQuery(this).find('td:last-child a').attr('href'));
-
-    nToolsHelper.addSpan(this, 'td:nth-child(2)', '(' + a[1] + ') ');
-  });
-
-  // Ajout de la machine name sur la liste des permissions.
-  var permission = jQuery('#user-admin-permissions, #og-ui-admin-global-permissions');
-  permission.find('thead tr').prepend(nToolsHelper.createTh());
-  permission.find('tbody tr').each(function () {
-    var tableau = /\[(.+)\]/.exec(jQuery(this).find('input').attr('name')),
-      output = '-';
-
-    if (tableau !== null) {
-      output = "'" + tableau[1] + "'";
-    }
-
-    nToolsHelper.addTd(this, output);
-  });
-
-  // Ajout de l'identifiant sur la liste des rôles.
-  jQuery('#user-roles tbody tr').each(function () {
-    var a = /\/admin\/people\/permissions\/(.+)/.exec(jQuery(this).find('td:last-child a').attr('href'));
-
-    if (a !== null) {
-      nToolsHelper.addSpan(this, 'td:first-child', '(' + a[1] + ') ');
-    }
-  });
-
-  /*
-   *****************************************************************************
-   * Modules
-   *****************************************************************************
-   */
-  // Ajout de la machine name sur la liste des modules.
-  jQuery('#system-modules thead tr').prepend(nToolsHelper.createTh());
-  jQuery('#system-modules tbody tr').each(function () {
-    var tableau = /\[.+\]\[(.+)\]\[.+\]/g.exec(jQuery(this).find('input').attr('name'));
-
-    nToolsHelper.addTd(this, tableau[1]);
-  });
-
-  /*
-   *****************************************************************************
-   * Configuration
-   *****************************************************************************
-   */
-  // Ajout d'un bouton pour cacher tous les libellés des champs.
-  jQuery('#entity-translation-admin-form').find('#edit-actions').append(
-    jQuery('<button></button>')
-      .html('Configuring')
-      .addClass('ntools-hidden')
-      .click(function () {
-        nToolsHelper.configuringEntityTranslation();
-        return false;
-      })
-  );
-
-  // Ajoute le machine name sur la liste des facettes.
-  jQuery('#facetapi-realm-settings-form thead tr').prepend(nToolsHelper.createTh());
-  jQuery('#facetapi-realm-settings-form tbody tr').each(function () {
-    var tableau = /enabled_facets\[(.+)\]/g.exec(jQuery(this).find('input').attr('name'));
-
-    nToolsHelper.addTd(this, tableau[1]);
-  });
-
-  /*
-   *****************************************************************************
-   * Reports
-   *****************************************************************************
-   */
-  // Le tableau de la liste des champs peu être trié.
-  nToolsHelper.addReportsOrder('.page-admin-reports-fields', '.sticky-enabled th');
 },
 
 toolbar: function () {
