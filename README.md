@@ -120,11 +120,6 @@ J'ai ajouter le focus sur le name du formulaire d'authentification comme ça, si
 vous avez enregistrer vos identifiants, vous n'avez plus qu'à appuyer sur la
 touche entrée.
 
-#### Problème connu
-
-Le préfixe de langue n'est pas pris en compte.
-Fonctionne uniquement si vous avez créée un domaine.
-
 ### Lien de déconnexion
 
 #### Philosophie
