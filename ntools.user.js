@@ -276,6 +276,10 @@ backOfficeD8: function () {
     // FID added on file list.
     nToolsHelper.addHelp('.views-field-count a', 1, 'FID');
   }
+  else if (drupalSettings.path.currentPath == 'admin/content/media') {
+    // FID added on media list.
+    nToolsHelper.addHelp('.edit a', 2, 'MID');
+  }
   /*
    *****************************************************************************
    * Structure
