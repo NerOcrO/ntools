@@ -483,9 +483,8 @@ backOfficeD7: function () {
     // Ajout de l'identifiant sur la liste des utilisateurs.
     nToolsHelper.addHelp('td:last-child a', 2, 'UID');
   }
-  else if (pathname == '/admin/people/permissions') {
+  else if (pathname == '/admin/people/permissions' || /\/admin\/config\/group\/permissions\/(.+)\/(.+)/g.exec(pathname) !== null) {
     // Ajout de la machine name sur la liste des permissions.
-    // var permission = jQuery('#user-admin-permissions, #og-ui-admin-global-permissions');
     jQuery('table')
     .find('thead tr').prepend(nToolsHelper.createTh())
     .parent().parent()
