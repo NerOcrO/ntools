@@ -76,6 +76,7 @@ nToolsHelper = {
           return false;
         })
     );
+    jQuery('.sticky-header').find('th:nth-child(4)').append(jQuery('button').clone(true));
   },
 
   // Ajoute une zone transparente sur l'élément voulu.
