@@ -255,7 +255,15 @@ nToolsHelper = {
         }
       })
       .addClass('filter');
-  }
+  },
+
+  removeDropButton: function () {
+    'use strict';
+    jQuery('.dropbutton-wrapper').removeClass()
+      .find('.dropbutton-widget').removeClass()
+      .find('.dropbutton').removeClass()
+      .find('.dropbutton-toggle').remove();
+  },
 }
 
 nTools = {
@@ -397,6 +405,8 @@ backOfficeD8: function () {
    */
   // Button added to hide all field's label.
   nToolsHelper.hideAllField();
+
+  nToolsHelper.removeDropButton();
 },
 
 backOfficeD7: function () {
