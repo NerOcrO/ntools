@@ -807,143 +807,143 @@ toolbar: function () {
     if (node[0] !== undefined) {
       body.find('.ntools').append(
         jQuery('<button></button>')
-              .html('Show ' + type.capitalize() + 's')
-              .addClass('ntools-' + type + 's-toggle')
-              .click(function () {
-                if (jQuery('.show-' + type).length === 0) {
-                  jQuery(this).html('Hide ' + type.capitalize() + 's');
+          .html('Show ' + type.capitalize() + 's')
+          .addClass('ntools-' + type + 's-toggle')
+          .click(function () {
+            if (jQuery('.show-' + type).length === 0) {
+              jQuery(this).html('Hide ' + type.capitalize() + 's');
 
-                  node.addClass('ntools-show show-' + type).each(function () {
-                    var target = jQuery(this),
-                      targetClass = target.attr('class'),
-                      targetId = target.attr('id'),
-                      classNode = targetClass.split(' '),
-                      output = '',
-                      link = null,
-                      links = [];
+              node.addClass('ntools-show show-' + type).each(function () {
+                var target = jQuery(this),
+                  targetClass = target.attr('class'),
+                  targetId = target.attr('id'),
+                  classNode = targetClass.split(' '),
+                  output = '',
+                  link = null,
+                  links = [];
 
-                    // Un bouton pour mettre en évidence les régions.
-                    if (type === 'region') {
-                      var classRegion = /region region-([a-z0-9-]+) /.exec(targetClass);
+                // Un bouton pour mettre en évidence les régions.
+                if (type === 'region') {
+                  var classRegion = /region region-([a-z0-9-]+) /.exec(targetClass);
 
-                      output = classRegion[1].replace(dash, '_');
-                    }
-                    // Un bouton pour mettre en évidence les blocs.
-                    else if (type === 'block') {
-                      var classBlock = /block block--?([a-z0-9-]+) /.exec(targetClass),
-                        nameBlockReg = new RegExp('block-' + classBlock[1] + '-', 'g'),
-                        whithoutDash = classBlock[1].replace(dash, '_'),
-                        idBlock = targetId.replace(nameBlockReg, '').replace(dash, '_');
-
-                      // Ce lien permet d'éditer le bloc rapidement surtout dans le cas où
-                      // le contextual link est absent.
-                      if (login === 1) {
-                        link = nToolsHelper.createLink('/admin/structure/block/manage/' + whithoutDash + '/' + idBlock + '/configure', 'Edit your block', 'E');
-                        links.push(link);
-                      };
-
-                      output = whithoutDash + " → ['" + idBlock + "']";
-                    }
-                    // Un bouton pour mettre en évidence les vues.
-                    else if (type === 'view') {
-                      var classView = /view view-(\S+)/.exec(targetClass),
-                        classIdView = /view-display-id-(\S+)/.exec(targetClass),
-                        whithoutDash = classView[1].replace(dash, '_');
-
-                      // Ce lien permet d'éditer la vue rapidement surtout dans le cas où
-                      // le contextual link est absent.
-                      if (login === 1) {
-                        var url = nTools.drupalVersion == 7 ? '/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1] : '/admin/build/views/edit/' + whithoutDash + '#view-tab-' + classIdView[1];
-                        link = nToolsHelper.createLink(url, 'Edit your view', 'E');
-                        links.push(link);
-                      };
-
-                      output = whithoutDash + ' → ' + classIdView[1];
-                    }
-                    // Un bouton pour mettre en évidence les nodes.
-                    else if (type === 'node') {
-                      var nid = targetId.replace('node-', ''),
-                        whithoutDash = classNode[1].replace(dash, '_'),
-                        whithoutNode = whithoutDash.replace('node_', ''),
-                        classTeaser = /node-teaser/.exec(targetClass),
-                        classPromoted = /node-promoted/.exec(targetClass),
-                        classSticky = /node-sticky/.exec(targetClass),
-                        classUnpublished = /node-unpublished/.exec(targetClass),
-                        displayMode = '',
-                        display = '',
-                        properties = [],
-                        flag = false;
-
-                      if (classPromoted !== null) {
-                        properties.push('P');
-                        flag = true;
-                      }
-                      if (classSticky !== null) {
-                        properties.push('S');
-                        flag = true;
-                      }
-                      if (classUnpublished !== null) {
-                        properties.push('U');
-                        flag = true;
-                      }
-                      if (flag) {
-                        properties = ' (' + properties.join() + ')';
-                      }
-
-                      // Malheureusement, Drupal ne gère que l'accroche.
-                      if (classTeaser !== null) {
-                        displayMode = ' → teaser';
-                        display = '/teaser';
-                      }
-
-                      // Ces liens permettent d'aller rapidement à la liste des champs
-                      // ou aux modes d'affichage du node.
-                      if (login === 1) {
-                        link = nToolsHelper.createLink('/node/' + nid , 'View this node', 'V');
-                        links.push(link);
-                        link = nToolsHelper.createLink('/node/' + nid + '/edit', 'Edit this node', 'E');
-                        links.push(link);
-                        link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/fields', 'Manage your ' + whithoutNode + ' fields', 'F');
-                        links.push(link);
-                        link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display' + display, 'Manage your ' + whithoutNode + ' displays', 'D');
-                        links.push(link);
-                      }
-
-                      output = whithoutDash + ':' + nid + properties + displayMode;
-                    }
-                    // Un bouton pour mettre en évidence les profiles.
-                    else if (type === 'profile') {
-                      var whithoutDash = classNode[1].replace(dash, '_'),
-                        whithoutProfile = classNode[2].replace(dash, '_').replace('profile2_', '');
-
-                      // Ces liens permettent d'aller rapidement à la liste des champs
-                      // ou aux modes d'affichage du profile.
-                      if (login === 1) {
-                        link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/fields', 'Manage your ' + whithoutProfile + ' fields', 'F');
-                        links.push(link);
-                        link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/display', 'Manage your ' + whithoutProfile + ' displays', 'D');
-                        links.push(link);
-                      }
-
-                      output = whithoutDash + ' → ' + classNode[2].replace(dash, '_');
-                    }
-                    // Un bouton pour mettre en évidence les fields.
-                    else if (type === 'field') {
-                      output = classNode[1].replace(dash, '_').replace('field_name_', '') + ' (' + classNode[2].replace(dash, '_') + ')';
-                    }
-                    // Un bouton pour mettre en évidence l'identifiant des formulaires.
-                    else if (type === 'form') {
-                      output = targetId.replace(dash, '_');
-                    }
-                    nToolsHelper.addOverlay(this, type, output, links);
-                  });
-
-                  nToolsHelper.addhideAllButton();
+                  output = classRegion[1].replace(dash, '_');
                 }
-                else {
-                  nToolsHelper.deleteOverlay(type);
+                // Un bouton pour mettre en évidence les blocs.
+                else if (type === 'block') {
+                  var classBlock = /block block--?([a-z0-9-]+) /.exec(targetClass),
+                    nameBlockReg = new RegExp('block-' + classBlock[1] + '-', 'g'),
+                    whithoutDash = classBlock[1].replace(dash, '_'),
+                    idBlock = targetId.replace(nameBlockReg, '').replace(dash, '_');
+
+                  // Ce lien permet d'éditer le bloc rapidement surtout dans le cas où
+                  // le contextual link est absent.
+                  if (login === 1) {
+                    link = nToolsHelper.createLink('/admin/structure/block/manage/' + whithoutDash + '/' + idBlock + '/configure', 'Edit your block', 'E');
+                    links.push(link);
+                  };
+
+                  output = whithoutDash + " → ['" + idBlock + "']";
                 }
-              })
+                // Un bouton pour mettre en évidence les vues.
+                else if (type === 'view') {
+                  var classView = /view view-(\S+)/.exec(targetClass),
+                    classIdView = /view-display-id-(\S+)/.exec(targetClass),
+                    whithoutDash = classView[1].replace(dash, '_');
+
+                  // Ce lien permet d'éditer la vue rapidement surtout dans le cas où
+                  // le contextual link est absent.
+                  if (login === 1) {
+                    var url = nTools.drupalVersion == 6 ? '/admin/build/views/edit/' + whithoutDash + '#view-tab-' + classIdView[1] : '/admin/structure/views/view/' + whithoutDash + '/edit/' + classIdView[1];
+                    link = nToolsHelper.createLink(url, 'Edit your view', 'E');
+                    links.push(link);
+                  };
+
+                  output = whithoutDash + ' → ' + classIdView[1];
+                }
+                // Un bouton pour mettre en évidence les nodes.
+                else if (type === 'node') {
+                  var nid = targetId.replace('node-', ''),
+                    whithoutDash = classNode[1].replace(dash, '_'),
+                    whithoutNode = whithoutDash.replace('node_', ''),
+                    classTeaser = /node-teaser/.exec(targetClass),
+                    classPromoted = /node-promoted/.exec(targetClass),
+                    classSticky = /node-sticky/.exec(targetClass),
+                    classUnpublished = /node-unpublished/.exec(targetClass),
+                    displayMode = '',
+                    display = '',
+                    properties = [],
+                    flag = false;
+
+                  if (classPromoted !== null) {
+                    properties.push('P');
+                    flag = true;
+                  }
+                  if (classSticky !== null) {
+                    properties.push('S');
+                    flag = true;
+                  }
+                  if (classUnpublished !== null) {
+                    properties.push('U');
+                    flag = true;
+                  }
+                  if (flag) {
+                    properties = ' (' + properties.join() + ')';
+                  }
+
+                  // Malheureusement, Drupal ne gère que l'accroche.
+                  if (classTeaser !== null) {
+                    displayMode = ' → teaser';
+                    display = '/teaser';
+                  }
+
+                  // Ces liens permettent d'aller rapidement à la liste des champs
+                  // ou aux modes d'affichage du node.
+                  if (login === 1) {
+                    link = nToolsHelper.createLink('/node/' + nid , 'View this node', 'V');
+                    links.push(link);
+                    link = nToolsHelper.createLink('/node/' + nid + '/edit', 'Edit this node', 'E');
+                    links.push(link);
+                    link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/fields', 'Manage your ' + whithoutNode + ' fields', 'F');
+                    links.push(link);
+                    link = nToolsHelper.createLink('/admin/structure/types/manage/' + whithoutNode + '/display' + display, 'Manage your ' + whithoutNode + ' displays', 'D');
+                    links.push(link);
+                  }
+
+                  output = whithoutDash + ':' + nid + properties + displayMode;
+                }
+                // Un bouton pour mettre en évidence les profiles.
+                else if (type === 'profile') {
+                  var whithoutDash = classNode[1].replace(dash, '_'),
+                    whithoutProfile = classNode[2].replace(dash, '_').replace('profile2_', '');
+
+                  // Ces liens permettent d'aller rapidement à la liste des champs
+                  // ou aux modes d'affichage du profile.
+                  if (login === 1) {
+                    link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/fields', 'Manage your ' + whithoutProfile + ' fields', 'F');
+                    links.push(link);
+                    link = nToolsHelper.createLink('/admin/structure/profiles/manage/' + whithoutProfile + '/display', 'Manage your ' + whithoutProfile + ' displays', 'D');
+                    links.push(link);
+                  }
+
+                  output = whithoutDash + ' → ' + classNode[2].replace(dash, '_');
+                }
+                // Un bouton pour mettre en évidence les fields.
+                else if (type === 'field') {
+                  output = classNode[1].replace(dash, '_').replace('field_name_', '') + ' (' + classNode[2].replace(dash, '_') + ')';
+                }
+                // Un bouton pour mettre en évidence l'identifiant des formulaires.
+                else if (type === 'form') {
+                  output = targetId.replace(dash, '_');
+                }
+                nToolsHelper.addOverlay(this, type, output, links);
+              });
+
+              nToolsHelper.addhideAllButton();
+            }
+            else {
+              nToolsHelper.deleteOverlay(type);
+            }
+          })
       );
     }
   });
