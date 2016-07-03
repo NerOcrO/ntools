@@ -728,30 +728,35 @@ toolbar: function () {
   }
 
   // Affichage des classes intéressantes du body.
-  if (pageNode !== null) {
-    bodyClass += pageNode[0] + '<br>';
-  }
   if (nodeType !== null) {
     bodyClass += nodeType[0] + '<br>';
   }
-  if (pageType !== null) {
-    bodyClass += pageType[0] + '<br>';
+  if (nTools.drupalVersion == 8) {
+    bodyClass += drupalSettings.path.currentPath + '<br>';
   }
-  if (pageTaxonomy !== null) {
-    bodyClass += pageTaxonomy[0] + '<br>';
-  }
-  if (pageUser !== null) {
-    bodyClass += pageUser[0] + '<br>';
-  }
-  if (pageContext !== null) {
-    var arrayLength = pageContext.length;
-    for (var i = 0; i < arrayLength; i++) {
-      var context = pageContext[i].split('context-');
-      bodyClass += pageContext[i];
-      if (login === 1) {
-        bodyClass += ' [<a href="/admin/structure/context/list/' + context[1].replace(dash, '_') + '/edit" title="Edit your context" target="_blank">E</a>]';
+  else {
+    if (pageNode !== null) {
+      bodyClass += pageNode[0] + '<br>';
+    }
+    if (pageType !== null) {
+      bodyClass += pageType[0] + '<br>';
+    }
+    if (pageTaxonomy !== null) {
+      bodyClass += pageTaxonomy[0] + '<br>';
+    }
+    if (pageUser !== null) {
+      bodyClass += pageUser[0] + '<br>';
+    }
+    if (pageContext !== null) {
+      var arrayLength = pageContext.length;
+      for (var i = 0; i < arrayLength; i++) {
+        var context = pageContext[i].split('context-');
+        bodyClass += pageContext[i];
+        if (login === 1) {
+          bodyClass += ' [<a href="/admin/structure/context/list/' + context[1].replace(dash, '_') + '/edit" title="Edit your context" target="_blank">E</a>]';
+        }
+        bodyClass += '<br>';
       }
-      bodyClass += '<br>';
     }
   }
   if (bodyClass !== '') {
