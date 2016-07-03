@@ -816,7 +816,7 @@ toolbar: function () {
               node.addClass('ntools-show show-' + type).each(function () {
                 var target = jQuery(this),
                   targetClass = target.attr('class'),
-                  targetId = target.attr('id'),
+                  targetId = target.attr('id') || target.attr('data-quickedit-entity-id'),
                   classNode = targetClass.split(' '),
                   output = '',
                   link = null,
@@ -862,10 +862,7 @@ toolbar: function () {
                 }
                 // Un bouton pour mettre en évidence les nodes.
                 else if (type === 'node') {
-                  var nid = targetId.replace('node-', ''),
-                    whithoutDash = classNode[1].replace(dash, '_'),
-                    whithoutNode = whithoutDash.replace('node_', ''),
-                    classTeaser = /node-teaser/.exec(targetClass),
+                  var classTeaser = /node-teaser/.exec(targetClass),
                     classPromoted = /node-promoted/.exec(targetClass),
                     classSticky = /node-sticky/.exec(targetClass),
                     classUnpublished = /node-unpublished/.exec(targetClass),
@@ -874,26 +871,50 @@ toolbar: function () {
                     properties = [],
                     flag = false;
 
-                  if (classPromoted !== null) {
-                    properties.push('P');
-                    flag = true;
-                  }
-                  if (classSticky !== null) {
-                    properties.push('S');
-                    flag = true;
-                  }
-                  if (classUnpublished !== null) {
-                    properties.push('U');
-                    flag = true;
-                  }
-                  if (flag) {
-                    properties = ' (' + properties.join() + ')';
-                  }
+                  if (nTools.drupalVersion == 8) {
+                    var classTeaser = /node--view-mode-(\S+)/.exec(targetClass),
+                      bundle = /node--type-(\S+)/.exec(targetClass),
+                      whithoutDash = bundle[1].replace(dash, '_'),
+                      whithoutNode = bundle[1];
+                    if (targetId !== undefined) {
+                      var nid = targetId.replace('node/', '');
+                    }
+                    else {
+                      var nid = 'N/A';
+                    }
 
-                  // Malheureusement, Drupal ne gère que l'accroche.
-                  if (classTeaser !== null) {
-                    displayMode = ' → teaser';
-                    display = '/teaser';
+                    displayMode = ' → ' + classTeaser[1].replace(dash, '_');
+                    if (classTeaser[1] !== 'full') {
+                      display = '/' + classTeaser[1].replace(dash, '_');
+                    }
+                  }
+                  else {
+                    var nid = targetId.replace('node-', ''),
+                      bundle = /node-(\S+)/.exec(targetClass),
+                      whithoutDash = bundle[1].replace(dash, '_'),
+                      whithoutNode = bundle[1];
+
+                    if (classPromoted !== null) {
+                      properties.push('P');
+                      flag = true;
+                    }
+                    if (classSticky !== null) {
+                      properties.push('S');
+                      flag = true;
+                    }
+                    if (classUnpublished !== null) {
+                      properties.push('U');
+                      flag = true;
+                    }
+                    if (flag) {
+                      properties = ' (' + properties.join() + ')';
+                    }
+
+                    // Malheureusement, Drupal 7 ne gère que l'accroche.
+                    if (classTeaser !== null) {
+                      displayMode = ' → teaser';
+                      display = '/teaser';
+                    }
                   }
 
                   // Ces liens permettent d'aller rapidement à la liste des champs
