@@ -233,33 +233,37 @@ nToolsHelper = {
   addReportsOrder: function (parent, selector) {
     'use strict';
     jQuery(parent).find(selector).click(function() {
-        var table = jQuery(this).parents('table').eq(0),
-          rows = table.find('tr:gt(0)').toArray().sort(compare(jQuery(this).index()));
-        table.find('th').removeClass().addClass('filter');
-        jQuery(this).addClass('active');
-        this.asc = !this.asc;
+      var table = jQuery(this).parents('table').eq(0),
+        rows = table.find('tr:gt(0)').toArray().sort(compare(jQuery(this).index()));
+      table.find('th').removeClass().addClass('filter');
+      jQuery(this).addClass('active');
+      this.asc = !this.asc;
 
-        if (!this.asc) {
-          rows = rows.reverse();
-        }
+      if (!this.asc) {
+        rows = rows.reverse();
+      }
 
-        for (var i = 0; i < rows.length; i++) {
-          table.append(rows[i]);
-        }
+      for (var i = 0; i < rows.length; i++) {
+        table.append(rows[i]);
+      }
 
-        function compare(index) {
-          return function (a, b) {
-            var valA = jQuery(a).children('td').eq(index).html(),
-              valB = jQuery(b).children('td').eq(index).html();
-            return !isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB)) ? valA - valB : valA.localeCompare(valB);
-          }
+      function compare(index) {
+        return function (a, b) {
+          var valA = jQuery(a).children('td').eq(index).html(),
+            valB = jQuery(b).children('td').eq(index).html();
+          return !isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB)) ? valA - valB : valA.localeCompare(valB);
         }
-      })
-      .addClass('filter');
+      }
+    })
+    .addClass('filter');
   },
 
   removeDropButton: function () {
     'use strict';
+    // Not for Views.
+    if (jQuery('form').attr('data-drupal-form-fields')) {
+      return;
+    }
     jQuery('.dropbutton-wrapper').removeClass()
       .find('.dropbutton-widget').removeClass()
       .find('.dropbutton').removeClass()
