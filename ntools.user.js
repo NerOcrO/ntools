@@ -879,7 +879,7 @@ toolbar: function () {
                     var classTeaser = /node--view-mode-(\S+)/.exec(targetClass),
                       bundle = /node--type-(\S+)/.exec(targetClass),
                       whithoutDash = bundle[1].replace(dash, '_'),
-                      whithoutNode = bundle[1];
+                      whithoutNode = bundle[1].replace(dash, '_');
                     if (targetId !== undefined) {
                       var nid = targetId.replace('node/', '');
                     }
@@ -888,9 +888,7 @@ toolbar: function () {
                     }
 
                     displayMode = ' → ' + classTeaser[1].replace(dash, '_');
-                    if (classTeaser[1] !== 'full') {
-                      display = '/' + classTeaser[1].replace(dash, '_');
-                    }
+                    display = '/' + classTeaser[1].replace(dash, '_');
                   }
                   else {
                     var nid = targetId.replace('node-', ''),
