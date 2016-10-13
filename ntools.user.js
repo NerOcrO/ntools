@@ -1150,6 +1150,7 @@ th.filter {
 .ntools-highlight a[target="_blank"] {
   background: #000;
   color: #FFF;
+  display: inline;
   padding: 0 4px;
 }
 .ntools-highlight a[target="_blank"]:hover {
