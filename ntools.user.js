@@ -88,7 +88,7 @@ nToolsHelper = {
       nameLinks.append(links[i]);
     }
 
-    jQuery(node).append(
+    jQuery(node).css('position', 'relative').append(
       jQuery('<div></div>')
         .addClass('ntools-highlight')
         .append(
