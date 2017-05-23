@@ -81,7 +81,28 @@
       $('.sticky-header').find('th:nth-child(4)').append($('button').clone(true));
     },
 
-    // Ajoute une zone transparente sur l'élément voulu.
+    // Retire tous les champs dans "Gérer l'affichage".
+    removeAllField: function () {
+      var $headCellFormat = $('#field-display-overview').find('thead th:nth-child(5)');
+      var $selectFormat = $('#field-display-overview').find('tbody td:nth-child(5) select');
+      $headCellFormat.append(
+        $("<button></button>")
+        .html("Remove all")
+        .addClass("ntools-hidden")
+        .click(function () {
+          $selectFormat.find("option[value=\"hidden\"]").each(function () {
+            $(this).attr("selected", true);
+          });
+
+          // Déclenche le call AJAX pour le 1er élément, déclenchant les autres.
+          $selectFormat.first().trigger('change');
+
+          return false;
+        })
+      );
+    },
+
+    // Ajoute une zone transparente sur l"élément voulu.
     addOverlay: function (node, type, output, links) {
       'use strict';
       var nameLinks = $('<span/>')
@@ -412,6 +433,8 @@
        */
       // Button added to hide all field's label.
       nToolsHelper.hideAllField();
+      // Button added to remove all fields.
+      nToolsHelper.removeAllField();
 
       nToolsHelper.removeDropButton();
     },
@@ -578,6 +601,8 @@
        */
       // Button added to hide all field's label.
       nToolsHelper.hideAllField();
+      // Button added to remove all fields.
+      nToolsHelper.removeAllField();
 
       // Ajout d'un lien vers un field collection sur la liste des champs.
       $('#field-overview tbody tr').each(function () {
