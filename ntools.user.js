@@ -64,7 +64,7 @@
       });
     },
 
-    // Met à <hidden> toutes les étiquettes des champs dans "Gérer l"affichage".
+    // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
     hideAllField: function () {
       $("#field-display-overview").find("th:nth-child(4)").append(
         $("<button></button>")
@@ -408,7 +408,7 @@
        *****************************************************************************
        */
       if (pathname == "/admin/content") {
-        // Ajout de l"identifiant sur la liste des nodes.
+        // Ajout de l'identifiant sur la liste des nodes.
         nToolsHelper.addHelp("td:last-child a", 2, "NID");
       }
 
@@ -446,7 +446,7 @@
           });
         // Ajout de la machine name sur la liste des vocabulaires.
         nToolsHelper.addHelp("td:last-child a", 2);
-        // Ajout des liens "Gérer les champs" et "Gérer l"affichage" sur la liste des vocabulaires.
+        // Ajout des liens "Gérer les champs" et "Gérer l'affichage" sur la liste des vocabulaires.
         $("table")
           .find("thead tr").append(nToolsHelper.createTh("Operations +", 2))
           .parent().parent()
@@ -477,7 +477,7 @@
        *****************************************************************************
        */
       else if (pathname == "/admin/people") {
-        // Ajout de l"identifiant sur la liste des utilisateurs.
+        // Ajout de l'identifiant sur la liste des utilisateurs.
         nToolsHelper.addHelp("td:last-child a", 2, "UID");
       } else if (
         pathname == "/admin/people/permissions"
@@ -498,7 +498,7 @@
             nToolsHelper.addTd(this, output);
           });
       } else if (pathname == "/admin/people/permissions/roles") {
-        // Ajout de l"identifiant sur la liste des rôles.
+        // Ajout de l'identifiant sur la liste des rôles.
         nToolsHelper.addHelp("td:last-child a", 1, "RID");
       }
 
@@ -524,7 +524,7 @@
        *****************************************************************************
        */
       else if (pathname == "/admin/config/regional/entity_translation") {
-        // Ajout d"un bouton pour configurer de façon pertinente
+        // Ajout d'un bouton pour configurer de façon pertinente
         // la traduction des entités.
         $("#entity-translation-admin-form").find("#edit-actions").append(
           $("<button></button>")
@@ -558,7 +558,7 @@
       // Button added to hide all field"s label.
       nToolsHelper.hideAllField();
 
-      // Ajout d"un lien vers un field collection sur la liste des champs.
+      // Ajout d'un lien vers un field collection sur la liste des champs.
       $("#field-overview tbody tr").each(function () {
         var text = $(this).find("td:nth-child(5)").text();
         var $field;
@@ -629,7 +629,7 @@
           }
         ];
 
-      // On lit les dernières positions de la barre d"outils.
+      // On lit les dernières positions de la barre d'outils.
       if (nToolsCookie.read("ntools_toggle_positions") !== null) {
         positions = nToolsCookie.read("ntools_toggle_positions").split(":");
         stylePosition1 = " style=\"position:fixed;top:" + positions[0] + "px;left:" + positions[1] + "px\"";
@@ -641,7 +641,7 @@
       ntoolsToggle = $(".ntools-toggle");
       ntoolsToggle.dblclick(function () {
           $(".ntools").slideToggle("fast");
-          // Gestion de l"affichage du bloc en fonction du cookie pour éviter de gêner
+          // Gestion de l'affichage du bloc en fonction du cookie pour éviter de gêner
           // quand on est en édition par exemple.
           if (nToolsCookie.read("ntools_toggle") === "off") {
             nToolsCookie.create("ntools_toggle", "on", 30);
@@ -758,7 +758,7 @@
       // Déplacement du bloc Masquerade dans la balise mère.
       body.find(".ntools").append(masquerade);
 
-      // Suppression d"une phrase que je juge inutile.
+      // Suppression d'une phrase que je juge inutile.
       masquerade.find(".description")
         .contents()
         .filter(function () {
@@ -916,15 +916,15 @@
                         properties = " (" + properties.join() + ")";
                       }
 
-                      // Malheureusement, Drupal 7 ne gère que l"accroche.
+                      // Malheureusement, Drupal 7 ne gère que l'accroche.
                       if (classTeaser !== null) {
                         displayMode = " → teaser";
                         display = "/teaser";
                       }
                     }
 
-                    // Ces liens permettent d"aller rapidement à la liste des champs
-                    // ou aux modes d"affichage du node.
+                    // Ces liens permettent d'aller rapidement à la liste des champs
+                    // ou aux modes d'affichage du node.
                     if (login === 1) {
                       link = nToolsHelper.createLink("/node/" + nid, "View this node", "V");
                       links.push(link);
@@ -943,8 +943,8 @@
                     whithoutDash = classNode[1].replace(dash, "_");
                     whithoutProfile = classNode[2].replace(dash, "_").replace("profile2_", "");
 
-                    // Ces liens permettent d"aller rapidement à la liste des champs
-                    // ou aux modes d"affichage du profile.
+                    // Ces liens permettent d'aller rapidement à la liste des champs
+                    // ou aux modes d'affichage du profile.
                     if (login === 1) {
                       link = nToolsHelper.createLink("/admin/structure/profiles/manage/" + whithoutProfile + "/fields", "Manage your " + whithoutProfile + " fields", "F");
                       links.push(link);
@@ -958,7 +958,7 @@
                   else if (type === "field") {
                     output = classNode[1].replace(dash, "_").replace("field_name_", "") + " (" + classNode[2].replace(dash, "_") + ")";
                   }
-                  // Un bouton pour mettre en évidence l"identifiant des formulaires.
+                  // Un bouton pour mettre en évidence l'identifiant des formulaires.
                   else if (type === "form") {
                     output = targetId.replace(dash, "_");
                   }
@@ -1209,7 +1209,7 @@
       nTools.drupalVersion = 6;
     }
 
-    // Ajout d"un title avec name/value sur input/textarea/select.
+    // Ajout d'un title avec name/value sur input/textarea/select.
     $("input, textarea, select").each(function () {
       var input = $(this);
       var output = "Name: " + input.attr("name");
