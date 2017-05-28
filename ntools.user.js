@@ -1021,7 +1021,7 @@
     },
 
     styles: function () {
-      'use strict';
+      "use strict";
 
       var styles = (function () {/*
     .page-admin table .odd:hover,
@@ -1230,9 +1230,9 @@
       padding: 5px;
     }*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
-      $('head')
+      $("head")
         .append(
-          $('<style></style>')
+          $("<style></style>")
             .append(document.createTextNode(styles)));
     },
   };
