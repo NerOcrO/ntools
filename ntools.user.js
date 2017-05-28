@@ -66,18 +66,22 @@
 
     // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
     hideAllField: function () {
-      $("#field-display-overview").find("th:nth-last-child(2)").append(
+      var $headCellFormat = $("#field-display-overview").find("th:nth-last-child(2)");
+      var $selectLabel = $("#field-display-overview").find("tbody td:nth-last-child(4) select option[value=\"hidden\"]");
+
+      $headCellFormat.append(
         $("<button></button>")
         .html("Hide all")
         .addClass("ntools-hidden")
         .click(function () {
-          $("#field-display-overview").find("tbody td:nth-last-child(4) select option[value=\"hidden\"]").each(function () {
+          $selectLabel.each(function () {
             $(this).attr("selected", true);
           });
           return false;
         })
       );
-      $(".sticky-header").find("th:nth-last-child(2)").append($("button").clone(true));
+
+      $(".sticky-header").find("th:nth-last-child(2)").append($headCellFormat.find("button").clone(true));
     },
 
     // Retire tous les champs dans "Gérer l'affichage".
@@ -103,11 +107,13 @@
           });
 
           // Déclenche le call AJAX pour le 1er élément, déclenchant les autres.
-          $selectFormat.first().trigger('change');
+          $selectFormat.first().trigger("change");
 
           return false;
         })
       );
+
+      $(".sticky-header").find("th:last-child").append($headCellFormat.find("button").clone(true));
     },
 
     // Ajoute une zone transparente sur l"élément voulu.
