@@ -66,8 +66,9 @@
 
     // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
     hideAllField: function () {
-      var $headCellFormat = $("#field-display-overview").find("th:nth-last-child(2)");
-      var $selectLabel = $("#field-display-overview").find("tbody td:nth-last-child(4) select option[value=\"hidden\"]");
+      var $fieldDisplayOverview = $("#field-display-overview");
+      var $headCellFormat = $fieldDisplayOverview.find("th:nth-last-child(2)");
+      var $selectLabel = $fieldDisplayOverview.find("tbody td:nth-last-child(4) select option[value=\"hidden\"]");
 
       $headCellFormat.append(
         $("<button></button>")
@@ -86,9 +87,10 @@
 
     // Retire tous les champs dans "Gérer l'affichage".
     removeAllField: function () {
-      var $headCellFormat = $("#field-display-overview").find("thead th:last-child");
-      var $selectFormat = $("#field-display-overview").find("tbody td:nth-last-child(3) select");
-      var $selectRegion = $("#field-display-overview").find("tbody td select[data-drupal-selector=\"edit-fields-field-visuel-region\"]");
+      var $fieldDisplayOverview = $("#field-display-overview");
+      var $headCellFormat = $fieldDisplayOverview.find("thead th:last-child");
+      var $selectFormat = $fieldDisplayOverview.find("tbody td:nth-last-child(3) select");
+      var $selectRegion = $fieldDisplayOverview.find("tbody td select[data-drupal-selector=\"edit-fields-field-visuel-region\"]");
       var $select = $selectRegion;
 
       // Drupal 8.3 intègre un nouveau select (région) qui désactive maintenant
