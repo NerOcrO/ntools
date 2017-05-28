@@ -66,30 +66,39 @@
 
     // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
     hideAllField: function () {
-      $("#field-display-overview").find("th:nth-child(4)").append(
+      $("#field-display-overview").find("th:nth-last-child(2)").append(
         $("<button></button>")
         .html("Hide all")
         .addClass("ntools-hidden")
         .click(function () {
-          $("#field-display-overview").find("tbody td:nth-child(4) select option[value=\"hidden\"]").each(function () {
+          $("#field-display-overview").find("tbody td:nth-last-child(4) select option[value=\"hidden\"]").each(function () {
             $(this).attr("selected", true);
           });
           return false;
         })
       );
-      $(".sticky-header").find("th:nth-child(4)").append($("button").clone(true));
+      $(".sticky-header").find("th:nth-last-child(2)").append($("button").clone(true));
     },
 
     // Retire tous les champs dans "Gérer l'affichage".
     removeAllField: function () {
-      var $headCellFormat = $('#field-display-overview').find('thead th:nth-child(5)');
-      var $selectFormat = $('#field-display-overview').find('tbody td:nth-child(5) select');
+      var $headCellFormat = $("#field-display-overview").find("thead th:last-child");
+      var $selectFormat = $("#field-display-overview").find("tbody td:nth-last-child(3) select");
+      var $selectRegion = $("#field-display-overview").find("tbody td select[data-drupal-selector=\"edit-fields-field-visuel-region\"]");
+      var $select = $selectRegion;
+
+      // Drupal 8.3 intègre un nouveau select (région) qui désactive maintenant
+      // le champ.
+      if ($selectRegion.length == 0) {
+        var $select = $selectFormat;
+      }
+
       $headCellFormat.append(
         $("<button></button>")
         .html("Remove all")
         .addClass("ntools-hidden")
         .click(function () {
-          $selectFormat.find("option[value=\"hidden\"]").each(function () {
+          $select.find("option[value=\"hidden\"]").each(function () {
             $(this).attr("selected", true);
           });
 
