@@ -80,6 +80,27 @@
       $(".sticky-header").find("th:nth-child(4)").append($("button").clone(true));
     },
 
+    // Retire tous les champs dans "Gérer l'affichage".
+    removeAllField: function () {
+      var $headCellFormat = $('#field-display-overview').find('thead th:nth-child(5)');
+      var $selectFormat = $('#field-display-overview').find('tbody td:nth-child(5) select');
+      $headCellFormat.append(
+        $("<button></button>")
+        .html("Remove all")
+        .addClass("ntools-hidden")
+        .click(function () {
+          $selectFormat.find("option[value=\"hidden\"]").each(function () {
+            $(this).attr("selected", true);
+          });
+
+          // Déclenche le call AJAX pour le 1er élément, déclenchant les autres.
+          $selectFormat.first().trigger('change');
+
+          return false;
+        })
+      );
+    },
+
     // Ajoute une zone transparente sur l"élément voulu.
     addOverlay: function (node, type, output, links) {
       var nameLinks = $("<span/>").addClass("ntools-links");
@@ -220,7 +241,7 @@
         });
     },
 
-    // Order added on field"s list table.
+    // Order added on field's list table.
     addReportsOrder: function (parent, selector) {
       $(parent).find(selector).click(function () {
           var table = $(this).parents("table").eq(0);
@@ -391,8 +412,10 @@
        * Other
        *****************************************************************************
        */
-      // Button added to hide all field"s label.
+      // Button added to hide all field's label.
       nToolsHelper.hideAllField();
+      // Button added to remove fields from display.
+      nToolsHelper.removeAllField();
 
       nToolsHelper.removeDropButton();
     },
@@ -555,8 +578,10 @@
        * Other
        *****************************************************************************
        */
-      // Button added to hide all field"s label.
+      // Button added to hide all field's label.
       nToolsHelper.hideAllField();
+      // Button added to remove fields from display.
+      nToolsHelper.removeAllField();
 
       // Ajout d'un lien vers un field collection sur la liste des champs.
       $("#field-overview tbody tr").each(function () {
