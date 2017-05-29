@@ -993,31 +993,26 @@
         `.page-admin table .odd:hover,
         .page-admin table .even:hover,
         .homebox-column-wrapper table .odd:hover,
-        .homebox-column-wrapper table .even:hover
-        {
+        .homebox-column-wrapper table .even:hover {
           background-color: #E1E2DC;
         }
         `,
-        `th.filter
-        {
+        `th.filter {
           cursor: pointer;
         }`,
         `.ntools-help,
-        .ntools-help *
-        {
+        .ntools-help * {
           color: #4D8F46;
           font-weight: 900;
         }
         `,
-        `.ntools-toggle
-        {
+        `.ntools-toggle {
           position: fixed;
           left: 0;
           top: 125px;
           z-index: 900;
         }`,
-        `.ntools-toggle button
-        {
+        `.ntools-toggle button {
           background: #202020;
           border: none;
           border-radius: 0;
@@ -1029,8 +1024,7 @@
           padding: 2px 5px;
           width: 100px;
         }`,
-        `.ntools
-        {
+        `.ntools {
           background-color: #202020;
           color: #FFF; min-width: 105px;
           padding: 5px 5px 0 5px;
@@ -1039,69 +1033,57 @@
           top: 149px;
           z-index: 900;
         }`,
-        `.ntools *
-        {
+        `.ntools * {
           box-sizing: content-box;
           font: 400 14px/18px Helvetica;
         }`,
-        `.ntools a
-        {
+        `.ntools a {
           color: #0071B3;
         }`,
         `.ntools a:link,
-        .ntools a:visited
-        {
+        .ntools a:visited {
           text-decoration: none;
         }`,
         `.ntools a:hover,
-        .ntools a:focus
-        {
+        .ntools a:focus {
           color: #018FE2;
         }
         `,
-        `.ntools>div
-        {
+        `.ntools>div {
           margin-bottom: 3px;
           padding-bottom: 2px;
         }
         `,
-        `.ntools-user
-        {
+        `.ntools-user {
           border-bottom: 1px solid #FFF;
         }
         `,
         `#block-masquerade-masquerade,
-        .ntools-body-class
-        {
+        .ntools-body-class {
           border-bottom: 1px solid #FFF;
         }
         `,
-        `#block-masquerade-masquerade h2
-        {
+        `#block-masquerade-masquerade h2 {
           display: none;
         }
         `,
         `#edit-masquerade-user-field,
-        #block-masquerade-masquerade input.form-submit
-        {
+        #block-masquerade-masquerade input.form-submit {
           border: 1px solid black;
           border-radius: 0;
         }
         `,
         `#block-masquerade-masquerade .content,
-        #block-masquerade-masquerade .form-item
-        {
+        #block-masquerade-masquerade .form-item {
           margin: 0;
         }
         `,
-        `#block-masquerade-masquerade .item-list ul li
-        {
+        `#block-masquerade-masquerade .item-list ul li {
           margin: 0;
           padding: 0;
         }
         `,
-        `.ntools button
-        {
+        `.ntools button {
           border: none;
           border-radius: 0;
           color: #FFF;
@@ -1112,85 +1094,69 @@
           width: 93%;
         }
         `,
-        `.ntools-regions-toggle
-        {
+        `.ntools-regions-toggle {
           background: #018FE2;
         }
         `,
-        `.ntools-regions-toggle:hover
-        {
+        `.ntools-regions-toggle:hover {
           background: #0073B7;
         }
         `,
-        `.ntools-blocks-toggle
-        {
+        `.ntools-blocks-toggle {
           background: #B73939;
         }
         `,
-        `.ntools-blocks-toggle:hover
-        {
+        `.ntools-blocks-toggle:hover {
           background: #9F2B2B;
         }
         `,
-        `.ntools-views-toggle
-        {
+        `.ntools-views-toggle {
           background: #FFA300;
         }
         `,
-        `.ntools-views-toggle:hover
-        {
+        `.ntools-views-toggle:hover {
           background: #DA900C;
         }
         `,
         `.ntools-nodes-toggle,
-        .ntools-profiles-toggle
-        {
+        .ntools-profiles-toggle {
           background: #4D8F46;
         }
         `,
         `.ntools-nodes-toggle:hover,
-        .ntools-profiles-toggle:hover
-        {
+        .ntools-profiles-toggle:hover {
           background: #277D1E;
         }
         `,
-        `.ntools-fields-toggle
-        {
+        `.ntools-fields-toggle {
           background: #783A00;
         }
         `,
-        `.ntools-fields-toggle:hover
-        {
+        `.ntools-fields-toggle:hover {
           background: #4E2500;
         }
         `,
-        `.ntools-forms-toggle
-        {
+        `.ntools-forms-toggle {
           background: #4A3657;
         }
         `,
-        `.ntools-forms-toggle:hover
-        {
+        `.ntools-forms-toggle:hover {
           background: #3B2549;
         }
         `,
-        `.ntools-hide-all-toggle
-        {
+        `.ntools-hide-all-toggle {
           background: #000;
         }
         `,
-        `.ntools-hide-all-toggle:hover
-        {
+        `.ntools-hide-all-toggle:hover {
           background: #3B3B3B;
         }
         `,
-        `.ntools-show
-        {
+        `.ntools-show {
           position: relative;
         }
         `,
-        `.ntools-highlight
-        {
+        `.ntools-highlight {
           background-color: #000;
           cursor: pointer;
           height: 100%;
@@ -1202,8 +1168,7 @@
           z-index: 19;
         }
         `,
-        `.ntools-highlight div
-        {
+        `.ntools-highlight div {
           color: #FFF;
           cursor: initial;
           font: 400 14px/18px Helvetica;
@@ -1218,55 +1183,45 @@
           z-index: 20;
         }
         `,
-        `.ntools-highlight a[target="_blank"]
-        {
+        `.ntools-highlight a[target="_blank"] {
           background: #000;
           color: #FFF;
           display: inline;
           padding: 0 4px;
         }
         `,
-        `.ntools-highlight a[target="_blank"]:hover
-        {
+        `.ntools-highlight a[target="_blank"]:hover {
           color: red;
         }
         `,
-        `.ntools-region-name
-        {
+        `.ntools-region-name {
           background-color: #018FE2;
         }
         `,
-        `.ntools-block-name
-        {
+        `.ntools-block-name {
           background-color: #B73939;
         }
         `,
-        `.ntools-view-name
-        {
+        `.ntools-view-name {
           background-color: #FFA300;
         }
         `,
         `.ntools-profile-name,
-        .ntools-node-name
-        {
+        .ntools-node-name {
           background-color: #4D8F46;
         }
         `,
-        `.ntools-field-name
-        {
+        `.ntools-field-name {
           background-color: #783A00;
         }
         `,
-        `.ntools-form-name
-        {
+        `.ntools-form-name {
           background-color: #4A3657;
         }`,
-        `.ntools-links a
-        {
+        `.ntools-links a {
           margin-right: 3px;
         }`,
-        `.ntools-hidden
-        {
+        `.ntools-hidden {
           background: #000;
           border: none;
           color: #FFF;
