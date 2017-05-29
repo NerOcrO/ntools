@@ -101,7 +101,7 @@
 
       $headCellFormat.append(
         $("<button></button>")
-        .html("Remove all")
+        .html("Disable all")
         .addClass("ntools-hidden")
         .click(function () {
           $select.find("option[value=\"hidden\"]").each(function () {
@@ -1029,7 +1029,7 @@
 
       	return style.sheet;
       })();
-      
+
       // Pour une meilleure lisibilité, on utilise des backticks pour afficher
       // une règle CSS sur plusieurs lignes (compatible ECMAScript 6).
       var rules = [
@@ -1273,7 +1273,7 @@
           padding: 5px;
         }`
       ];
-      
+
       rules.forEach(function (value, index) {
         try {
           sheet.insertRule(value, index);
