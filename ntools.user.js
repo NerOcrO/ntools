@@ -102,7 +102,7 @@
 
       $headCell.append(
         $("<button></button>")
-        .html("Remove all")
+        .html("Disable all")
         .addClass("ntools-hidden")
         .click(function () {
           $select.find("option[value=\"hidden\"]").each(function () {
