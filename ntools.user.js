@@ -66,40 +66,41 @@
 
     // Met à <hidden> toutes les étiquettes des champs dans "Gérer l'affichage".
     hideAllField: function () {
-      var $fieldDisplayOverview = $("#field-display-overview");
-      var $headCellFormat = $fieldDisplayOverview.find("th:nth-last-child(2)");
-      var $selectLabel = $fieldDisplayOverview.find("tbody td:nth-last-child(4) select option[value=\"hidden\"]");
+      var $table = $("#field-display-overview");
+      var $headCell = $table.find("th:nth-last-child(2)");
+      var $stickyCell = $(".sticky-header").find("th:nth-last-child(2)");
+      var $select = $table.find("tbody td:nth-last-child(4) select");
 
-      $headCellFormat.append(
+      $headCell.append(
         $("<button></button>")
         .html("Hide all")
         .addClass("ntools-hidden")
         .click(function () {
-          $selectLabel.each(function () {
+          $select.find("option[value=\"hidden\"]").each(function () {
             $(this).attr("selected", true);
           });
+
           return false;
         })
       );
 
-      $(".sticky-header").find("th:nth-last-child(2)").append($headCellFormat.find("button").clone(true));
+      $stickyCell.append($headCell.find("button").clone(true));
     },
 
     // Retire tous les champs dans "Gérer l'affichage".
     removeAllField: function () {
-      var $fieldDisplayOverview = $("#field-display-overview");
-      var $headCellFormat = $fieldDisplayOverview.find("thead th:last-child");
-      var $selectFormat = $fieldDisplayOverview.find("tbody td:nth-last-child(3) select");
-      var $selectRegion = $fieldDisplayOverview.find("tbody td select[data-drupal-selector=\"edit-fields-field-visuel-region\"]");
-      var $select = $selectRegion;
+      var $table = $("#field-display-overview");
+      var $headCell = $table.find("thead th:nth-last-child(1)");
+      var $stickyCell = $(".sticky-header").find("th:nth-last-child(1)");
+      var $select = $table.find("select.field-region");
 
       // Drupal 8.3 intègre un nouveau select (région) qui désactive maintenant
       // le champ.
-      if ($selectRegion.length == 0) {
-        var $select = $selectFormat;
+      if (!$select.length) {
+        $select = $table.find("tbody td:nth-last-child(3) select");
       }
 
-      $headCellFormat.append(
+      $headCell.append(
         $("<button></button>")
         .html("Disable all")
         .addClass("ntools-hidden")
@@ -109,13 +110,13 @@
           });
 
           // Déclenche le call AJAX pour le 1er élément, déclenchant les autres.
-          $selectFormat.first().trigger("change");
+          $select.first().trigger("change");
 
           return false;
         })
       );
 
-      $(".sticky-header").find("th:last-child").append($headCellFormat.find("button").clone(true));
+      $stickyCell.append($headCell.find("button").clone(true));
     },
 
     // Ajoute une zone transparente sur l"élément voulu.
