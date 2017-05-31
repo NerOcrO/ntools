@@ -150,7 +150,7 @@
       var flag = false;
       var $node;
 
-      if (typeof node === "object") {
+      if (typeof element === "object") {
         $node = $(element).parent();
         flag = $("." + type).find(".ntools-highlight").length === 1;
       } else {
