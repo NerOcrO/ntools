@@ -23,20 +23,20 @@ et regardez tout ce que vous pouvez faire sur votre Drupal favori !
 
 * Installer [greasemonkey](https://addons.mozilla.org/fr/firefox/addon/greasemonkey/)
 * [Cliquez ici et installer le script](https://github.com/NerOcrO/ntools/raw/master/ntools.user.js)
-* about:addons -> Scripts utilisateur (tête de singe) et cliquer sur le bouton
-"Préférences" et ajoutez vos noms de domaines autorisés (e.g. : http://nerocro.monsite.fr/*)
+* Cliquez ensuite sur la tête de singe qui se trouve à côté de votre barre
+d'adresse, puis sur NTools->edit
+* Remplacez "localhost" par le domaine sur lequel vous voulez que NTools
+s'applique (e.g. : http://nerocro.monsite.fr/*)
 
 ### Chrome
 
 * Installer [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
-* Téléchargez ou clonez ce dépôt
-* Outils->Extensions
-* Cliquez sur le lien "Options" de Tampermonkey
-* Créez un nouveau script en y collant celui-ci puis enregistrez
-* Retournez sur l'onglet "Userscripts installés" et cliquez sur Ntools
-* Cliquez sur l'onglet "Paramètres"
-* Section "Inclusions/Exclusions" -> "Inclusions utilisateur" ajoutez vos noms
-de domaines autorisés (e.g. : http://nerocro.monsite.fr/*)
+* [Cliquez ici et installer le script](https://github.com/NerOcrO/ntools/raw/master/ntools.user.js)
+* Cliquez sur l'icône Tampermonkey à côté de votre barre d'adresse puis
+"Tableau de bord"
+* Cliquez sur la ligne NTools
+* Remplacez "localhost" par le domaine sur lequel vous voulez que NTools
+s'applique (e.g. : http://nerocro.monsite.fr/*)
 
 ### Mes pages exclues
 
@@ -47,7 +47,7 @@ de domaines autorisés (e.g. : http://nerocro.monsite.fr/*)
 
 * Téléchargez ou clonez ce dépôt
 * Placez le script JS dans le répertoire js/ de votre thème
-* Supprimez les huit premières lignes en rapport avec greasemonkey
+* Supprimez les neuf premières lignes en rapport avec greasemonkey
 * Insérez dans votre_theme.info : `scripts[] = js/ntools.user.js`
 
 ## Pourquoi ?
@@ -58,8 +58,8 @@ développé ce script pour éviter des tâches répétitives comme utiliser
 l'inspecteur d'élément pour trouver comment s'appelle une vue, comment s'appelle
 un bloc, suis-je sur un node, quel est le nid du node en cours, quel est le nom
 machine d'une taxonomie, d'une vue, d'un bloc...
-En **1 clic** (ou moins), j'accède à toutes ces informations soit avec un effet visuel
-soit un colonne en plus dans un tableau (admin) ou soit un lien.
+En **1 clic** (ou moins), j'accède à toutes ces informations soit avec un effet
+visuel soit un colonne en plus dans un tableau (admin) ou soit un lien.
 
 ## Je suis un client et je ne sais pas utiliser l'inspecteur d'élément, est-ce que je peux utiliser ce script ?
 

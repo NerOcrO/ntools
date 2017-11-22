@@ -3,12 +3,20 @@
 // @author       NerOcrO
 // @description  Script who help developers on Drupal 7/8
 // @grant        none
+// @require      https://code.jquery.com/jquery-3.2.1.min.js
 // @include      localhost
-// @version      3.0
+// @version      4.0
 // ==/UserScript==
 
 (function ($) {
   "use strict";
+
+  var Drupal = window.Drupal;
+  var drupalSettings = window.drupalSettings;
+  if (typeof unsafeWindow !== "undefined") {
+    Drupal = unsafeWindow.Drupal;
+    drupalSettings = unsafeWindow.drupalSettings;
+  }
 
   String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
