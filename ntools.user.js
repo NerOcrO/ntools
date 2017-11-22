@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NTools
 // @author       NerOcrO
-// @description  Script who help developers on Drupal 7
+// @description  Script who help developers on Drupal 7/8
 // @grant        none
 // @include      localhost
 // @version      3.0
@@ -1025,10 +1025,10 @@
 
     styles: function () {
       var sheet = (function () {
-      	var style = document.createElement("style");
-      	document.head.appendChild(style);
+        var style = document.createElement("style");
+        document.head.appendChild(style);
 
-      	return style.sheet;
+        return style.sheet;
       })();
 
       // Pour une meilleure lisibilité, on utilise des backticks pour afficher
