@@ -45,10 +45,10 @@
       var c;
       for (i = 0; i < ca.length; i+=1) {
         c = ca[i];
-        while (c.charAt(0) == " ") {
+        while (c.charAt(0) === " ") {
           c = c.substring(1, c.length);
         }
-        if (c.indexOf(nameEQ) == 0) {
+        if (c.indexOf(nameEQ) === 0) {
           return c.substring(nameEQ.length, c.length);
         }
       }
@@ -318,13 +318,13 @@
        * Content
        *****************************************************************************
        */
-      if (drupalSettings.path.currentPath == "admin/content") {
+      if (drupalSettings.path.currentPath === "admin/content") {
         // NID added on content list.
         nToolsHelper.addHelp(".edit a", 2, "NID");
-      } else if (drupalSettings.path.currentPath == "admin/content/files") {
+      } else if (drupalSettings.path.currentPath === "admin/content/files") {
         // FID added on file list.
         nToolsHelper.addHelp(".views-field-count a", 1, "FID");
-      } else if (drupalSettings.path.currentPath == "admin/content/media") {
+      } else if (drupalSettings.path.currentPath === "admin/content/media") {
         // FID added on media list.
         nToolsHelper.addHelp(".edit a", 2, "MID");
       }
@@ -333,7 +333,7 @@
        * Structure
        *****************************************************************************
        */
-      // else if (drupalSettings.path.currentPath == "admin/structure/block") {
+      // else if (drupalSettings.path.currentPath === "admin/structure/block") {
       //   // Machine name added on blocks list.
       //   $("[data-drupal-selector=\"edit-blocks\"]")
       //   .find("thead tr").prepend(nToolsHelper.createTh("base_block_id"))
@@ -353,28 +353,28 @@
       //     nToolsHelper.addTd(this, output);
       //   });
       // }
-      else if (drupalSettings.path.currentPath == "admin/structure/types") {
+      else if (drupalSettings.path.currentPath === "admin/structure/types") {
         // Machine name added on content type list.
         nToolsHelper.addHelp(".manage-fields a", 2);
-      } else if (drupalSettings.path.currentPath == "admin/structure/display-modes/form") {
+      } else if (drupalSettings.path.currentPath === "admin/structure/display-modes/form") {
         // Machine name added on display modes form list.
         nToolsHelper.addHelp(".edit a", 1);
-      } else if (drupalSettings.path.currentPath == "admin/structure/display-modes/view") {
+      } else if (drupalSettings.path.currentPath === "admin/structure/display-modes/view") {
         // Machine name added on display modes view list.
         nToolsHelper.addHelp(".edit a", 1);
-      } else if (drupalSettings.path.currentPath == "admin/structure/menu") {
+      } else if (drupalSettings.path.currentPath === "admin/structure/menu") {
         // Machine name added on menu list.
         nToolsHelper.addHelp(".edit a", 1);
-      } else if (drupalSettings.path.currentPath == "admin/structure/taxonomy") {
+      } else if (drupalSettings.path.currentPath === "admin/structure/taxonomy") {
         // Machine name added on vocabularies list.
         nToolsHelper.addHelp(".list a", 2);
       } else if (
-        drupalSettings.path.currentPath.substring(0, 31) == "admin/structure/taxonomy/manage"
-        && (/admin\/structure\/taxonomy\/manage\/(.+)\/overview\/(.+)/g).exec(drupalSettings.path.currentPath) == null
+        drupalSettings.path.currentPath.substring(0, 31) === "admin/structure/taxonomy/manage"
+        && (/admin\/structure\/taxonomy\/manage\/(.+)\/overview\/(.+)/g).exec(drupalSettings.path.currentPath) === null
       ) {
         // TID added on terms list.
         nToolsHelper.addHelp(".edit a", 2, "TID");
-      } else if (drupalSettings.path.currentPath == "admin/structure/views") {
+      } else if (drupalSettings.path.currentPath === "admin/structure/views") {
         // Machine name added on menu list.
         nToolsHelper.addHelp(".edit a", 1, "", "id:&nbsp;");
       }
@@ -384,10 +384,10 @@
        * People
        *****************************************************************************
        */
-      else if (drupalSettings.path.currentPath == "admin/people") {
+      else if (drupalSettings.path.currentPath === "admin/people") {
         // UID added on users list.
         nToolsHelper.addHelp(".edit a", 2, "UID");
-      } else if (drupalSettings.path.currentPath == "admin/people/permissions") {
+      } else if (drupalSettings.path.currentPath === "admin/people/permissions") {
         // Machine name added on permissions list.
         $("[data-drupal-selector=\"permissions\"]")
           .find("thead tr").prepend(nToolsHelper.createTh())
@@ -402,7 +402,7 @@
 
             nToolsHelper.addTd(this, output);
           });
-      } else if (drupalSettings.path.currentPath == "admin/people/roles") {
+      } else if (drupalSettings.path.currentPath === "admin/people/roles") {
         // Machine name added on roles list.
         nToolsHelper.addHelp(".edit a", 1);
       }
@@ -412,7 +412,7 @@
        * Modules
        *****************************************************************************
        */
-      else if (drupalSettings.path.currentPath == "admin/modules") {
+      else if (drupalSettings.path.currentPath === "admin/modules") {
         // Machine name added on modules list.
         $("[data-drupal-selector=\"system-modules\"]")
           .find("thead tr").prepend(nToolsHelper.createTh("Machine name", 1, "visually-hidden"))
@@ -429,7 +429,7 @@
        * Reports
        *****************************************************************************
        */
-      else if (drupalSettings.path.currentPath == "admin/reports/fields") {
+      else if (drupalSettings.path.currentPath === "admin/reports/fields") {
         nToolsHelper.addReportsOrder("table", "th");
       }
 
@@ -456,7 +456,7 @@
        * Content
        *****************************************************************************
        */
-      if (pathname == "/admin/content") {
+      if (pathname === "/admin/content") {
         // Ajout de l'identifiant sur la liste des nodes.
         nToolsHelper.addHelp("td:last-child a", 2, "NID");
       }
@@ -466,7 +466,7 @@
        * Structure
        *****************************************************************************
        */
-      else if (pathname == "/admin/structure/block") {
+      else if (pathname === "/admin/structure/block") {
         // Ajout de la machine name sur la liste des blocs.
         $("table")
           .find("thead tr").prepend(nToolsHelper.createTh())
@@ -483,7 +483,7 @@
 
             nToolsHelper.addTd(this, output);
           });
-      } else if (pathname == "/admin/structure/taxonomy") {
+      } else if (pathname === "/admin/structure/taxonomy") {
         // Ajout du VID sur la liste des vocabulaires.
         $("table")
           .find("thead tr").prepend(nToolsHelper.createTh("VID"))
@@ -510,12 +510,12 @@
             $(this).append(tdField).append(tdDisplay);
           });
       } else if (
-        pathname.substring(0, 26) == "/admin/structure/taxonomy/"
-        && (/\/admin\/structure\/taxonomy\/(.+)\/(.+)/g).exec(pathname) == null
+        pathname.substring(0, 26) === "/admin/structure/taxonomy/"
+        && (/\/admin\/structure\/taxonomy\/(.+)\/(.+)/g).exec(pathname) === null
       ) {
         // Ajout du TID sur la liste des termes.
         nToolsHelper.addHelp("td:last-child a", 2, "TID");
-      } else if (pathname == "/admin/structure/views") {
+      } else if (pathname === "/admin/structure/views") {
         // Ajout de la machine name sur la liste des vues.
         nToolsHelper.addHelp(".first a", 2, "", "$view->name = \"", "\";");
       }
@@ -525,11 +525,11 @@
        * People
        *****************************************************************************
        */
-      else if (pathname == "/admin/people") {
+      else if (pathname === "/admin/people") {
         // Ajout de l'identifiant sur la liste des utilisateurs.
         nToolsHelper.addHelp("td:last-child a", 2, "UID");
       } else if (
-        pathname == "/admin/people/permissions"
+        pathname === "/admin/people/permissions"
         || (/\/admin\/config\/group\/permissions\/(.+)\/(.+)/g).exec(pathname) !== null
       ) {
         // Ajout de la machine name sur la liste des permissions.
@@ -546,7 +546,7 @@
 
             nToolsHelper.addTd(this, output);
           });
-      } else if (pathname == "/admin/people/permissions/roles") {
+      } else if (pathname === "/admin/people/permissions/roles") {
         // Ajout de l'identifiant sur la liste des rôles.
         nToolsHelper.addHelp("td:last-child a", 1, "RID");
       }
@@ -556,7 +556,7 @@
        * Modules
        *****************************************************************************
        */
-      else if (pathname == "/admin/modules") {
+      else if (pathname === "/admin/modules") {
         // Ajout de la machine name sur la liste des modules.
         $("table")
           .find("thead tr").prepend(nToolsHelper.createTh())
@@ -572,7 +572,7 @@
        * Configuration
        *****************************************************************************
        */
-      else if (pathname == "/admin/config/regional/entity_translation") {
+      else if (pathname === "/admin/config/regional/entity_translation") {
         // Ajout d'un bouton pour configurer de façon pertinente
         // la traduction des entités.
         $("#entity-translation-admin-form").find("#edit-actions").append(
@@ -584,7 +584,7 @@
             return false;
           })
         );
-      } else if (pathname == "/admin/config/search/apachesolr/settings/solr/facets") {
+      } else if (pathname === "/admin/config/search/apachesolr/settings/solr/facets") {
         // Ajout de la machine name sur la liste des facettes.
         nToolsHelper.addHelp(".first a", 2);
       }
@@ -594,7 +594,7 @@
        * Reports
        *****************************************************************************
        */
-      else if (pathname == "/admin/reports/fields") {
+      else if (pathname === "/admin/reports/fields") {
         // Le tableau de la liste des champs peu être trié.
         nToolsHelper.addReportsOrder(".page-admin-reports-fields", ".sticky-enabled th");
       }
@@ -739,7 +739,7 @@
       if (login === 0) {
         var pathPrefix = "";
 
-        if (Drupal.settings == undefined) {
+        if (Drupal.settings === undefined) {
           pathPrefix = drupalSettings.path.pathPrefix;
         } else {
           pathPrefix = Drupal.settings.pathPrefix;
@@ -772,7 +772,7 @@
       if (nodeType !== null) {
         bodyClass += nodeType[0] + "<br>";
       }
-      if (nTools.drupalVersion == 8) {
+      if (nTools.drupalVersion === 8) {
         bodyClass += drupalSettings.path.currentPath + "<br>";
       } else {
         if (pageNode !== null) {
@@ -915,7 +915,7 @@
                     // Ce lien permet d"éditer la vue rapidement surtout dans le cas où
                     // le contextual link est absent.
                     if (login === 1) {
-                      url = nTools.drupalVersion == 6 ? "/admin/build/views/edit/" + whithoutDash + "#view-tab-" + classIdView[1] : "/admin/structure/views/view/" + whithoutDash + "/edit/" + classIdView[1];
+                      url = nTools.drupalVersion === 6 ? "/admin/build/views/edit/" + whithoutDash + "#view-tab-" + classIdView[1] : "/admin/structure/views/view/" + whithoutDash + "/edit/" + classIdView[1];
                       link = nToolsHelper.createLink(url, "Edit your view", "E");
                       links.push(link);
                     }
@@ -931,7 +931,7 @@
                     displayMode = "";
                     display = "";
 
-                    if (nTools.drupalVersion == 8) {
+                    if (nTools.drupalVersion === 8) {
                       classTeaser = /node--view-mode-(\S+)/.exec(targetClass);
                       bundle = /node--type-(\S+)/.exec(targetClass);
                       whithoutDash = bundle[1].replace(dash, "_");
@@ -1298,9 +1298,9 @@
     nTools.styles();
 
     // Drupal version.
-    if (typeof drupalSettings != "undefined") {
+    if (typeof drupalSettings !== "undefined") {
       nTools.drupalVersion = 8;
-    } else if (typeof Drupal.themes == "undefined") {
+    } else if (typeof Drupal.themes === "undefined") {
       nTools.drupalVersion = 7;
     } else {
       nTools.drupalVersion = 6;
