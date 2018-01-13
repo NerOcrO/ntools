@@ -192,8 +192,9 @@
             nToolsHelper.deleteOverlay("node");
             nToolsHelper.deleteOverlay("profile");
             nToolsHelper.deleteOverlay("field");
-            nToolsHelper.deleteOverlay("form");
             nToolsHelper.deleteOverlay("paragraph");
+            nToolsHelper.deleteOverlay("media");
+            nToolsHelper.deleteOverlay("form");
           })
         );
       }
@@ -638,7 +639,6 @@
       var bodyClass = "";
       var pageNode = /page-node-([0-9]+)/.exec(bodyClasses);
       var nodeType = /node-type-(\S+)/.exec(bodyClasses);
-      var paragraphType = /paragraph--type--(\S+)/.exec(bodyClasses);
       var pageType = /page-type-(\S+)/.exec(bodyClasses);
       var pageTaxonomy = /page-taxonomy-term-([0-9]+)/.exec(bodyClasses);
       var pageUser = /page-user-([0-9]+)/.exec(bodyClasses);
@@ -677,12 +677,16 @@
             type: "field"
           },
           {
-            id: "form",
-            type: "form"
-          },
-          {
             id: "paragraph",
             type: "paragraph"
+          },
+          {
+            id: "media",
+            type: "media"
+          },
+          {
+            id: "form",
+            type: "form"
           },
         ];
 
@@ -874,6 +878,7 @@
                   var url;
                   var bundle;
                   var nid;
+                  var mid;
                   var output;
                   var classRegion;
                   var classBlock;
@@ -891,6 +896,7 @@
                   var whithoutNode;
                   var whithoutProfile;
                   var whithoutParagraph;
+                  var whithoutMedia;
 
                   // Un bouton pour mettre en évidence les régions.
                   if (type === "region") {
@@ -1036,6 +1042,28 @@
                     }
 
                     output = whithoutParagraph + " → " + classViewMode[1].replace(dash, "_");
+                  }
+                  // Un bouton pour mettre en évidence les paragraphs.
+                  else if (type === "media") {
+                    whithoutMedia = classNode[1].replace("media-", "").replace(dash, "_");
+                    classViewMode = /view-mode-(\S+)/.exec(targetClass);
+                    display = "/" + classViewMode[1].replace(dash, "_");
+                    mid = targetId.replace("media/", "");
+
+                    // Ces liens permettent d'aller rapidement à la liste des champs
+                    // ou aux modes d'affichage du media.
+                    if (login === 1) {
+                      link = nToolsHelper.createLink("/media/" + mid, "View this media", "V");
+                      links.push(link);
+                      link = nToolsHelper.createLink("/media/" + mid + "/edit", "Edit this media", "E");
+                      links.push(link);
+                      link = nToolsHelper.createLink("/admin/structure/media/manage/" + whithoutMedia + "/fields", "Manage your " + whithoutMedia + " fields", "F");
+                      links.push(link);
+                      link = nToolsHelper.createLink("/admin/structure/media/manage/" + whithoutMedia + "/display" + display, "Manage your " + whithoutMedia + " displays", "D");
+                      links.push(link);
+                    }
+
+                    output = whithoutMedia + " → " + classViewMode[1].replace(dash, "_");
                   }
                   nToolsHelper.addOverlay(this, type, output, links);
                 });
@@ -1205,12 +1233,14 @@
         }
         `,
         `.ntools-fields-toggle,
-        .ntools-paragraphs-toggle {
+        .ntools-paragraphs-toggle,
+        .ntools-medias-toggle {
           background: #783A00;
         }
         `,
         `.ntools-fields-toggle:hover,
-        .ntools-paragraphs-toggle:hover {
+        .ntools-paragraphs-toggle:hover,
+        .ntools-medias-toggle:hover {
           background: #4E2500;
         }
         `,
@@ -1290,7 +1320,8 @@
         }
         `,
         `.ntools-field-name,
-        .ntools-paragraph-name {
+        .ntools-paragraph-name,
+        .ntools-media-name {
           background-color: #783A00;
         }
         `,

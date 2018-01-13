@@ -189,14 +189,14 @@ long et chiant surtout quand je passe derrière un collègue ou trois mois aprè
 #### Fonctionnalité
 
 Ajout de boutons pour mieux visualiser les régions, blocs, vues, nodes,
-profiles, champs et formulaires. Ces boutons ne s'affichent uniquement que si
-ces éléments sont présents dans la page. Au clic, un calque noir transparent
-s'affiche sur l'espace occupé par l'élément avec son identifiant pour mieux le
-chercher dans votre code. Au clic sur cette dernière, elle disparait. Si vous ne
-voyez rien apparaître, c'est que l'élément est caché et qu'il faut qu'un
-événement se produise pour le voir (e.g. popin). Toujours au clic, un bouton
-pour effacer toutes les zones apparaît. Il disparaît quand il n'y a plus de
-zone à effacer.
+profiles, champs, paragraphes, médias et formulaires. Ces boutons ne s'affichent
+uniquement que si ces éléments sont présents dans la page. Au clic, un calque
+noir transparent s'affiche sur l'espace occupé par l'élément avec son
+identifiant pour mieux le chercher dans votre code. Au clic sur cette dernière,
+elle disparait. Si vous ne voyez rien apparaître, c'est que l'élément est caché
+et qu'il faut qu'un événement se produise pour le voir (e.g. popin). Toujours au
+clic, un bouton pour effacer toutes les zones apparaît. Il disparaît quand il
+n'y a plus de zone à effacer.
 
 #### Les blocs
 
@@ -229,6 +229,28 @@ J'affiche enfin les propriétés du node :
 * P → Promoted
 * S → Sticky
 * U → Unpublished
+
+#### Les champs
+
+Affichage juste du nom machine et de son type.
+
+#### Les paragraphes
+
+Pour éviter de passer par l'admin menu, j'ai ajouté deux liens dans une
+nouvelle fenêtre vers :
+
+* Gérer les champs [F]
+* Gérer l'affichage [D]
+
+#### Les médias
+
+Pour éviter de passer par l'admin menu, j'ai ajouté quatre liens dans une
+nouvelle fenêtre vers :
+
+* Afficher le média [V]
+* Éditer le média [E]
+* Gérer les champs [F]
+* Gérer l'affichage [D]
 
 #### Troll
 
