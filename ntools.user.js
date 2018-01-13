@@ -193,6 +193,7 @@
             nToolsHelper.deleteOverlay("profile");
             nToolsHelper.deleteOverlay("field");
             nToolsHelper.deleteOverlay("form");
+            nToolsHelper.deleteOverlay("paragraph");
           })
         );
       }
@@ -637,6 +638,7 @@
       var bodyClass = "";
       var pageNode = /page-node-([0-9]+)/.exec(bodyClasses);
       var nodeType = /node-type-(\S+)/.exec(bodyClasses);
+      var paragraphType = /paragraph--type--(\S+)/.exec(bodyClasses);
       var pageType = /page-type-(\S+)/.exec(bodyClasses);
       var pageTaxonomy = /page-taxonomy-term-([0-9]+)/.exec(bodyClasses);
       var pageUser = /page-user-([0-9]+)/.exec(bodyClasses);
@@ -677,7 +679,11 @@
           {
             id: "form",
             type: "form"
-          }
+          },
+          {
+            id: "paragraph",
+            type: "paragraph"
+          },
         ];
 
       // On lit les dernières positions de la barre d'outils.
@@ -875,7 +881,7 @@
                   var nameBlockReg;
                   var classView;
                   var classIdView;
-                  var classTeaser;
+                  var classViewMode;
                   var classPromoted;
                   var classSticky;
                   var classUnpublished;
@@ -884,6 +890,7 @@
                   var whithoutDash;
                   var whithoutNode;
                   var whithoutProfile;
+                  var whithoutParagraph;
 
                   // Un bouton pour mettre en évidence les régions.
                   if (type === "region") {
@@ -924,7 +931,7 @@
                   }
                   // Un bouton pour mettre en évidence les nodes.
                   else if (type === "node") {
-                    classTeaser = /node-teaser/.exec(targetClass);
+                    classViewMode = /node-teaser/.exec(targetClass);
                     classPromoted = /node-promoted/.exec(targetClass);
                     classSticky = /node-sticky/.exec(targetClass);
                     classUnpublished = /node-unpublished/.exec(targetClass);
@@ -932,7 +939,7 @@
                     display = "";
 
                     if (nTools.drupalVersion === 8) {
-                      classTeaser = /node--view-mode-(\S+)/.exec(targetClass);
+                      classViewMode = /node--view-mode-(\S+)/.exec(targetClass);
                       bundle = /node--type-(\S+)/.exec(targetClass);
                       whithoutDash = bundle[1].replace(dash, "_");
                       whithoutNode = bundle[1].replace(dash, "_");
@@ -943,8 +950,8 @@
                         nid = "N/A";
                       }
 
-                      displayMode = " → " + classTeaser[1].replace(dash, "_");
-                      display = "/" + classTeaser[1].replace(dash, "_");
+                      displayMode = " → " + classViewMode[1].replace(dash, "_");
+                      display = "/" + classViewMode[1].replace(dash, "_");
                     } else {
                       nid = targetId.replace("node-", "");
                       bundle = /node-(\S+)/.exec(targetClass);
@@ -968,7 +975,7 @@
                       }
 
                       // Malheureusement, Drupal 7 ne gère que l'accroche.
-                      if (classTeaser !== null) {
+                      if (classViewMode !== null) {
                         displayMode = " → teaser";
                         display = "/teaser";
                       }
@@ -992,7 +999,7 @@
                   // Un bouton pour mettre en évidence les profiles.
                   else if (type === "profile") {
                     whithoutDash = classNode[1].replace(dash, "_");
-                    whithoutProfile = classNode[2].replace(dash, "_").replace("profile2_", "");
+                    whithoutProfile = classNode[2].replace("profile2-", "").replace(dash, "_");
 
                     // Ces liens permettent d'aller rapidement à la liste des champs
                     // ou aux modes d'affichage du profile.
@@ -1007,11 +1014,28 @@
                   }
                   // Un bouton pour mettre en évidence les fields.
                   else if (type === "field") {
-                    output = classNode[1].replace(dash, "_").replace("field_name_", "") + " (" + classNode[2].replace(dash, "_") + ")";
+                    output = classNode[1].replace("field-name-", "").replace(dash, "_") + " (" + classNode[2].replace(dash, "_") + ")";
                   }
                   // Un bouton pour mettre en évidence l'identifiant des formulaires.
                   else if (type === "form") {
                     output = targetId.replace(dash, "_");
+                  }
+                  // Un bouton pour mettre en évidence les paragraphs.
+                  else if (type === "paragraph") {
+                    whithoutParagraph = classNode[1].replace("paragraph--type--", "").replace(dash, "_");
+                    classViewMode = /paragraph--view-mode--(\S+)/.exec(targetClass);
+                    display = "/" + classViewMode[1].replace(dash, "_");
+
+                    // Ces liens permettent d'aller rapidement à la liste des champs
+                    // ou aux modes d'affichage du paragraph.
+                    if (login === 1) {
+                      link = nToolsHelper.createLink("/admin/structure/paragraphs_type/" + whithoutParagraph + "/fields", "Manage your " + whithoutParagraph + " fields", "F");
+                      links.push(link);
+                      link = nToolsHelper.createLink("/admin/structure/paragraphs_type/" + whithoutParagraph + "/display" + display, "Manage your " + whithoutParagraph + " displays", "D");
+                      links.push(link);
+                    }
+
+                    output = whithoutParagraph + " → " + classViewMode[1].replace(dash, "_");
                   }
                   nToolsHelper.addOverlay(this, type, output, links);
                 });
@@ -1180,11 +1204,13 @@
           background: #277D1E;
         }
         `,
-        `.ntools-fields-toggle {
+        `.ntools-fields-toggle,
+        .ntools-paragraphs-toggle {
           background: #783A00;
         }
         `,
-        `.ntools-fields-toggle:hover {
+        `.ntools-fields-toggle:hover,
+        .ntools-paragraphs-toggle:hover {
           background: #4E2500;
         }
         `,
@@ -1263,7 +1289,8 @@
           background-color: #4D8F46;
         }
         `,
-        `.ntools-field-name {
+        `.ntools-field-name,
+        .ntools-paragraph-name {
           background-color: #783A00;
         }
         `,
