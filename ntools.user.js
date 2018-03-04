@@ -1326,8 +1326,8 @@
   else if ($('body[class*="path-admin"]').length === 1) {
     nTools.backOfficeD8();
   }
-  else {
-    nTools.toolbar();
-    nTools.loginFocus();
-  }
+
+  nTools.toolbar();
+  nTools.loginFocus();
+
 }(jQuery, window.Drupal, window.drupalSettings));
