@@ -675,6 +675,7 @@
       const $divNtoolsToggle = $('<div></div>').addClass('ntools-toggle');
       const $divNtools = $('<div></div>').addClass('ntools');
       const $divNtoolsBodyClass = $('<div></div>').addClass('ntools-body-class');
+      const $inputsSubmit = $('#edit-actions input[type=submit]').clone();
       const myTypes = [
         {
           id: 'region',
@@ -1079,6 +1080,16 @@
           $('.ntools', $body).append($button);
         }
       });
+
+      // Ajout des boutons submit pour valider de n'importe où.
+      if ($inputsSubmit.length > 0) {
+        $inputsSubmit
+          .on('click', () => {
+            $inputsSubmit.prevObject.parents('form').submit();
+          });
+        $('.ntools', $body).append('<hr>');
+        $('.ntools', $body).append($inputsSubmit);
+      }
     },
 
     loginFocus() {
@@ -1133,6 +1144,9 @@
         .ntools * {
           box-sizing: content-box;
           font: 400 14px/18px Helvetica;
+        }
+        .ntools hr {
+          margin-bottom: 5px;
         }
         .ntools a {
           color: #0071B3;
@@ -1298,6 +1312,11 @@
           cursor: pointer;
           margin-left: 5px;
           padding: 5px;
+        }
+        .ntools input[type=submit] {
+          display: block;
+          margin: 0 0 5px;
+          max-width: 150px;
         }`;
       const textNode = document.createTextNode(rules);
 
@@ -1329,5 +1348,4 @@
 
   nTools.toolbar();
   nTools.loginFocus();
-
 }(jQuery, window.Drupal, window.drupalSettings));

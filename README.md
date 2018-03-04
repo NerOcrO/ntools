@@ -266,6 +266,15 @@ l'écrire dans votre code. Affichage de quelques liens pour un accès rapide san
 passer par l'admin menu. Pour plus de lisibilité, leur police est grasse et
 verte.
 
+### La mer noire ? non la barre noire !
+
+La barre d'outils se colle sur le côté gauche par défaut, est repliable/dépliable
+au double clique et vous pouvez la déplacer où vous voulez. La configuration est
+enregistré grâce au cookies ntools_toggle et ntools_toggle_positions.
+Elle est agrémentée des boutons de type submit pour éviter d'aller tout en bas
+de la page pour valider le formulaire en question. Très utile dans le cas d'une
+modification du titre d'un node quand on fait des tests.
+
 ### Structure
 
 #### Blocs
